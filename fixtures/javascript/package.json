@@ -1,0 +1,11 @@
+{
+  "name": "ub-fixture-javascript",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "c8": "^10.1.3"
+  }
+}
