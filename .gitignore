@@ -1,0 +1,21 @@
+# Local toolchain caches, venvs, scratch (see harness/env.sh)
+/.local/
+# Reference checkouts of unclebob's tools — recreate with harness/fetch-upstream.sh
+/upstream/
+# Build outputs
+/ubgate/bin/
+/harness/bin/
+/harness/logs/
+/dist/
+# Fixture dependencies and tool outputs (fixtures/setup.sh rebuilds them)
+/fixtures/*/node_modules/
+/fixtures/*/.venv
+/fixtures/*/.metrics/
+/fixtures/*/target/
+/fixtures/*/coverage/
+/fixtures/**/.coverage
+# Generic
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
