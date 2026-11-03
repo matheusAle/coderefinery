@@ -1,0 +1,26 @@
+package p
+
+import . "fmt"
+import _ "x"
+import ()
+var ()
+
+type P[T1, T2 any, S ~[]E | int] struct{ a, b int; c string }
+
+func (T) M(a, b int) {
+	_ = "\x41BC\0123é" + `` + ""
+	{ /* c */ }
+	if f(T{}) {
+	}
+	for _, v := range []T{{1}} {
+	}
+	_ = (*T).M
+	_ = T.M
+	var f func() func(int) error
+	switch x := y; t := x.(type) {
+	}
+	switch x := 5; {
+	}
+	_ = 'a' + 1.5 + 2i + 0x1F
+L:
+}

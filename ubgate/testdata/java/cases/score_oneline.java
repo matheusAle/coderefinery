@@ -1,0 +1,1 @@
+class Sample { int score(boolean a, boolean b, int[] values) { for(;;){} for(int v:values){} while(a){a=false;} do{b=false;}while(b); if (a && b || values.length > 0) {} try { return a ? 1 : 0; } catch (RuntimeException ex) { return 2; } } }

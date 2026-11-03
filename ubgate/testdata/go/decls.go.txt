@@ -1,0 +1,37 @@
+package p
+
+type (
+	A [N]int
+	S[T any, U comparable] struct {
+		a, b int `tag`
+		*E
+		pkg.F
+		G[int]
+	}
+	I interface {
+		M(x int) (int, error)
+		io.Reader
+		~int | ~string
+	}
+	Al = int
+	F func(int, string) bool
+	C <-chan int
+	D chan<- []*int
+	M map[string]struct{}
+)
+
+const (
+	X = iota
+	Y
+	Z, W int = 1, 2
+)
+
+var (
+	v1, v2 = f()
+	v3 []int
+)
+
+func (s *S[T, U]) Method(a, b int, c ...string) (r int, err error) {}
+func g(int, string) {}
+func h() (int) { return 1 }
+func k[T any](x T) T

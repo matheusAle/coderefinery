@@ -1,0 +1,33 @@
+package p
+
+func f() {
+	_ = f[int](a, b)
+	_ = f[a.B](x)
+	_ = f[[]int](x)
+	_ = f[*T](x)
+	_ = m[k](x,)
+	_ = a.b.c[d](x)
+	_ = m[k][j](x)
+	_ = f[int]{}
+	_ = m[k](x)(y)
+	_ = T(x)
+	_ = new(a.B)
+	_ = new(T[int])
+	_ = make(chan int, n)
+	_ = map[K]V(m)
+	_ = (T)(x)
+	_ = interface{}(x)
+	_ = f[0:1](x)
+	_ = f[i+1](x)
+	_ = f[T1, T2]
+	_ = f[T1, T2]{}
+	_ = g(f[int])
+
+
+	_ = f[T1, T2](x)
+	_ = f[m[k]](x)
+	_ = f[k.l[m]](x)
+	_ = struct{}{}
+	_ = f(a)[k](x)
+	_ = f[k](x...)
+}

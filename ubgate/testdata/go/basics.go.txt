@@ -1,0 +1,22 @@
+// lead
+package main
+
+import (
+	"fmt" // c1
+	x "os"
+)
+
+func main() {
+	// inside
+	a := 1
+	b, c := m[k](x), xs[0](y)
+	if a > 0 && b {
+		fmt.Println("hi\n", `raw`) // trail
+	} else if c {
+	} else {
+	}
+
+	for i := range 10 {
+		i++
+	}
+}

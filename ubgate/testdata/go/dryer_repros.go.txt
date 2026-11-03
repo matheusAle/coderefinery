@@ -1,0 +1,6 @@
+package p
+
+func f() {
+	_ = (*(*[10]byte)(q))[:]
+	_ = &s.m[r.n][r.i]
+}

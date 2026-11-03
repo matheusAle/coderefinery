@@ -1,0 +1,65 @@
+package p
+
+func f() {
+	x = new(Foo)
+	y := make([]int, 3, n)
+	z := f[int](a)
+	z = f[int, string](a, b)
+	z = g[int]
+	z = a.b[c](d)
+	z = (*T)(x)
+	z = []byte(s)
+	z = T{1, k: v, {2}}
+	z = &pkg.T{}
+	z = x.(T)
+	z = s[1:2]
+	z = s[:2:3]
+	z = s[a:]
+	z = -x + ^y * !z
+	z = <-ch
+	ch <- 1
+	x, y = y, x
+	x += 1
+	x--
+	go f()
+	defer func() { recover() }()
+	switch v := x.(type) {
+	case int, *string:
+	case nil:
+	default:
+		break
+	}
+	switch x := f(); x {
+	case 1:
+		fallthrough
+	case 2, 3:
+	}
+	switch {
+	}
+	select {
+	case v := <-ch:
+	case ch <- 1:
+	case <-done:
+	default:
+	}
+L:
+	for i := 0; i < 10; i++ {
+		continue L
+	}
+	for {
+		goto L
+	}
+	for x < 3 {
+	}
+	for range ch {
+	}
+	if x := 1; x > 0 {
+	}
+	{
+	}
+	;
+	var a int = 1
+	const c = 2
+	type t int
+	return 1, 2
+}

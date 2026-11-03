@@ -1,0 +1,48 @@
+package glr
+
+// tree-sitter-go GLR choices reproduced by the parser.
+
+func many(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, z int) {}
+
+func funcName(int, func(int)) {}
+
+func variadicAfterBare(a, b ...int) {}
+
+type set[T *net.IPNet | string, V any] struct{}
+
+type A [N * 2]int
+
+func f() {
+	_ = h[i][y[j]]
+	_ = h[i][a.b]
+	_ = a.b[c[d]]
+	_ = a.b[c[d.e]]
+	_ = h[y[a.b]]
+	_ = reflect.TypeFor[abi.Type]()
+	_ = reflect.TypeFor[*ast.Ident]()
+	_ = f[i](a, b)
+	_ = f[a.B](a, b)
+	_ = new(par.Cache[string, Repo])
+	_ = new(nil)
+	_ = *(*[]*Block)(unsafe.Pointer(&s))
+	_ = (*entry[K, V])(unsafe.Pointer(n))
+	_ = (*B[A])(nil)
+	if x && m[a.b][c.d] {
+	}
+	var c chan<- chan string
+	x() // trailing
+
+	switch {
+	case true:
+		fallthrough // c
+		;
+		;
+
+	}
+L:
+	;
+
+	y()
+}
+
+var last = 1
