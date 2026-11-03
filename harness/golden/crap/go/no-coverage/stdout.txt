@@ -1,0 +1,15 @@
+CRAP Report
+===========
+Languages: go
+
+Function                       Namespace                             CC    Cov%     CRAP
+----------------------------------------------------------------------------------------
+Grade                          example.com/ubfix                      7   N/A       N/A
+Collect                        example.com/ubfix/geometry             6   N/A       N/A
+Mean                           example.com/ubfix                      5   N/A       N/A
+SumPositive                    example.com/ubfix                      3   N/A       N/A
+SumWeights                     example.com/ubfix                      3   N/A       N/A
+clampIndex                     example.com/ubfix                      3   N/A       N/A
+Area                           example.com/ubfix/geometry.Rect        3   N/A       N/A
+Scale                          example.com/ubfix/geometry.Rect        2   N/A       N/A
+square                         example.com/ubfix/geometry.Rect        2   N/A       N/A

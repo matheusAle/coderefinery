@@ -1,0 +1,12 @@
+{:entries [
+  {:name "describe", :namespace "lib.format", :complexity 7, :coverage nil, :crap nil}
+  {:name "priority", :namespace "lib.queue", :complexity 7, :coverage nil, :crap nil}
+  {:name "totals", :namespace "lib.format", :complexity 4, :coverage nil, :crap nil}
+  {:name "weights", :namespace "lib.format", :complexity 4, :coverage nil, :crap nil}
+  {:name "push", :namespace "lib.queue.Queue", :complexity 4, :coverage nil, :crap nil}
+  {:name "clamp", :namespace "lib.format", :complexity 3, :coverage nil, :crap nil}
+  {:name "plural", :namespace "lib.format", :complexity 2, :coverage nil, :crap nil}
+  {:name "constructor", :namespace "lib.queue.Queue", :complexity 2, :coverage nil, :crap nil}
+  {:name "pop", :namespace "lib.queue.Queue", :complexity 2, :coverage nil, :crap nil}
+  {:name "size", :namespace "lib.queue.Queue", :complexity 1, :coverage nil, :crap nil}
+]}

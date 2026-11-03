@@ -1,0 +1,8 @@
+/Users/matheusale/workspaces/ub-mode/upstream/dryer/dryer
+--edn
+--min-lines
+3
+--min-nodes
+5
+--threshold
+0.7

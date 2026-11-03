@@ -1,0 +1,27 @@
+CRAP Report
+===========
+Languages: typescript
+
+Function                       Namespace                             CC    Cov%     CRAP
+----------------------------------------------------------------------------------------
+shippingZone                   inventory                              5   N/A       N/A
+Badge                          badge                                  4   N/A       N/A
+restock                        inventory.Inventory                    4   N/A       N/A
+POST /users                    routes                                 4   N/A       N/A
+label                          inventory                              3   N/A       N/A
+add                            inventory.Inventory                    3   N/A       N/A
+quantity                       inventory.Inventory                    3   N/A       N/A
+value                          inventory.Inventory                    3   N/A       N/A
+handle                         router.Router                          3   N/A       N/A
+DELETE /users/:id              routes                                 3   N/A       N/A
+sumPositive                    stats                                  3   N/A       N/A
+sumWeights                     stats                                  3   N/A       N/A
+discount                       inventory                              2   N/A       N/A
+GET /users                     routes                                 2   N/A       N/A
+GET /users#2                   routes                                 2   N/A       N/A
+find                           inventory.Inventory                    1   N/A       N/A
+makeResponse                   router                                 1   N/A       N/A
+delete                         router.Router                          1   N/A       N/A
+get                            router.Router                          1   N/A       N/A
+post                           router.Router                          1   N/A       N/A
+routeCount                     routes                                 1   N/A       N/A

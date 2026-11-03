@@ -1,0 +1,39 @@
+
+ RUN  v3.2.7 /Users/matheusale/workspaces/ub-mode/.local/scratch/20261103-160710-7923/golden/crap__typescript__threshold/typescript
+      Coverage enabled with v8
+
+ ✓ tests/inventory.test.ts (5 tests) 3ms
+ ✓ tests/routes.test.ts (4 tests) 2ms
+
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  16:07:18
+   Duration  385ms (transform 48ms, setup 0ms, collect 54ms, tests 5ms, environment 0ms, prepare 225ms)
+
+CRAP Report
+===========
+Languages: typescript
+
+Function                       Namespace                             CC    Cov%     CRAP
+----------------------------------------------------------------------------------------
+Badge                          badge                                  4   0.0%     20.0
+restock                        inventory.Inventory                    4  12.5%     14.7
+sumPositive                    stats                                  3   0.0%     12.0
+sumWeights                     stats                                  3   0.0%     12.0
+DELETE /users/:id              routes                                 3  12.5%      9.0
+shippingZone                   inventory                              5  60.0%      6.6
+POST /users                    routes                                 4  50.0%      6.0
+label                          inventory                              3  50.0%      4.1
+GET /users#2                   routes                                 2  20.0%      4.0
+add                            inventory.Inventory                    3 100.0%      3.0
+quantity                       inventory.Inventory                    3 100.0%      3.0
+value                          inventory.Inventory                    3 100.0%      3.0
+handle                         router.Router                          3 100.0%      3.0
+discount                       inventory                              2  50.0%      2.5
+GET /users                     routes                                 2  50.0%      2.5
+find                           inventory.Inventory                    1 100.0%      1.0
+makeResponse                   router                                 1 100.0%      1.0
+delete                         router.Router                          1 100.0%      1.0
+get                            router.Router                          1 100.0%      1.0
+post                           router.Router                          1 100.0%      1.0
+routeCount                     routes                                 1 100.0%      1.0

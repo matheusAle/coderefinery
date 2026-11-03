@@ -1,0 +1,19 @@
+# Variant matrix: <tool> <fixture|*> <variant> [args...]
+# tool is the ubgate subcommand (crap = crapper, dry = dryer, mutate = mutator).
+# "*" expands to every fixture on the fixtures line. Args are shell-quoted.
+fixtures python typescript javascript go
+
+# crapper
+crap   *  default
+crap   *  no-coverage   --no-coverage
+crap   *  threshold     --threshold 10
+
+# dryer (.js/.mjs are not dryer languages: the javascript cases pin that)
+dry    *  default
+dry    *  loose         --min-lines 3 --min-nodes 5
+dry    *  edn-loose     --edn --min-lines 3 --min-nodes 5 --threshold 0.7
+
+# mutator (fresh copy each run, so --scan never sees a coverage report)
+mutate *  scan          --scan
+mutate *  full
+mutate *  no-coverage   --no-coverage

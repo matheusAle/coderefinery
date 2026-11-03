@@ -1,0 +1,2 @@
+/Users/matheusale/workspaces/ub-mode/upstream/mutator/mutator
+--scan

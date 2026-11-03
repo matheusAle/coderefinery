@@ -1,0 +1,1 @@
+{:version 1 :tested-at "2026-11-03T16:07:39+00:00" :source "src/badge.tsx" :namespace "badge" :outcomes {} :forms [{:id "defn/Badge" :kind "defn" :file "src/badge.tsx" :line 1 :end-line 9 :hash "e14109f1f7b9df9029662a9d35937e2b09fc12d8f2131bb9aab9513be6b09b3d" :killed 0 :survived 0 :uncovered 4 :sites 4}]}

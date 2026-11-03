@@ -1,0 +1,8 @@
+{:candidates [
+ {:score 1.0
+  :language "python"
+  :left {:file "src/shop/reports.py", :start-line 4, :end-line 12}
+  :right {:file "src/shop/reports.py", :start-line 15, :end-line 23}
+  :left-nodes 100
+  :right-nodes 100}
+]}

@@ -1,0 +1,23 @@
+CRAP Report
+===========
+Languages: python
+
+Function                       Namespace                             CC    Cov%     CRAP
+----------------------------------------------------------------------------------------
+_grade                         shop.reports                           6   N/A       N/A
+shipping                       shop.pricing                           5   N/A       N/A
+bucket_totals                  shop.pricing                           4   N/A       N/A
+parse_quantity                 shop.pricing                           4   N/A       N/A
+_discount                      shop.pricing.Cart                      4   N/A       N/A
+eligible                       shop.pricing                           3   N/A       N/A
+add                            shop.pricing.Cart                      3   N/A       N/A
+summarize_orders               shop.reports                           3   N/A       N/A
+summarize_refunds              shop.reports                           3   N/A       N/A
+expensive                      shop.pricing.Cart                      2   N/A       N/A
+balance                        shop.reports.Ledger                    2   N/A       N/A
+record                         shop.reports.Ledger                    2   N/A       N/A
+__init__                       shop.pricing.Cart                      1   N/A       N/A
+subtotal                       shop.pricing.Cart                      1   N/A       N/A
+total                          shop.pricing.Cart                      1   N/A       N/A
+format_line                    shop.reports                           1   N/A       N/A
+__init__                       shop.reports.Ledger                    1   N/A       N/A

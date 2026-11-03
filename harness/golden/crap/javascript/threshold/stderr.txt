@@ -1,0 +1,3 @@
++ (/Users/matheusale/workspaces/ub-mode/.local/scratch/20261103-160710-7923/golden/crap__javascript__threshold/javascript) npx --yes c8 --reporter=lcov --reports-dir /Users/matheusale/workspaces/ub-mode/.local/scratch/20261103-160710-7923/golden/crap__javascript__threshold/javascript/target/coverage/typescript npm test
+Wrote /Users/matheusale/workspaces/ub-mode/.local/scratch/20261103-160710-7923/golden/crap__javascript__threshold/javascript/.metrics/crap.edn
+CRAP threshold exceeded: 16.0 > 10.0

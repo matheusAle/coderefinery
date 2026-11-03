@@ -1,0 +1,54 @@
+KILLED    lib/format.mjs:2 === -> !==
+KILLED    lib/format.mjs:2 1 -> 0
+SURVIVED  lib/format.mjs:6 < -> <=
+SURVIVED  lib/format.mjs:7 > -> >=
+KILLED    lib/format.mjs:12 ?. -> .
+SURVIVED  lib/format.mjs:12 ?? -> ||
+KILLED    lib/format.mjs:13 ?. -> .
+KILLED    lib/format.mjs:24 0 -> 1
+KILLED    lib/format.mjs:25 0 -> 1
+SURVIVED  lib/format.mjs:27 > -> >=
+SURVIVED  lib/format.mjs:27 0 -> 1
+KILLED    lib/format.mjs:29 1 -> 0
+KILLED    lib/format.mjs:32 === -> !==
+SURVIVED  lib/format.mjs:32 0 -> 1
+SURVIVED  lib/format.mjs:32 0 -> 1
+KILLED    lib/format.mjs:32 / -> *
+SURVIVED  lib/format.mjs:36 0 -> 1
+SURVIVED  lib/format.mjs:37 0 -> 1
+SURVIVED  lib/format.mjs:39 > -> >=
+SURVIVED  lib/format.mjs:39 0 -> 1
+SURVIVED  lib/format.mjs:41 1 -> 0
+SURVIVED  lib/format.mjs:44 === -> !==
+SURVIVED  lib/format.mjs:44 0 -> 1
+SURVIVED  lib/format.mjs:44 0 -> 1
+SURVIVED  lib/format.mjs:44 / -> *
+SURVIVED  lib/queue.js:7 ?? -> ||
+KILLED    lib/queue.js:11 === -> !==
+KILLED    lib/queue.js:11 || -> &&
+KILLED    lib/queue.js:11 === -> !==
+KILLED    lib/queue.js:12 false -> true
+KILLED    lib/queue.js:14 >= -> >
+KILLED    lib/queue.js:18 true -> false
+SURVIVED  lib/queue.js:22 > -> >=
+SURVIVED  lib/queue.js:22 0 -> 1
+KILLED    lib/queue.js:35 0 -> 1
+KILLED    lib/queue.js:36 && -> ||
+KILLED    lib/queue.js:36 delete !
+KILLED    lib/queue.js:39 ?. -> .
+SURVIVED  lib/queue.js:39 || -> &&
+KILLED    lib/queue.js:39 ?. -> .
+Function    Namespace        Killed  Survived  Uncovered  Sites   Score
+-----------------------------------------------------------------------
+size        lib.queue.Queue       0         0          0      0    n/a
+weights     lib.format            0         9          0      9   0.0%
+clamp       lib.format            0         2          0      2   0.0%
+pop         lib.queue.Queue       0         2          0      2   0.0%
+constructor lib.queue.Queue       0         1          0      1   0.0%
+totals      lib.format            5         4          0      9  55.6%
+describe    lib.format            2         1          0      3  66.7%
+priority    lib.queue             5         1          0      6  83.3%
+plural      lib.format            2         0          0      2 100.0%
+push        lib.queue.Queue       6         0          0      6 100.0%
+-----------------------------------------------------------------------
+Total                            20        20          0     40   50.0%

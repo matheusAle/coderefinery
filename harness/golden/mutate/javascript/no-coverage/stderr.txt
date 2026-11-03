@@ -1,0 +1,4 @@
+Wrote /Users/matheusale/workspaces/ub-mode/.local/scratch/20261103-160710-7923/golden/mutate__javascript__no-coverage/javascript/.metrics/mutate/lib.format.edn
+Wrote /Users/matheusale/workspaces/ub-mode/.local/scratch/20261103-160710-7923/golden/mutate__javascript__no-coverage/javascript/.metrics/mutate/lib.format.edn
+Wrote /Users/matheusale/workspaces/ub-mode/.local/scratch/20261103-160710-7923/golden/mutate__javascript__no-coverage/javascript/.metrics/mutate/lib.queue.edn
+Wrote /Users/matheusale/workspaces/ub-mode/.local/scratch/20261103-160710-7923/golden/mutate__javascript__no-coverage/javascript/.metrics/mutate/lib.queue.Queue.edn

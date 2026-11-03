@@ -1,0 +1,15 @@
+DUPLICATE score=1.00
+  src/router.ts:19-21
+  src/router.ts:23-25
+
+DUPLICATE score=1.00
+  src/router.ts:19-21
+  src/router.ts:27-29
+
+DUPLICATE score=1.00
+  src/router.ts:23-25
+  src/router.ts:27-29
+
+DUPLICATE score=0.82
+  src/stats.ts:1-11
+  src/stats.ts:13-23

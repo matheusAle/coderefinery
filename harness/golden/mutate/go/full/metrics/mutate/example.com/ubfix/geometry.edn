@@ -1,0 +1,1 @@
+{:version 1 :tested-at "2026-11-03T16:07:44+00:00" :source "geometry/shapes.go" :namespace "example.com/ubfix/geometry" :outcomes {} :forms [{:id "defn/Collect" :kind "defn" :file "geometry/shapes.go" :line 33 :end-line 49 :hash "961c42c6debdcffbf3eab01c2c1b30cf4676ab5bf91dec4ec04b176e7a4d55a3" :killed 0 :survived 0 :uncovered 2 :sites 2}]}

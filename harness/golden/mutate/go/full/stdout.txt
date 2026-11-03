@@ -1,0 +1,64 @@
+ok  	example.com/ubfix	0.303s	coverage: 55.9% of statements
+ok  	example.com/ubfix/geometry	0.586s	coverage: 52.9% of statements
+UNCOVERED calc.go:11 == -> !=
+UNCOVERED calc.go:11 0 -> 1
+UNCOVERED calc.go:12 0 -> 1
+UNCOVERED calc.go:14 0 -> 1
+UNCOVERED calc.go:14 0 -> 1
+UNCOVERED calc.go:16 > -> >=
+UNCOVERED calc.go:16 0 -> 1
+UNCOVERED calc.go:21 == -> !=
+UNCOVERED calc.go:21 0 -> 1
+UNCOVERED calc.go:22 0 -> 1
+UNCOVERED calc.go:30 >= -> >
+UNCOVERED calc.go:32 >= -> >
+UNCOVERED calc.go:32 && -> ||
+UNCOVERED calc.go:32 < -> <=
+UNCOVERED calc.go:34 < -> <=
+UNCOVERED calc.go:34 0 -> 1
+UNCOVERED calc.go:34 || -> &&
+UNCOVERED calc.go:34 > -> >=
+UNCOVERED calc.go:42 < -> <=
+UNCOVERED calc.go:42 0 -> 1
+UNCOVERED calc.go:43 0 -> 1
+UNCOVERED calc.go:45 >= -> >
+UNCOVERED calc.go:46 - -> +
+UNCOVERED calc.go:46 1 -> 0
+UNCOVERED calc.go:53 0 -> 1
+UNCOVERED calc.go:54 0 -> 1
+UNCOVERED calc.go:56 > -> >=
+UNCOVERED calc.go:56 0 -> 1
+UNCOVERED calc.go:66 0 -> 1
+UNCOVERED calc.go:67 0 -> 1
+UNCOVERED calc.go:69 > -> >=
+UNCOVERED calc.go:69 0 -> 1
+UNCOVERED geometry/shapes.go:13 <= -> <
+UNCOVERED geometry/shapes.go:13 0 -> 1
+UNCOVERED geometry/shapes.go:13 || -> &&
+UNCOVERED geometry/shapes.go:13 <= -> <
+UNCOVERED geometry/shapes.go:13 0 -> 1
+UNCOVERED geometry/shapes.go:14 0 -> 1
+UNCOVERED geometry/shapes.go:16 * -> /
+UNCOVERED geometry/shapes.go:21 == -> !=
+UNCOVERED geometry/shapes.go:21 1 -> 0
+UNCOVERED geometry/shapes.go:24 * -> /
+UNCOVERED geometry/shapes.go:25 * -> /
+UNCOVERED geometry/shapes.go:29 == -> !=
+UNCOVERED geometry/shapes.go:29 && -> ||
+UNCOVERED geometry/shapes.go:29 != -> ==
+UNCOVERED geometry/shapes.go:29 0 -> 1
+UNCOVERED geometry/shapes.go:35 < -> <=
+UNCOVERED geometry/shapes.go:38 delete !
+Function    Namespace                        Killed  Survived  Uncovered  Sites   Score
+---------------------------------------------------------------------------------------
+Area        example.com/ubfix/geometry.Rect       0         0          7      7    n/a
+Collect     example.com/ubfix/geometry            0         0          2      2    n/a
+Grade       example.com/ubfix                     0         0          8      8    n/a
+Mean        example.com/ubfix                     0         0         10     10    n/a
+Scale       example.com/ubfix/geometry.Rect       0         0          4      4    n/a
+SumPositive example.com/ubfix                     0         0          4      4    n/a
+SumWeights  example.com/ubfix                     0         0          4      4    n/a
+clampIndex  example.com/ubfix                     0         0          6      6    n/a
+square      example.com/ubfix/geometry.Rect       0         0          4      4    n/a
+---------------------------------------------------------------------------------------
+Total                                             0         0         49     49     n/a

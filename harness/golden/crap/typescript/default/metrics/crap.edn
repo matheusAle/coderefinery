@@ -1,0 +1,23 @@
+{:entries [
+  {:name "Badge", :namespace "badge", :complexity 4, :coverage 0.0, :crap 20.0}
+  {:name "restock", :namespace "inventory.Inventory", :complexity 4, :coverage 12.5, :crap 14.7188}
+  {:name "sumPositive", :namespace "stats", :complexity 3, :coverage 0.0, :crap 12.0}
+  {:name "sumWeights", :namespace "stats", :complexity 3, :coverage 0.0, :crap 12.0}
+  {:name "DELETE /users/:id", :namespace "routes", :complexity 3, :coverage 12.5, :crap 9.0293}
+  {:name "shippingZone", :namespace "inventory", :complexity 5, :coverage 60.0, :crap 6.6}
+  {:name "POST /users", :namespace "routes", :complexity 4, :coverage 50.0, :crap 6.0}
+  {:name "label", :namespace "inventory", :complexity 3, :coverage 50.0, :crap 4.125}
+  {:name "GET /users#2", :namespace "routes", :complexity 2, :coverage 20.0, :crap 4.048}
+  {:name "add", :namespace "inventory.Inventory", :complexity 3, :coverage 100.0, :crap 3.0}
+  {:name "quantity", :namespace "inventory.Inventory", :complexity 3, :coverage 100.0, :crap 3.0}
+  {:name "value", :namespace "inventory.Inventory", :complexity 3, :coverage 100.0, :crap 3.0}
+  {:name "handle", :namespace "router.Router", :complexity 3, :coverage 100.0, :crap 3.0}
+  {:name "discount", :namespace "inventory", :complexity 2, :coverage 50.0, :crap 2.5}
+  {:name "GET /users", :namespace "routes", :complexity 2, :coverage 50.0, :crap 2.5}
+  {:name "find", :namespace "inventory.Inventory", :complexity 1, :coverage 100.0, :crap 1.0}
+  {:name "makeResponse", :namespace "router", :complexity 1, :coverage 100.0, :crap 1.0}
+  {:name "delete", :namespace "router.Router", :complexity 1, :coverage 100.0, :crap 1.0}
+  {:name "get", :namespace "router.Router", :complexity 1, :coverage 100.0, :crap 1.0}
+  {:name "post", :namespace "router.Router", :complexity 1, :coverage 100.0, :crap 1.0}
+  {:name "routeCount", :namespace "routes", :complexity 1, :coverage 100.0, :crap 1.0}
+]}

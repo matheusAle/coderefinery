@@ -1,0 +1,8 @@
+{:candidates [
+ {:score 1.0
+  :language "go"
+  :left {:file "calc.go", :start-line 52, :end-line 62}
+  :right {:file "calc.go", :start-line 65, :end-line 75}
+  :left-nodes 97
+  :right-nodes 97}
+]}

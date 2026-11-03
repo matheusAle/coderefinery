@@ -1,0 +1,8 @@
+{:candidates [
+ {:score 0.821428571429
+  :language "typescript"
+  :left {:file "src/stats.ts", :start-line 1, :end-line 11}
+  :right {:file "src/stats.ts", :start-line 13, :end-line 23}
+  :left-nodes 93
+  :right-nodes 99}
+]}

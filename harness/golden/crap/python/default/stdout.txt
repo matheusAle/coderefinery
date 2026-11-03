@@ -1,0 +1,34 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /Users/matheusale/workspaces/ub-mode/.local/scratch/20261103-160710-7923/golden/crap__python__default/python
+configfile: pyproject.toml
+testpaths: tests
+collected 9 items
+
+tests/test_pricing.py .......                                            [ 77%]
+tests/test_reports.py ..                                                 [100%]
+
+============================== 9 passed in 0.04s ===============================
+CRAP Report
+===========
+Languages: python
+
+Function                       Namespace                             CC    Cov%     CRAP
+----------------------------------------------------------------------------------------
+_grade                         shop.reports                           6  10.0%     32.2
+summarize_refunds              shop.reports                           3  11.1%      9.3
+shipping                       shop.pricing                           5  87.5%      5.0
+parse_quantity                 shop.pricing                           4  75.0%      4.2
+bucket_totals                  shop.pricing                           4 100.0%      4.0
+_discount                      shop.pricing.Cart                      4 100.0%      4.0
+eligible                       shop.pricing                           3 100.0%      3.0
+add                            shop.pricing.Cart                      3 100.0%      3.0
+summarize_orders               shop.reports                           3 100.0%      3.0
+expensive                      shop.pricing.Cart                      2  50.0%      2.5
+balance                        shop.reports.Ledger                    2 100.0%      2.0
+record                         shop.reports.Ledger                    2 100.0%      2.0
+__init__                       shop.pricing.Cart                      1 100.0%      1.0
+subtotal                       shop.pricing.Cart                      1 100.0%      1.0
+total                          shop.pricing.Cart                      1 100.0%      1.0
+format_line                    shop.reports                           1 100.0%      1.0
+__init__                       shop.reports.Ledger                    1 100.0%      1.0

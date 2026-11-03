@@ -1,0 +1,17 @@
+ok  	example.com/ubfix	0.310s	coverage: 55.9% of statements
+ok  	example.com/ubfix/geometry	0.585s	coverage: 52.9% of statements
+CRAP Report
+===========
+Languages: go
+
+Function                       Namespace                             CC    Cov%     CRAP
+----------------------------------------------------------------------------------------
+SumWeights                     example.com/ubfix                      3   0.0%     12.0
+clampIndex                     example.com/ubfix                      3   0.0%     12.0
+Grade                          example.com/ubfix                      7  60.0%     10.1
+Collect                        example.com/ubfix/geometry             6  66.7%      7.3
+Scale                          example.com/ubfix/geometry.Rect        2   0.0%      6.0
+square                         example.com/ubfix/geometry.Rect        2   0.0%      6.0
+Mean                           example.com/ubfix                      5  90.0%      5.0
+SumPositive                    example.com/ubfix                      3 100.0%      3.0
+Area                           example.com/ubfix/geometry.Rect        3 100.0%      3.0

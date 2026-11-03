@@ -1,0 +1,23 @@
+{:entries [
+  {:name "shippingZone", :namespace "inventory", :complexity 5, :coverage nil, :crap nil}
+  {:name "Badge", :namespace "badge", :complexity 4, :coverage nil, :crap nil}
+  {:name "restock", :namespace "inventory.Inventory", :complexity 4, :coverage nil, :crap nil}
+  {:name "POST /users", :namespace "routes", :complexity 4, :coverage nil, :crap nil}
+  {:name "label", :namespace "inventory", :complexity 3, :coverage nil, :crap nil}
+  {:name "add", :namespace "inventory.Inventory", :complexity 3, :coverage nil, :crap nil}
+  {:name "quantity", :namespace "inventory.Inventory", :complexity 3, :coverage nil, :crap nil}
+  {:name "value", :namespace "inventory.Inventory", :complexity 3, :coverage nil, :crap nil}
+  {:name "handle", :namespace "router.Router", :complexity 3, :coverage nil, :crap nil}
+  {:name "DELETE /users/:id", :namespace "routes", :complexity 3, :coverage nil, :crap nil}
+  {:name "sumPositive", :namespace "stats", :complexity 3, :coverage nil, :crap nil}
+  {:name "sumWeights", :namespace "stats", :complexity 3, :coverage nil, :crap nil}
+  {:name "discount", :namespace "inventory", :complexity 2, :coverage nil, :crap nil}
+  {:name "GET /users", :namespace "routes", :complexity 2, :coverage nil, :crap nil}
+  {:name "GET /users#2", :namespace "routes", :complexity 2, :coverage nil, :crap nil}
+  {:name "find", :namespace "inventory.Inventory", :complexity 1, :coverage nil, :crap nil}
+  {:name "makeResponse", :namespace "router", :complexity 1, :coverage nil, :crap nil}
+  {:name "delete", :namespace "router.Router", :complexity 1, :coverage nil, :crap nil}
+  {:name "get", :namespace "router.Router", :complexity 1, :coverage nil, :crap nil}
+  {:name "post", :namespace "router.Router", :complexity 1, :coverage nil, :crap nil}
+  {:name "routeCount", :namespace "routes", :complexity 1, :coverage nil, :crap nil}
+]}

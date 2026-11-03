@@ -1,0 +1,62 @@
+KILLED    calc.go:11 == -> !=
+KILLED    calc.go:11 0 -> 1
+SURVIVED  calc.go:12 0 -> 1
+KILLED    calc.go:14 0 -> 1
+KILLED    calc.go:14 0 -> 1
+SURVIVED  calc.go:16 > -> >=
+SURVIVED  calc.go:16 0 -> 1
+KILLED    calc.go:21 == -> !=
+SURVIVED  calc.go:21 0 -> 1
+SURVIVED  calc.go:22 0 -> 1
+SURVIVED  calc.go:30 >= -> >
+SURVIVED  calc.go:32 >= -> >
+SURVIVED  calc.go:32 && -> ||
+SURVIVED  calc.go:32 < -> <=
+SURVIVED  calc.go:34 < -> <=
+SURVIVED  calc.go:34 0 -> 1
+SURVIVED  calc.go:34 || -> &&
+SURVIVED  calc.go:34 > -> >=
+SURVIVED  calc.go:42 < -> <=
+SURVIVED  calc.go:42 0 -> 1
+SURVIVED  calc.go:43 0 -> 1
+SURVIVED  calc.go:45 >= -> >
+SURVIVED  calc.go:46 - -> +
+SURVIVED  calc.go:46 1 -> 0
+KILLED    calc.go:53 0 -> 1
+KILLED    calc.go:54 0 -> 1
+SURVIVED  calc.go:56 > -> >=
+KILLED    calc.go:56 0 -> 1
+SURVIVED  calc.go:66 0 -> 1
+SURVIVED  calc.go:67 0 -> 1
+SURVIVED  calc.go:69 > -> >=
+SURVIVED  calc.go:69 0 -> 1
+SURVIVED  geometry/shapes.go:13 <= -> <
+SURVIVED  geometry/shapes.go:13 0 -> 1
+KILLED    geometry/shapes.go:13 || -> &&
+SURVIVED  geometry/shapes.go:13 <= -> <
+SURVIVED  geometry/shapes.go:13 0 -> 1
+KILLED    geometry/shapes.go:14 0 -> 1
+KILLED    geometry/shapes.go:16 * -> /
+SURVIVED  geometry/shapes.go:21 == -> !=
+SURVIVED  geometry/shapes.go:21 1 -> 0
+SURVIVED  geometry/shapes.go:24 * -> /
+SURVIVED  geometry/shapes.go:25 * -> /
+SURVIVED  geometry/shapes.go:29 == -> !=
+SURVIVED  geometry/shapes.go:29 && -> ||
+SURVIVED  geometry/shapes.go:29 != -> ==
+SURVIVED  geometry/shapes.go:29 0 -> 1
+SURVIVED  geometry/shapes.go:35 < -> <=
+KILLED    geometry/shapes.go:38 delete !
+Function    Namespace                        Killed  Survived  Uncovered  Sites   Score
+---------------------------------------------------------------------------------------
+Grade       example.com/ubfix                     0         8          0      8   0.0%
+clampIndex  example.com/ubfix                     0         6          0      6   0.0%
+Scale       example.com/ubfix/geometry.Rect       0         4          0      4   0.0%
+SumWeights  example.com/ubfix                     0         4          0      4   0.0%
+square      example.com/ubfix/geometry.Rect       0         4          0      4   0.0%
+Area        example.com/ubfix/geometry.Rect       3         4          0      7  42.9%
+Mean        example.com/ubfix                     5         5          0     10  50.0%
+Collect     example.com/ubfix/geometry            1         1          0      2  50.0%
+SumPositive example.com/ubfix                     3         1          0      4  75.0%
+---------------------------------------------------------------------------------------
+Total                                            12        37          0     49   24.5%

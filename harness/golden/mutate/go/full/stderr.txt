@@ -1,0 +1,7 @@
++ (/Users/matheusale/workspaces/ub-mode/.local/scratch/20261103-160710-7923/golden/mutate__go__full/go) go test ./... -coverprofile=/Users/matheusale/workspaces/ub-mode/.local/scratch/20261103-160710-7923/golden/mutate__go__full/go/target/coverage/go/coverage.out
+No coverage data for calc.go; its sites are uncovered. Pass --no-coverage to run them anyway.
+No coverage data for geometry/shapes.go; its sites are uncovered. Pass --no-coverage to run them anyway.
+Wrote /Users/matheusale/workspaces/ub-mode/.local/scratch/20261103-160710-7923/golden/mutate__go__full/go/.metrics/mutate/example.com/ubfix.edn
+Wrote /Users/matheusale/workspaces/ub-mode/.local/scratch/20261103-160710-7923/golden/mutate__go__full/go/.metrics/mutate/example.com/ubfix.edn
+Wrote /Users/matheusale/workspaces/ub-mode/.local/scratch/20261103-160710-7923/golden/mutate__go__full/go/.metrics/mutate/example.com/ubfix/geometry.edn
+Wrote /Users/matheusale/workspaces/ub-mode/.local/scratch/20261103-160710-7923/golden/mutate__go__full/go/.metrics/mutate/example.com/ubfix/geometry.Rect.edn

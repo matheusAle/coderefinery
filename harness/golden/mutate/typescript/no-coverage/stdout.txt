@@ -1,0 +1,81 @@
+SURVIVED  src/badge.tsx:5 && -> ||
+SURVIVED  src/badge.tsx:6 ?? -> ||
+SURVIVED  src/badge.tsx:6 0 -> 1
+SURVIVED  src/badge.tsx:6 > -> >=
+SURVIVED  src/inventory.ts:13 < -> <=
+SURVIVED  src/inventory.ts:13 0 -> 1
+KILLED    src/inventory.ts:13 || -> &&
+KILLED    src/inventory.ts:13 delete !
+KILLED    src/inventory.ts:22 === -> !==
+KILLED    src/inventory.ts:26 ?. -> .
+SURVIVED  src/inventory.ts:26 ?? -> ||
+KILLED    src/inventory.ts:26 0 -> 1
+KILLED    src/inventory.ts:30 0 -> 1
+KILLED    src/inventory.ts:32 * -> /
+SURVIVED  src/inventory.ts:32 ?? -> ||
+KILLED    src/inventory.ts:32 1 -> 0
+SURVIVED  src/inventory.ts:39 && -> ||
+SURVIVED  src/inventory.ts:39 > -> >=
+SURVIVED  src/inventory.ts:39 0 -> 1
+SURVIVED  src/inventory.ts:40 ?? -> ||
+SURVIVED  src/inventory.ts:40 0 -> 1
+SURVIVED  src/inventory.ts:40 + -> -
+SURVIVED  src/inventory.ts:41 true -> false
+SURVIVED  src/inventory.ts:43 false -> true
+SURVIVED  src/inventory.ts:55 ?. -> .
+KILLED    src/inventory.ts:59 * -> /
+KILLED    src/inventory.ts:64 1 -> 0
+KILLED    src/router.ts:32 === -> !==
+KILLED    src/router.ts:32 && -> ||
+KILLED    src/router.ts:32 === -> !==
+KILLED    src/router.ts:33 delete !
+KILLED    src/router.ts:34 false -> true
+KILLED    src/router.ts:37 true -> false
+KILLED    src/routes.ts:11 === -> !==
+SURVIVED  src/routes.ts:22 ?. -> .
+KILLED    src/routes.ts:23 !== -> ===
+SURVIVED  src/routes.ts:23 || -> &&
+KILLED    src/routes.ts:23 === -> !==
+SURVIVED  src/routes.ts:23 0 -> 1
+SURVIVED  src/routes.ts:27 + -> -
+SURVIVED  src/routes.ts:27 1 -> 0
+SURVIVED  src/routes.ts:31 === -> !==
+SURVIVED  src/routes.ts:32 < -> <=
+SURVIVED  src/routes.ts:32 0 -> 1
+SURVIVED  src/routes.ts:32 && -> ||
+SURVIVED  src/routes.ts:32 delete !
+SURVIVED  src/stats.ts:2 0 -> 1
+SURVIVED  src/stats.ts:3 0 -> 1
+SURVIVED  src/stats.ts:5 > -> >=
+SURVIVED  src/stats.ts:5 0 -> 1
+SURVIVED  src/stats.ts:7 1 -> 0
+SURVIVED  src/stats.ts:14 0 -> 1
+SURVIVED  src/stats.ts:15 0 -> 1
+SURVIVED  src/stats.ts:17 > -> >=
+SURVIVED  src/stats.ts:17 0 -> 1
+SURVIVED  src/stats.ts:19 1 -> 0
+Function          Namespace            Killed  Survived  Uncovered  Sites   Score
+---------------------------------------------------------------------------------
+GET /users#2      routes                    0         0          0      0    n/a
+delete            router.Router             0         0          0      0    n/a
+get               router.Router             0         0          0      0    n/a
+makeResponse      router                    0         0          0      0    n/a
+post              router.Router             0         0          0      0    n/a
+routeCount        routes                    0         0          0      0    n/a
+restock           inventory.Inventory       0         8          0      8   0.0%
+DELETE /users/:id routes                    0         5          0      5   0.0%
+sumPositive       stats                     0         5          0      5   0.0%
+sumWeights        stats                     0         5          0      5   0.0%
+Badge             badge                     0         4          0      4   0.0%
+label             inventory                 0         1          0      1   0.0%
+POST /users       routes                    2         5          0      7  28.6%
+add               inventory.Inventory       2         2          0      4  50.0%
+quantity          inventory.Inventory       2         1          0      3  66.7%
+value             inventory.Inventory       3         1          0      4  75.0%
+GET /users        routes                    1         0          0      1 100.0%
+discount          inventory                 1         0          0      1 100.0%
+find              inventory.Inventory       1         0          0      1 100.0%
+handle            router.Router             6         0          0      6 100.0%
+shippingZone      inventory                 1         0          0      1 100.0%
+---------------------------------------------------------------------------------
+Total                                      19        37          0     56   33.9%

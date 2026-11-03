@@ -1,0 +1,19 @@
+{:entries [
+  {:name "_grade", :namespace "shop.reports", :complexity 6, :coverage 10.0, :crap 32.244}
+  {:name "summarize_refunds", :namespace "shop.reports", :complexity 3, :coverage 11.1111, :crap 9.321}
+  {:name "shipping", :namespace "shop.pricing", :complexity 5, :coverage 87.5, :crap 5.0488}
+  {:name "parse_quantity", :namespace "shop.pricing", :complexity 4, :coverage 75.0, :crap 4.25}
+  {:name "bucket_totals", :namespace "shop.pricing", :complexity 4, :coverage 100.0, :crap 4.0}
+  {:name "_discount", :namespace "shop.pricing.Cart", :complexity 4, :coverage 100.0, :crap 4.0}
+  {:name "eligible", :namespace "shop.pricing", :complexity 3, :coverage 100.0, :crap 3.0}
+  {:name "add", :namespace "shop.pricing.Cart", :complexity 3, :coverage 100.0, :crap 3.0}
+  {:name "summarize_orders", :namespace "shop.reports", :complexity 3, :coverage 100.0, :crap 3.0}
+  {:name "expensive", :namespace "shop.pricing.Cart", :complexity 2, :coverage 50.0, :crap 2.5}
+  {:name "balance", :namespace "shop.reports.Ledger", :complexity 2, :coverage 100.0, :crap 2.0}
+  {:name "record", :namespace "shop.reports.Ledger", :complexity 2, :coverage 100.0, :crap 2.0}
+  {:name "__init__", :namespace "shop.pricing.Cart", :complexity 1, :coverage 100.0, :crap 1.0}
+  {:name "subtotal", :namespace "shop.pricing.Cart", :complexity 1, :coverage 100.0, :crap 1.0}
+  {:name "total", :namespace "shop.pricing.Cart", :complexity 1, :coverage 100.0, :crap 1.0}
+  {:name "format_line", :namespace "shop.reports", :complexity 1, :coverage 100.0, :crap 1.0}
+  {:name "__init__", :namespace "shop.reports.Ledger", :complexity 1, :coverage 100.0, :crap 1.0}
+]}

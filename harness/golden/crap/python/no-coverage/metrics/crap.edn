@@ -1,0 +1,19 @@
+{:entries [
+  {:name "_grade", :namespace "shop.reports", :complexity 6, :coverage nil, :crap nil}
+  {:name "shipping", :namespace "shop.pricing", :complexity 5, :coverage nil, :crap nil}
+  {:name "bucket_totals", :namespace "shop.pricing", :complexity 4, :coverage nil, :crap nil}
+  {:name "parse_quantity", :namespace "shop.pricing", :complexity 4, :coverage nil, :crap nil}
+  {:name "_discount", :namespace "shop.pricing.Cart", :complexity 4, :coverage nil, :crap nil}
+  {:name "eligible", :namespace "shop.pricing", :complexity 3, :coverage nil, :crap nil}
+  {:name "add", :namespace "shop.pricing.Cart", :complexity 3, :coverage nil, :crap nil}
+  {:name "summarize_orders", :namespace "shop.reports", :complexity 3, :coverage nil, :crap nil}
+  {:name "summarize_refunds", :namespace "shop.reports", :complexity 3, :coverage nil, :crap nil}
+  {:name "expensive", :namespace "shop.pricing.Cart", :complexity 2, :coverage nil, :crap nil}
+  {:name "balance", :namespace "shop.reports.Ledger", :complexity 2, :coverage nil, :crap nil}
+  {:name "record", :namespace "shop.reports.Ledger", :complexity 2, :coverage nil, :crap nil}
+  {:name "__init__", :namespace "shop.pricing.Cart", :complexity 1, :coverage nil, :crap nil}
+  {:name "subtotal", :namespace "shop.pricing.Cart", :complexity 1, :coverage nil, :crap nil}
+  {:name "total", :namespace "shop.pricing.Cart", :complexity 1, :coverage nil, :crap nil}
+  {:name "format_line", :namespace "shop.reports", :complexity 1, :coverage nil, :crap nil}
+  {:name "__init__", :namespace "shop.reports.Ledger", :complexity 1, :coverage nil, :crap nil}
+]}

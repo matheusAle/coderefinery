@@ -1,0 +1,16 @@
+CRAP Report
+===========
+Languages: typescript
+
+Function                       Namespace                             CC    Cov%     CRAP
+----------------------------------------------------------------------------------------
+describe                       lib.format                             7   N/A       N/A
+priority                       lib.queue                              7   N/A       N/A
+totals                         lib.format                             4   N/A       N/A
+weights                        lib.format                             4   N/A       N/A
+push                           lib.queue.Queue                        4   N/A       N/A
+clamp                          lib.format                             3   N/A       N/A
+plural                         lib.format                             2   N/A       N/A
+constructor                    lib.queue.Queue                        2   N/A       N/A
+pop                            lib.queue.Queue                        2   N/A       N/A
+size                           lib.queue.Queue                        1   N/A       N/A

@@ -1,0 +1,2 @@
++ (/Users/matheusale/workspaces/ub-mode/.local/scratch/20261103-160710-7923/golden/crap__javascript__default/javascript) npx --yes c8 --reporter=lcov --reports-dir /Users/matheusale/workspaces/ub-mode/.local/scratch/20261103-160710-7923/golden/crap__javascript__default/javascript/target/coverage/typescript npm test
+Wrote /Users/matheusale/workspaces/ub-mode/.local/scratch/20261103-160710-7923/golden/crap__javascript__default/javascript/.metrics/crap.edn

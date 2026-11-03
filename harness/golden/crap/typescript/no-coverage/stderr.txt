@@ -1,0 +1,1 @@
+Wrote /Users/matheusale/workspaces/ub-mode/.local/scratch/20261103-160710-7923/golden/crap__typescript__no-coverage/typescript/.metrics/crap.edn

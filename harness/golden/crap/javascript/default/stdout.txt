@@ -1,0 +1,34 @@
+
+> ub-fixture-javascript@0.0.1 test
+> node --test
+
+✔ plural (0.601917ms)
+✔ clamp (0.740708ms)
+✔ describe (0.066625ms)
+✔ totals (0.465833ms)
+✔ queue keeps at most limit items (0.514041ms)
+✔ priority of urgent tasks (0.1155ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 52.610167
+CRAP Report
+===========
+Languages: typescript
+
+Function                       Namespace                             CC    Cov%     CRAP
+----------------------------------------------------------------------------------------
+weights                        lib.format                             4   9.1%     16.0
+priority                       lib.queue                              7  50.0%     13.1
+describe                       lib.format                             7  85.7%      7.1
+totals                         lib.format                             4  75.0%      4.2
+push                           lib.queue.Queue                        4 100.0%      4.0
+clamp                          lib.format                             3  66.7%      3.3
+constructor                    lib.queue.Queue                        2  50.0%      2.5
+pop                            lib.queue.Queue                        2  50.0%      2.5
+plural                         lib.format                             2 100.0%      2.0
+size                           lib.queue.Queue                        1 100.0%      1.0

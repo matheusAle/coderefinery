@@ -1,0 +1,11 @@
+{:entries [
+  {:name "Grade", :namespace "example.com/ubfix", :complexity 7, :coverage nil, :crap nil}
+  {:name "Collect", :namespace "example.com/ubfix/geometry", :complexity 6, :coverage nil, :crap nil}
+  {:name "Mean", :namespace "example.com/ubfix", :complexity 5, :coverage nil, :crap nil}
+  {:name "SumPositive", :namespace "example.com/ubfix", :complexity 3, :coverage nil, :crap nil}
+  {:name "SumWeights", :namespace "example.com/ubfix", :complexity 3, :coverage nil, :crap nil}
+  {:name "clampIndex", :namespace "example.com/ubfix", :complexity 3, :coverage nil, :crap nil}
+  {:name "Area", :namespace "example.com/ubfix/geometry.Rect", :complexity 3, :coverage nil, :crap nil}
+  {:name "Scale", :namespace "example.com/ubfix/geometry.Rect", :complexity 2, :coverage nil, :crap nil}
+  {:name "square", :namespace "example.com/ubfix/geometry.Rect", :complexity 2, :coverage nil, :crap nil}
+]}

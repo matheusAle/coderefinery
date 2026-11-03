@@ -1,0 +1,3 @@
+DUPLICATE score=1.00
+  src/shop/reports.py:4-12
+  src/shop/reports.py:15-23

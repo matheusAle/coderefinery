@@ -1,0 +1,5 @@
+/Users/matheusale/workspaces/ub-mode/upstream/dryer/dryer
+--min-lines
+3
+--min-nodes
+5
