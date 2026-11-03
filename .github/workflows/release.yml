@@ -1,0 +1,72 @@
+name: release
+
+# Push a tag vX.Y.Z equal to UBGATE_VERSION in skills/ub-mode/scripts/ubgate.
+# Publishes ubgate_<X.Y.Z>_<os>_<arch>.tar.gz + SHA256SUMS (the names the
+# launcher downloads) and tags ubgate/vX.Y.Z so `go install` of the nested
+# module github.com/matheusAle/ub-mode/ubgate resolves @vX.Y.Z too.
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+env:
+  UBMODE: ${{ github.workspace }}
+  VERSION: ${{ github.ref_name }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: .tool-versions
+      - name: Point env.sh at this Go
+        run: echo "UBMODE_GOROOT_BIN=$(go env GOROOT)/bin" >> "$GITHUB_ENV"
+      - name: Tag must match the launcher's pinned version
+        run: |
+          pinned=$(sed -n 's/^UBGATE_VERSION=//p' skills/ub-mode/scripts/ubgate)
+          if [ "$pinned" != "$VERSION" ]; then
+            echo "::error::tag $VERSION does not match UBGATE_VERSION=$pinned in skills/ub-mode/scripts/ubgate"
+            exit 1
+          fi
+      - name: gofmt, vet, test, build
+        run: make -C ubgate ci
+      - name: Build release archives
+        run: make -C ubgate dist VERSION="$VERSION"
+      - name: Smoke test the linux/amd64 binary
+        run: |
+          got=$(dist/ubgate_${VERSION#v}_linux_amd64/ubgate --version)
+          test "$got" = "ubgate $VERSION" || { echo "::error::--version printed '$got'"; exit 1; }
+          (cd dist && sha256sum -c SHA256SUMS)
+      - name: Tag the Go module (ubgate/vX.Y.Z)
+        run: |
+          if git ls-remote --exit-code --tags origin "refs/tags/ubgate/$VERSION" >/dev/null; then
+            echo "ubgate/$VERSION already exists"
+          else
+            git tag "ubgate/$VERSION" "$GITHUB_SHA"
+            git push origin "refs/tags/ubgate/$VERSION"
+          fi
+      - name: Publish the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$VERSION" --verify-tag --title "ubgate $VERSION" --generate-notes \
+            dist/ubgate_${VERSION#v}_*.tar.gz dist/SHA256SUMS
+
+  verify:
+    # The skill's launcher, from a clean cache, installs what was just published.
+    needs: release
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Launcher downloads, verifies and runs the release
+        run: |
+          got=$(env -i HOME="$RUNNER_TEMP/home" PATH=/usr/bin:/bin skills/ub-mode/scripts/ubgate --version)
+          test "$got" = "ubgate $VERSION" || { echo "::error::launcher printed '$got'"; exit 1; }
