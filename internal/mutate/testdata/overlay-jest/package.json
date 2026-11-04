@@ -1,0 +1,11 @@
+{
+  "name": "overlay-jest",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "moduleDirectories": ["node_modules", "<rootDir>"]
+  }
+}
