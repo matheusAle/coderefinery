@@ -150,12 +150,6 @@ func hasSuffixParts(parts, suffix []string) bool {
 	return true
 }
 
-// SuffixMatch is coverage.suffix_match.
-func SuffixMatch(path, suffix string) bool {
-	sp := segments(suffix)
-	return len(sp) > 0 && hasSuffixParts(segments(path), sp)
-}
-
 var srcPrefix = regexp.MustCompile(`^src/`)
 
 // Candidates is coverage._candidates. The absolute form resolves relative

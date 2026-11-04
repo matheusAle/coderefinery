@@ -87,15 +87,12 @@ func TestSelectKey(t *testing.T) {
 	}
 }
 
-func TestNormalizePathAndSuffixMatch(t *testing.T) {
+func TestNormalizePath(t *testing.T) {
 	if got := NormalizePath("file:./src//demo/core.clj"); got != "src/demo/core.clj" {
 		t.Errorf("got %q", got)
 	}
 	if got := NormalizePath("%2E%2Fsrc%2Fcore.clj"); got != "src/core.clj" {
 		t.Errorf("got %q", got)
-	}
-	if !SuffixMatch("src/demo/core.clj", "demo/core.clj") || SuffixMatch("core.clj", "src/demo/core.clj") || SuffixMatch("src/demo/core.clj", "") {
-		t.Error("suffix_match")
 	}
 }
 
