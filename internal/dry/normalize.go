@@ -41,13 +41,18 @@ var (
 	typeArgsTypes = set("type_arguments", "type_parameters")
 )
 
-type normalizer struct{ src []byte }
+// normalizer carries the source and, for dry --jsx, the JSX state that
+// takes over JSX element nodes (jsx.go); jsx is nil for dryer's forms.
+type normalizer struct {
+	src []byte
+	jsx *jsxScan
+}
 
 // Normalize is astnorm.normalize(node, data): the normalized tree of a
 // candidate node. It returns nil only when the node itself is punctuation,
 // a comment or another dropped token.
 func Normalize(n *syntax.Node, src []byte) *Value {
-	return normalizer{src}.norm(n, false)
+	return normalizer{src: src}.norm(n, false)
 }
 
 func (z normalizer) text(n *syntax.Node) string { return n.Text(z.src) }
@@ -70,6 +75,9 @@ func (z normalizer) norm(n *syntax.Node, head bool) *Value {
 	}
 	if !n.Named {
 		return nil
+	}
+	if z.jsx != nil && jsxElementTypes[n.Type] {
+		return z.jsx.element(z, n)
 	}
 	if identifierTypes[n.Type] {
 		if head {

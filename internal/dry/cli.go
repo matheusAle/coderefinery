@@ -27,7 +27,8 @@ type Options struct {
 	MinLines    int
 	MinNodes    int
 	Format      string
-	Tests       bool // --tests (hidden, design-tests §7)
+	Tests       bool       // --tests (hidden, design-tests §7)
+	JSX         JSXOptions // --jsx (hidden, design-react §10)
 }
 
 // ParseArgs is dryer cli.parse_args (spec-dryer §1.1).
@@ -43,6 +44,12 @@ func ParseArgs(args []string) Options {
 	}
 	for i := 0; i < len(args); {
 		arg := args[i]
+		if next, msg := opts.jsxArg(args, i); msg != "" {
+			return usage(msg)
+		} else if next > 0 {
+			i = next
+			continue
+		}
 		switch arg {
 		case "-s", "--source-root", "--root", "--threshold", "--min-lines", "--min-nodes", "--format":
 			v, err := cliutil.Value(args, i, arg)
@@ -125,7 +132,16 @@ func Run(opts Options, stdout, stderr io.Writer) (int, error) {
 	} else {
 		fmt.Fprint(stdout, FormatText(candidates))
 	}
+	jsxMetrics := ""
+	if opts.JSX.Enabled {
+		if jsxMetrics, err = runJSX(opts, files, root, stdout); err != nil {
+			return 0, err
+		}
+	}
 	fmt.Fprintf(stderr, "Wrote %s\n", metrics)
+	if jsxMetrics != "" {
+		fmt.Fprintf(stderr, "Wrote %s\n", jsxMetrics)
+	}
 	return 0, nil
 }
 

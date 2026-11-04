@@ -85,6 +85,11 @@ func SelectFiles(opts Options) ([]string, error) {
 	if opts.Tests {
 		walk, keep = iterWithTests, hasLanguage
 	}
+	keepFile := func(p string) bool { return LanguageOf(p) != "" }
+	if opts.JSX.Enabled {
+		walk, keep = withJSXFiles(opts.Tests, keep)
+		keepFile = func(p string) bool { return LanguageOf(p) != "" || isJSXFile(p) }
+	}
 	return discover.Select(discover.Selection{
 		ProjectRoot: opts.ProjectRoot,
 		SourceRoots: opts.SourceRoots,
@@ -92,6 +97,6 @@ func SelectFiles(opts Options) ([]string, error) {
 		Changed:     opts.Changed,
 		Walk:        walk,
 		KeepChanged: func(p, root string) bool { return trackedSource(p, root, keep) },
-		KeepFile:    func(p string) bool { return LanguageOf(p) != "" },
+		KeepFile:    keepFile,
 	})
 }
