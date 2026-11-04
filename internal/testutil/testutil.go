@@ -4,6 +4,7 @@ package testutil
 
 import (
 	"os"
+	"os/exec"
 	"path/filepath"
 	"testing"
 )
@@ -29,4 +30,27 @@ func ReadFile(t testing.TB, path string) string {
 		t.Fatal(err)
 	}
 	return string(data)
+}
+
+// Git runs git in dir and returns its output. Any failure stops the test.
+func Git(t testing.TB, dir string, args ...string) string {
+	t.Helper()
+	out, err := exec.Command("git", append([]string{"-C", dir}, args...)...).CombinedOutput()
+	if err != nil {
+		t.Fatalf("git %v: %v\n%s", args, err, out)
+	}
+	return string(out)
+}
+
+// InitRepo makes dir a git repository with a committer identity; the test
+// is skipped when git is not installed.
+func InitRepo(t testing.TB, dir string) {
+	t.Helper()
+	if _, err := exec.LookPath("git"); err != nil {
+		t.Skip("git not installed")
+	}
+	Git(t, dir, "init", "-q")
+	Git(t, dir, "config", "user.email", "dev@example.com")
+	Git(t, dir, "config", "user.name", "Dev")
+	Git(t, dir, "config", "commit.gpgsign", "false")
 }
