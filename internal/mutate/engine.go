@@ -205,6 +205,7 @@ type fileOptions struct {
 	attribute       bool // --attribute (attribute.go)
 	branches        bool // --branches (branches.go)
 	fixOverlay      bool // --fix-overlay (workers.go packageDirs)
+	react           bool // --react (react_sites.go)
 }
 
 // mutateFile is engine.mutate_file.
@@ -224,6 +225,7 @@ func mutateFile(path, root string, o fileOptions) (RunResult, error) {
 		return RunResult{Path: key, Skipped: "file is not UTF-8"}, nil
 	}
 	u := newFileUnit(string(original), path, root, key)
+	u.react = o.react
 	found := u.sites()
 	covered := coverageMap(found, o.coveredLines, o.ignoreCoverage)
 	if o.coveredLines == nil && !o.ignoreCoverage && len(found) > 0 {
@@ -305,7 +307,7 @@ func mutateFile(path, root string, o fileOptions) (RunResult, error) {
 
 // scanFile is engine.scan_file. The text is read like Path.read_text:
 // strict UTF-8 and universal newlines.
-func scanFile(path, root string, coveredLines lineSet, ignoreCoverage bool, lines map[int]bool) (string, error) {
+func scanFile(path, root string, coveredLines lineSet, ignoreCoverage bool, lines map[int]bool, react bool) (string, error) {
 	root = discover.Resolve(root)
 	path = discover.Resolve(path)
 	key := sourceKey(path, root)
@@ -317,6 +319,7 @@ func scanFile(path, root string, coveredLines lineSet, ignoreCoverage bool, line
 		return "", fmt.Errorf("'utf-8' codec can't decode %s", key)
 	}
 	u := newFileUnit(source.UniversalNewlines(string(raw)), path, root, key)
+	u.react = react
 	found := u.sites()
 	if lines != nil {
 		var kept []Site

@@ -17,10 +17,15 @@ type Site struct {
 	Category   string
 	ID         string // mutation id (the :outcomes key)
 	AnchorLine int    // line its statement starts on
+	Label      string // react operators: the description (react_sites.go)
 }
 
-// Description is "delete <orig>" or "<orig> -> <mutant>".
+// Description is "delete <orig>" or "<orig> -> <mutant>"; a React
+// operator's site describes itself (`drop render <X/>`).
 func (s Site) Description() string {
+	if s.Label != "" {
+		return s.Label
+	}
 	if s.Mutant == "" {
 		return "delete " + s.Original
 	}

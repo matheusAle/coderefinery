@@ -120,7 +120,7 @@ func TestASiteInsideACoveredMultiLineStatementIsRun(t *testing.T) {
 	if r.Forms[0].Uncovered != 0 || r.Forms[0].Killed != 1 {
 		t.Fatalf("form %+v", r.Forms[0])
 	}
-	text, err := scanFile(path, root, lines(2), false, nil)
+	text, err := scanFile(path, root, lines(2), false, nil, false)
 	if err != nil || strings.Contains(text, "uncovered") || !strings.Contains(text, "+ -> -") {
 		t.Fatalf("scan %q %v", text, err)
 	}

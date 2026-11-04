@@ -41,7 +41,7 @@ func TestRawSitesMatchUpstreamGoldens(t *testing.T) {
 				needGrammar(t, grammar)
 			}
 			var got [][]any
-			for _, s := range discoverRaw(source, language, path) {
+			for _, s := range discoverRaw(source, language, path, false) {
 				got = append(got, []any{float64(s.Line), float64(s.AnchorLine), float64(s.Start), float64(s.End), s.Original, s.Mutant})
 			}
 			if len(want) == 0 && len(got) == 0 {
@@ -118,13 +118,13 @@ func TestStringsAndNamesAreNotSites(t *testing.T) {
 
 func TestADeepExpressionIsWalked(t *testing.T) {
 	expr := strings.Repeat("1 + ", 1199) + "1"
-	if sites := discoverRaw("def place():\n    return "+expr+"\n", "python", "app.py"); len(sites) != 2399 {
+	if sites := discoverRaw("def place():\n    return "+expr+"\n", "python", "app.py", false); len(sites) != 2399 {
 		t.Fatalf("python: %d sites, want 2399", len(sites))
 	}
 	if !testing.Short() {
 		t.Run("go", func(t *testing.T) {
 			needGrammar(t, "go")
-			if sites := discoverRaw("package p\nfunc place() int { return "+expr+" }\n", "go", "app.go"); len(sites) == 0 {
+			if sites := discoverRaw("package p\nfunc place() int { return "+expr+" }\n", "go", "app.go", false); len(sites) == 0 {
 				t.Fatal("go: no sites")
 			}
 		})

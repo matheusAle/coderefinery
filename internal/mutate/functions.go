@@ -220,6 +220,7 @@ type fileUnit struct {
 	lines     []string // source.splitlines()
 	functions []model.Function
 	private   []bool // per function
+	react     bool   // mutate --react: add the React operators' sites
 }
 
 func newFileUnit(source, path, root, key string) *fileUnit {
@@ -244,7 +245,7 @@ func (u *fileUnit) sites() []Site {
 		return nil
 	}
 	var found []Site
-	for _, raw := range discoverRaw(u.source, u.language, u.path) {
+	for _, raw := range discoverRaw(u.source, u.language, u.path, u.react) {
 		i := owner(u.functions, raw.Line, raw.Start)
 		if i < 0 {
 			continue
@@ -262,6 +263,7 @@ func (u *fileUnit) sites() []Site {
 			Original:   raw.Original,
 			Mutant:     raw.Mutant,
 			Category:   raw.Category,
+			Label:      raw.Label,
 			ID:         mutationID(u.key, fn.Namespace, form, raw.Start, raw.End, raw.Original, raw.Mutant),
 			AnchorLine: raw.AnchorLine,
 		})

@@ -44,6 +44,7 @@ type RawSite struct {
 	Start, End       int
 	Original, Mutant string
 	Category         string
+	Label            string // react operators (react_sites.go): the site-log description
 }
 
 // grammarFor is sites._grammar.
@@ -219,8 +220,9 @@ func visit(root *syntax.Node, each func(*syntax.Node)) {
 }
 
 // discoverRaw is sites.discover_raw: sites in (line, start, end) order.
-// A file the hand parser rejects has no sites (DEVIATIONS.md A2).
-func discoverRaw(source, language, path string) []RawSite {
+// A file the hand parser rejects has no sites (DEVIATIONS.md A2). react adds
+// the React operators' sites (mutate --react, react_sites.go).
+func discoverRaw(source, language, path string, react bool) []RawSite {
 	data := []byte(source)
 	var root *syntax.Node
 	if language == "clojure" {
@@ -237,6 +239,9 @@ func discoverRaw(source, language, path string) []RawSite {
 		visit(root, f.clojureNode)
 	} else {
 		visit(root, f.node)
+		if react && language == "typescript" {
+			f.found = append(f.found, reactSites(root, data)...)
+		}
 	}
 	sortStable(f.found, func(a, b RawSite) bool {
 		if a.Line != b.Line {

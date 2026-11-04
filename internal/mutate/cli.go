@@ -52,6 +52,9 @@ type Options struct {
 	// language into worker overlays (DEVIATIONS.md M8). Hidden from --help;
 	// --attribute turns it on too.
 	FixOverlay bool
+	// React adds the React operators (react_sites.go, docs/design-react.md
+	// §13) to the usual sites. Hidden from --help.
+	React bool
 }
 
 func parseLines(value string) (map[int]bool, error) {
@@ -163,6 +166,8 @@ func ParseArgs(args []string) Options {
 			opts.Branches = true
 		case "--fix-overlay":
 			opts.FixOverlay = true
+		case "--react":
+			opts.React = true
 		default:
 			if strings.HasPrefix(arg, "-") {
 				return usage("Unknown option: " + arg)
