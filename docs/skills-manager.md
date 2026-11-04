@@ -94,3 +94,41 @@ local release directory into the cache, and the cache.
 - npm `skills@1.7.6`, `dist/cli.mjs`: `discoverSkills`, `parseSkillMd`, `copyDirectory`, `sanitizeName`
 - https://agentskills.io/specification
 - https://code.claude.com/docs/en/skills (frontmatter, `${CLAUDE_SKILL_DIR}`)
+
+## Supporting files (progressive disclosure)
+
+Checked on 2026-11-04 against the Claude Code skills page, Anthropic's skill
+authoring best practices and the Agent Skills spec. The skill uses this layout:
+`SKILL.md` (rules, gate order, how to read each gate, exit codes),
+`references/*.md` (per-language, testing, react, install details) and
+`scripts/coderefinery` (the launcher, run and never read).
+
+- Loading: only `name` and `description` are loaded at startup. The `SKILL.md`
+  body loads when the skill is invoked. Other files load only when the agent
+  reads them, so `SKILL.md` must say what each file holds and when to open it.
+  Scripts are executed, not loaded.
+- Size: keep the `SKILL.md` body under 500 lines (spec: under ~5000 tokens).
+  A reference file over 100 lines gets a table of contents at the top, because
+  an agent may preview it with a partial read (`head -100`).
+- Links: relative paths from the skill root (`references/python.md`), forward
+  slashes, one level deep. Every reference is linked from `SKILL.md`; a reference
+  may name a sibling (`react.md`), which `SKILL.md` links too, never a deeper file. `references/` is the spec's
+  conventional directory name; files are named by domain.
+- Paths: Claude Code substitutes `${CLAUDE_SKILL_DIR}` (the directory holding
+  `SKILL.md`) in skill content and in `allowed-tools` Bash rules, so commands
+  work from any working directory. Other agents resolve paths relative to the
+  skill directory.
+- Installing: `npx skills` copies the whole skill directory recursively (see
+  above), so `references/` needs no manifest. Verified 2026-11-04: installing
+  this worktree with `skills@1.7.6 add <path> -a claude-code -y` into a scratch
+  HOME and project produced `.claude/skills/coderefinery/` with `SKILL.md`,
+  `LICENSE`, the nine `references/*.md` and `scripts/coderefinery` (still
+  `-rwxr-xr-x`), `diff -r` identical to `skills/coderefinery/`.
+
+Sources:
+
+- https://code.claude.com/docs/en/skills ("Supporting files", `${CLAUDE_SKILL_DIR}`, frontmatter)
+- https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices
+  ("Progressive disclosure patterns", "Avoid deeply nested references",
+  "Structure longer reference files with a table of contents", "Runtime environment")
+- https://agentskills.io/specification ("Optional directories", "Progressive disclosure", "File references")
