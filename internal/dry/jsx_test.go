@@ -300,3 +300,20 @@ func TestDryJSXWritesItsOwnSectionAndMetrics(t *testing.T) {
 		t.Fatalf("min elements 6:\n%s", out)
 	}
 }
+
+func TestJSXSkipsSVGOnlySubtrees(t *testing.T) {
+	// two icons: same shape, different drawings (the d values are dropped)
+	icons := `export const I = <svg viewBox="0 0 24 24"><g><path d="M1 1" /><path d="M2 2" /><circle r="1" /></g></svg>;
+export const J = <svg viewBox="0 0 20 20"><g><path d="M9 9" /><path d="M8 8" /><circle r="4" /></g></svg>;
+export const K = <button><svg><g><path d="M1" /><path d="M2" /></g></svg><span /></button>;
+export const L = <button><svg><g><path d="M3" /><path d="M4" /></g></svg><span /></button>;
+`
+	all := jsxCandidatesIn(icons, "i.tsx", "i.tsx")
+	if all[0].Tag != "svg" || all[0].Elements != 5 || all[0].Markup != 0 || all[10].Tag != "button" || all[10].Markup != 2 {
+		t.Fatalf("counts: %+v %+v", all[0], all[10])
+	}
+	// the svg pairs are never candidates; the buttons, which hold markup, pair
+	// (nodes: button 5 + svg 5 + g 5 + 2 paths of 8 + span 5)
+	expectPairs(t, findJSXDuplicates(all, JSXOptions{Threshold: 0.82, MinElements: 1, MinNodes: 1}),
+		JSXDuplicate{1, jsxSide("i.tsx", 3, 3, "button", 6, 36), jsxSide("i.tsx", 4, 4, "button", 6, 36)})
+}

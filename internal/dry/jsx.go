@@ -97,12 +97,22 @@ func withJSXFiles(tests bool, keep func(string) bool) (func([]string) []string, 
 
 var jsxElementTypes = set("jsx_element", "jsx_self_closing_element")
 
+// svgTags are SVG drawing elements (plus the fe* filter primitives). A
+// subtree made only of them is an icon or a drawing: its content is in the
+// attribute values normalization drops, so any two icons with as many
+// paths look alike. Such subtrees are not candidates (excalidraw's
+// icons.tsx alone gave 742 of 771 pairs; design-react §10).
+var svgTags = set("svg", "g", "path", "circle", "ellipse", "line", "polyline", "polygon", "rect", "defs",
+	"clipPath", "mask", "use", "symbol", "linearGradient", "radialGradient", "stop", "pattern", "marker",
+	"text", "tspan", "textPath", "title", "desc", "filter", "image", "foreignObject")
+
 // jsxCandidate is one normalized element or fragment.
 type jsxCandidate struct {
 	Span
 	Start, End int    // byte range, for containment
 	Tag        string // "" for a fragment
 	Elements   int    // elements in the subtree, itself included (fragments do not count)
+	Markup     int    // those that are not SVG drawing elements (svgTags)
 	Nodes      int
 	Norm       *Value
 }
@@ -113,6 +123,7 @@ type jsxScan struct {
 	src      []byte
 	file     string
 	elements int
+	markup   int
 	found    []jsxCandidate
 }
 
@@ -131,7 +142,7 @@ type jsxScan struct {
 // alike. A spread {...props} attribute stays as an expression; key is
 // dropped.
 func (s *jsxScan) element(z normalizer, n *syntax.Node) *Value {
-	count := s.elements
+	count, markup := s.elements, s.markup
 	open := n
 	if n.Type == "jsx_element" {
 		open = n.ChildByFieldName("open_tag")
@@ -142,6 +153,9 @@ func (s *jsxScan) element(z normalizer, n *syntax.Node) *Value {
 		tag = strings.Join(strings.Fields(name.Text(s.src)), "")
 		out = List(K("element"), List(K("tag"), Str(tag)))
 		s.elements++
+		if !svgTags[tag] && !strings.HasPrefix(tag, "fe") {
+			s.markup++
+		}
 	}
 	for _, a := range open.ChildrenByFieldName("attribute") {
 		out.append(s.attribute(z, a))
@@ -159,7 +173,7 @@ func (s *jsxScan) element(z normalizer, n *syntax.Node) *Value {
 	s.found = append(s.found, jsxCandidate{
 		Span:  Span{File: s.file, StartLine: n.StartLine(), EndLine: n.EndLine()},
 		Start: n.StartByte, End: n.EndByte, Tag: tag,
-		Elements: s.elements - count, Nodes: NodeCount(out), Norm: out,
+		Elements: s.elements - count, Markup: s.markup - markup, Nodes: NodeCount(out), Norm: out,
 	})
 	return out
 }
@@ -237,7 +251,7 @@ type JSXDuplicate struct {
 func findJSXDuplicates(all []jsxCandidate, o JSXOptions) []JSXDuplicate {
 	var kept []jsxCandidate
 	for _, c := range all {
-		if c.Elements >= o.MinElements && c.Nodes >= o.MinNodes {
+		if c.Elements >= o.MinElements && c.Nodes >= o.MinNodes && c.Markup > 0 {
 			kept = append(kept, c)
 		}
 	}
