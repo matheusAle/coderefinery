@@ -356,3 +356,150 @@ numbers), the `:renders` EDN, the generated config, and exit 2 on a failing test
 `internal/react/profile_test.go` covers merging, joining, the flag threshold, the generated files,
 the Jest arguments and the table/EDN text. The Jest path was checked by hand on a scratch Jest 30 +
 jsdom project with the same components (same counts).
+
+## 12. Duplicate JSX (`dry --jsx`)
+
+Status: built (`internal/dry/jsx.go`, React v2 item 2). dryer pairs whole functions, so two
+components that repeat a card, a form row or a list item inside different bodies go unseen. A
+repeated element tree is the "extract a component" signal.
+
+### Surface: a hidden `dry --jsx` flag, not a `react` section
+
+- Duplication, the threshold and the Jaccard score are dry's concepts. The engine (`Fingerprinter`,
+  `groupHits`: interned ids, size pruning, parallel rows) is package-internal to `internal/dry`, and
+  `--jsx` reuses it as is. A `react` section would have to export or fork it.
+- `react` runs the coverage runner by default and exits 3 on a violation. Duplicate markup needs no
+  test run and is not a gate, like dry, which always exits 0.
+- Parity: the flags are hidden (dryer `--help` unchanged). The function report and `.metrics/dry.edn`
+  are byte-identical with or without `--jsx`. The pairs get their own section and
+  `.metrics/dry-jsx.edn`.
+
+Flags (each one implies `--jsx`): `--jsx-threshold N` (0.82), `--jsx-min-elements N` (4),
+`--jsx-min-nodes N` (40). dry's `--threshold`, `--min-lines` and `--min-nodes` still apply to
+functions only. `--tests`, `--changed`, paths and filters work as in dry.
+
+### Files and candidates
+
+`--jsx` widens dry's selection walk to `.jsx` and `.js` (dry has no JavaScript), with crap's
+test-file rule. `ScanFiles` skips the files dryer has no language for, so the function report does
+not change. Every `jsx_element` / `jsx_self_closing_element` in a `.tsx`/`.jsx`/`.js` file is a
+candidate, fragments included. That covers elements nested in other elements, in `{...}` children
+(`.map`, `&&`, ternaries) and in attribute values. A file the parser rejects contributes nothing (A2).
+All files form one pool, so a `.jsx` copy pairs with its `.tsx` original. The javascript grammar has
+no `required_parameter`, so an arrow inside JSX normalizes one node differently in `.jsx` and `.tsx`.
+
+### Normalization
+
+dryer's normalizer (§4 of spec-dryer) with one hook: the JSX state takes over element nodes at any
+depth, and the rest of the expression follows dryer's rules.
+
+| construct | normalized |
+|---|---|
+| element `<Tag ...>children</Tag>`, `<Tag ... />` | `[:element [:tag "Tag"] attr... child...]`. Self-closing and empty paired tags are equal. Member/namespace tags keep their text (`Sidebar.Tab`, `svg:rect`) |
+| fragment `<>...</>` | `[:fragment child...]` (not counted as an element) |
+| attribute | `[:attr "name"]`. The value is dropped (string, `className`, `{expression}`): values become props when the markup is extracted. Exception: a value holding JSX (`icon={<Icon/>}`, render props) is normalized like a child |
+| `key` | dropped: reconciliation, not markup. A list item inside `.map` has it, the same markup outside does not |
+| `{...props}` | dryer's form of the expression (`[:jsx_expression [:spread_element :symbol]]`) |
+| child `{expression}` | dryer's form: locals become `:symbol`, literals `:literal`, callees keep their names (`map`), JSX inside is normalized as above. A `{}` holding only comments is dropped |
+| text, `&amp;` | dropped |
+
+Size: **elements** counts the subtree's elements, itself included. **Nodes** is dryer's
+`node_count` of the normalized tree. A candidate needs elements >= `--jsx-min-elements`, nodes >=
+`--jsx-min-nodes`, and at least one element that is not an SVG drawing element (`svg g path circle
+rect ... fe*`). An icon's content is its path data, an attribute value that is dropped, so any two
+icons with as many paths look identical.
+
+### Pairing and nested pairs
+
+Fingerprints and scores are dryer's (the set of printed subtrees, Jaccard). One `Fingerprinter`
+serves the pool, and `groupHits` scores the pairs. Then:
+
+1. A pair where one side holds the other (same file, byte range inside) is dropped: an element and
+   its own child are not duplicates.
+2. A pair is dropped when another remaining pair dominates it. Each side of the other pair must be
+   the same candidate as, an ancestor of, or a descendant of this pair's side, and either (a) it
+   strictly encloses this pair on both sides (the largest enclosing duplicate wins whatever the
+   scores), or (b) it has a higher score, or the same score and more nodes. Rule (b) covers a shared
+   side, or one side larger and one smaller: `(li, li')` at 1.0 beats `(li, <aside>{x && li'}</aside>)`.
+   Two sibling rows inside one parent pair with each other, not with the parent.
+
+Order: score descending, then left file/line, right file/line, then document order. Left is the
+earlier candidate (file order, then start offset).
+
+Rule (a) holds at any threshold. At a low `--jsx-threshold`, a weak outer pair can hide a perfect
+inner pair. Rows whose spans have the same file and lines on both sides are never paired:
+`groupHits` skips equal spans, as dryer does. For JSX that means two equal elements on the same
+line(s).
+
+### Output
+
+```
+Duplicate JSX
+=============
+
+DUPLICATE score=1.00
+  src/ProfileCard.tsx:6-17 <section> 7 elements
+  src/TeamCard.tsx:5-16 <section> 7 elements
+```
+
+The section follows the function report after a blank line. It reads `No duplicate JSX candidates
+found.` when there are no pairs. `.metrics/dry-jsx.edn` (and, under `--edn`, a second map on stdout
+after dry's):
+
+```clojure
+{:jsx-candidates [
+ {:score 1.0
+  :left {:file "src/ProfileCard.tsx", :start-line 6, :end-line 17, :tag "section", :elements 7, :nodes 68}
+  :right {:file "src/TeamCard.tsx", :start-line 5, :end-line 16, :tag "section", :elements 7, :nodes 68}}
+]}
+```
+
+`:tag` is `""` for a fragment (`<>` in the text report). stderr adds `Wrote <root>/.metrics/dry-jsx.edn`
+after dry's line.
+
+### Calibration (excalidraw `dd2f8fc`, whole repo)
+
+259 JSX files hold 2,796 elements. 286 pass the defaults, 24 pairs are reported. The JSX pass
+takes 1.1 s to parse and normalize and 7 ms to pair. The whole `dry --jsx` run took 2.8-6.5 s
+against 1.1-3.4 s for plain `dry`, measured at load average ~120, so the absolute times are loose.
+Changes made while calibrating:
+
+- Attribute values were first kept as dryer expressions. The fixture's ProfileCard/TeamCard cards
+  (same markup, different handler names) then scored 0.70: one differing callee changes every
+  enclosing subtree's fingerprint. Dropping values (JSX-holding values excepted) gives 1.00.
+- `key` kept a `.map` item and its copy outside a list under 0.82, so it is now dropped.
+- SVG-only subtrees: 742 of 771 pairs were icons in `components/icons.tsx` (`<g>` / fragments of
+  `<path>`s), so they are now excluded. 771 pairs became 24.
+- Looser settings were tried and are not the default. `--jsx-min-elements 3 --jsx-min-nodes 30`
+  gives 43 pairs (adds 3-element `StatsRow`s, `Trans` blocks, `PublishLibrary` fields: real but small).
+  `--jsx-threshold 0.75` gives 33 (adds `SearchMenu` result rows at 0.80 and the export `Card`s of
+  `ExportToExcalidrawPlus` / `JSONExportDialog` at 0.76).
+
+Top pairs at the defaults:
+
+| score | left | right |
+|---|---|---|
+| 1.00 | `dev-docs/src/components/Homepage/index.js:39-47` `<div>` 6 | `dev-docs/src/components/Homepage/index.tsx:47-55` `<div>` 6 |
+| 1.00 | `packages/excalidraw/actions/actionProperties.tsx:734-770` `<fieldset>` 4 | `…:791-824` `<fieldset>` 4 |
+| 1.00 | `…actionProperties.tsx:734-770` | `…:883-904` |
+| 1.00 | `…actionProperties.tsx:734-770` | `…:927-960` |
+| 1.00 | `…actionProperties.tsx:734-770` | `…:1028-1097` |
+
+The rest: the same 7 fieldsets (stroke width, sloppiness, ...: `fieldset > legend + div.buttonList >
+RadioSelection`, 21 pairs in all), two `PublishLibrary` labels (1.00) and two `AppSidebar`
+`Sidebar.Tab`s (0.93). Every reported pair was a real repeated block on inspection.
+
+### Tests
+
+`internal/dry/jsx_test.go` pins the normalized forms and counts, the exact reported pairs (nested,
+sibling, lopsided and below-threshold cases), a hand-computed 7/9 score, SVG exclusion, the hidden
+flags and their usage errors, file selection, and the run output with an unchanged `dry.edn`.
+`cmd/coderefinery/dry_jsx_e2e_test.go` runs `dry --jsx` on `fixtures/react-jsx` (a small fixture
+with no dependencies).
+
+### Follow-ups
+
+- Cluster the pairs: 7 copies are now 21 pairs. A "same markup at N sites" group would read better.
+- A `Duplicate JSX` count per component in `coderefinery react` (needs the engine exported).
+- `.tsx` files are parsed twice (once for functions, once for JSX). Sharing the tree would save
+  about the parse share of the 1.1 s above.

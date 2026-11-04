@@ -276,6 +276,22 @@ Sidebar                        Dashboard                                 1      
 Not rendered by the tests: Toolbar, IconButton, ToolbarGroup
 ```
 
+### Duplicate JSX
+
+`dry --jsx` (hidden flag) also compares JSX element subtrees in `.tsx`,
+`.jsx` and `.js` files, inside and across components: the "extract a
+component" signal. Tag and attribute names count; text, attribute values,
+`key` and SVG-only subtrees (icons) do not. The largest enclosing pair is
+reported, not each pair of children under it. The function report and
+`dry.edn` stay as they are. The pairs come after them and go to
+`.metrics/dry-jsx.edn`. Design and calibration:
+[docs/design-react.md §12](docs/design-react.md#12-duplicate-jsx-dry---jsx).
+
+```bash
+coderefinery dry --jsx                                  # >= 4 elements, >= 40 nodes, score >= 0.82
+coderefinery dry --jsx-min-elements 3 --jsx-min-nodes 30 --jsx-threshold 0.75 src   # looser
+```
+
 ## Parity status
 
 - **Harness**: 36 of 36 cases byte-identical to upstream (crap, dry and
@@ -299,7 +315,7 @@ Not rendered by the tests: Toolbar, IconButton, ToolbarGroup
   tree-sitter would recover with ERROR nodes. Each opt-in fix sits behind a
   flag, such as `mutate --fix-go-coverage`.
 - **Additions**: `test`, `tests`, `crap --branches`, `dry --tests`,
-  `mutate --attribute` and `mutate --branches` are additive and opt-in. The
+  `dry --jsx`, `mutate --attribute` and `mutate --branches` are additive and opt-in. The
   flags are hidden from the upstream `--help` text (only the top-level
   `coderefinery --help` lists `test` and `tests`), and the default `crap`,
   `dry` and `mutate` output, exit codes and `.metrics` files stay

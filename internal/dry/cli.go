@@ -28,7 +28,7 @@ type Options struct {
 	MinNodes    int
 	Format      string
 	Tests       bool       // --tests (hidden, design-tests §7)
-	JSX         JSXOptions // --jsx (hidden, design-react §10)
+	JSX         JSXOptions // --jsx (hidden, design-react §12)
 }
 
 // ParseArgs is dryer cli.parse_args (spec-dryer §1.1).

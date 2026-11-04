@@ -18,7 +18,7 @@ import (
 	"github.com/matheusAle/coderefinery/internal/syntax"
 )
 
-// dry --jsx (docs/design-react.md §10): duplicated JSX element subtrees
+// dry --jsx (docs/design-react.md §12): duplicated JSX element subtrees
 // inside and across components, the "extract a component" signal. Every
 // element (and fragment) of a .tsx/.jsx/.js file is a candidate; it is
 // normalized with dryer's normalizer plus the JSX rules below, fingerprinted
@@ -36,7 +36,7 @@ type JSXOptions struct {
 	MinNodes    int
 }
 
-// DefaultJSXOptions are the --jsx defaults (calibration: design-react §10).
+// DefaultJSXOptions are the --jsx defaults (calibration: design-react §12).
 func DefaultJSXOptions() JSXOptions {
 	return JSXOptions{Enabled: true, Threshold: 0.82, MinElements: 4, MinNodes: 40}
 }
@@ -101,7 +101,7 @@ var jsxElementTypes = set("jsx_element", "jsx_self_closing_element")
 // subtree made only of them is an icon or a drawing: its content is in the
 // attribute values normalization drops, so any two icons with as many
 // paths look alike. Such subtrees are not candidates (excalidraw's
-// icons.tsx alone gave 742 of 771 pairs; design-react §10).
+// icons.tsx alone gave 742 of 771 pairs; design-react §12).
 var svgTags = set("svg", "g", "path", "circle", "ellipse", "line", "polyline", "polygon", "rect", "defs",
 	"clipPath", "mask", "use", "symbol", "linearGradient", "radialGradient", "stop", "pattern", "marker",
 	"text", "tspan", "textPath", "title", "desc", "filter", "image", "foreignObject")
