@@ -261,19 +261,19 @@ Runtime renders (vitest test run; durations are React actualDuration in ms, nois
 
 Component                      Namespace                           Renders Mounts Updates Upd/Mount TotalMs MaxMs Inline Flag
 -----------------------------------------------------------------------------------------------------------------------------
-Clicker                        Clicker                                   4      1       3       3.0    12.3  10.2      3 re-renders with inline props
-Label                          Clicker                                   4      1       3       3.0     6.2   5.8      0
-Cart                           Cart                                      4      2       2       1.0     7.8   3.9      0
-TodoList                       TodoList                                  2      1       1       1.0   252.6 251.2      4
-Toggle                         Clicker                                   2      1       1       1.0     0.5   0.4      0
-TodoList.TodoRow               TodoList                                  3      3       0       0.0    11.1   9.6      2
-Badge                          Badge                                     2      2       0       0.0    11.5  11.1      0
-Dashboard                      Dashboard                                 1      1       0       0.0   258.8 258.8      0
-Layout                         Dashboard                                 1      1       0       0.0   258.5 258.5      0
-SettingsPanel                  SettingsPanel                             1      1       0       0.0     2.5   2.5      0
-Sidebar                        Dashboard                                 1      1       0       0.0   258.0 258.0      0
+Clicker                        Clicker                                   4      1       3       3.0   138.3 135.5      3 re-renders with inline props
+Label                          Clicker                                   4      1       3       3.0    91.2  91.0      0
+Cart                           Cart                                      4      2       2       1.0    46.1  42.4      0
+TodoList                       TodoList                                  2      1       1       1.0   109.6 109.1      4
+Toggle                         Clicker                                   2      1       1       1.0     1.0   1.0      0
+TodoList.TodoRow               TodoList                                  3      3       0       0.0    56.9  55.8      2
+Badge                          Badge                                     2      2       0       0.0    38.6  37.9      0
+Dashboard                      Dashboard                                 1      1       0       0.0    79.6  79.6      0
+Layout                         Dashboard                                 1      1       0       0.0     9.8   9.8      0
+SettingsPanel                  SettingsPanel                             1      1       0       0.0    53.2  53.2      0
+Sidebar                        Dashboard                                 1      1       0       0.0     7.2   7.2      0
 
-Not rendered by the tests: IconButton
+Not rendered by the tests: Toolbar, IconButton, ToolbarGroup
 ```
 
 ## Parity status
