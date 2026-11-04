@@ -65,7 +65,7 @@ For hooks the `return` rule does not apply: Render counts JSX only (usually 1).
 
 | group | metric | definition |
 |---|---|---|
-| props | count | first parameter: destructured names (`{a, b = 1, c: d, "e": f}`), plus the members of the props type when it is resolvable in the file: a type annotation on the parameter, `React.FC<P>` / `FC<P>` on the declarator, or the last type argument of `memo<P>` / `forwardRef<R, P>`; `P` is an interface (with its `extends`), a type alias, an inline object type, an intersection, or `PropsWithChildren<>` / `Readonly<>` of those. `Omit`, `Pick` and imported types are not resolved. A plain `props` parameter adds `props.x` reads and `const {x} = props` |
+| props | count | first parameter: destructured names (`{a, b = 1, c: d, "e": f}`), plus the members of the props type: a type annotation on the parameter, `React.FC<P>` / `FC<P>` on the declarator, or the last type argument of `memo<P>` / `forwardRef<R, P>`; `P` is resolved across modules and type operators (§10); an unresolvable part makes the props **open** (counts are lower bounds, `9+`, `:open true`). A plain `props` parameter adds `props.x` reads and `const {x} = props` |
 | | boolean | type `boolean` / `true \| false` (optionally `\| undefined \| null`), or a `true`/`false` default |
 | | optional | `?:` in the type, or a default value |
 | | callback (`On`) | name `on[A-Z]...`, a function type, or a method signature |
@@ -146,7 +146,7 @@ Stderr: `Wrote <root>/.metrics/react.edn`, then `React thresholds exceeded: N vi
 ]
  :components [
   {:name "Cart", :namespace "Cart", :kind :component, :path "src/Cart.tsx", :line 16, :render 5, :logic 1,
-   :props {:count 4, :boolean 0, :optional 1, :callback 1, :rest false, :pass-through []},
+   :props {:count 4, :boolean 0, :optional 1, :callback 1, :rest false, :pass-through [], :open false},
    :hooks {:state 4, :effects 2, :max-deps 2, :setter-effects 1},
    :render-cost {:jsx-depth 3, :elements 9, :inline-functions 0, :inline-objects 0, :nested-components 0}}
 ]
@@ -175,9 +175,11 @@ metric name (`:props :boolean-props :pass-through :state :effects :deps :setter-
 `fixtures/setup-tests.sh`): a clean `Badge`; `SettingsPanel` (9 props, 5 boolean); `Cart` (a CC-10
 effect, a setter-only effect, handlers, an early return); `Dashboard` → `Layout` → `Sidebar` (prop
 drilling, `props.x` reads); `TodoList` (inline handlers and objects, a nested `TodoRow`); `IconButton`
-(`memo(forwardRef<R, P>)`, untested); `useCounter` (a custom hook). `cmd/coderefinery/react_e2e_test.go`
-checks the exact `--no-coverage` report and exit 3 (7 violations), the coverage run (exact Cov%/CRAP
-rows, 8 violations; skipped without `node_modules` or under `-short`) and exit 2 on a failing
+(`memo(forwardRef<R, P>)`, untested); `useCounter` (a custom hook); `Toolbar` (props
+`Omit<ButtonBase, "variant"> & {...}` with `ButtonBase` from `src/types/` through an index re-export: 8
+props) and `ToolbarGroup` (`& HTMLAttributes<HTMLDivElement>`: open, `2+`). `cmd/coderefinery/react_e2e_test.go`
+checks the exact `--no-coverage` report and exit 3 (8 violations), the coverage run (exact Cov%/CRAP
+rows, 9 violations; skipped without `node_modules` or under `-short`) and exit 2 on a failing
 coverage command. `internal/react/react_test.go` covers each metric with exact values.
 
 ## 9. Follow-ups (v2, out of scope here)
@@ -188,5 +190,66 @@ coverage command. `internal/react/react_test.go` covers each metric with exact v
 - **dry over JSX subtrees**: duplicate element trees modulo literals and attribute values.
 - **Runtime render cost** via `<Profiler>` (render counts and durations per component during the
   test run) to confirm what inline-functions / inline-objects only suggest statically.
-- Props from imported types (cross-file resolution), `Omit`/`Pick`, a unit
-  body's coverage without its extracted entries' lines, shadowing in pass-through.
+- A unit body's coverage without its extracted entries' lines, shadowing in pass-through.
+  (Props from imported types and `Omit`/`Pick`: done, §10.)
+
+## 10. Props type resolution (v2)
+
+`internal/react/types_modules.go` (modules) and `types.go` (type evaluation). Stdlib only, no
+TypeScript checker: a syntactic evaluator that knows what it does not know.
+
+**Modules.** Each module is indexed once per run (one `resolver` per `react` run caches every parsed
+file, the analysed files included): top-level `interface` / `type` declarations (merged interfaces
+kept together), imports (`import type { A as B }`, `{ type A }`, default, `* as NS`), exports
+(`export interface`, `export default interface X` / `export default X`, `export { X as Y }`,
+`export { X as Y } from`, `export { default as Y } from`, `export *`, `export * as NS`).
+Specifiers resolve inside the project root only (never `node_modules`, never a package): relative
+paths with TypeScript's order (`.tsx .ts .d.ts .jsx .js .mts .cts`, then `<dir>/index.*`; an ESM
+`./x.js` also tries `./x.ts`), then the nearest `tsconfig.json` / `jsconfig.json` between the file
+and the root: `compilerOptions.paths` (exact keys first, then the longest wildcard prefix; targets
+relative to `baseUrl` when set, else to the file declaring `paths`) and `baseUrl`, following a
+relative `extends` chain (a package `extends` is not followed). tsconfig is read as JSON with
+comments and trailing commas.
+
+**Types.** Evaluated to a member list (name, optional, boolean, callback, rules of §4):
+
+| form | members |
+|---|---|
+| interface (with `extends A, B<T>`, merged declarations), type alias, object type | its signatures plus the bases' |
+| `A & B` | both; a prop is optional only when optional on both sides |
+| `A \| B` | every branch's members; a member missing from a branch is optional; `undefined` / `null` branches skipped |
+| `Omit<T, K>` / `Pick<T, K>` | `K` is a string literal, a union of them, `keyof X` of a closed `X`, or an alias of those; a picked key the (open) base does not list still counts, type unknown |
+| `Partial` / `Required` / `Readonly` | all optional / none optional / unchanged (also `React.`-qualified) |
+| `PropsWithChildren<P>` | `P` plus `children?` (React's definition) |
+| `Box<X>` / `Box` of `type Box<T = D> = ...` | type parameters bound to the arguments, else to their defaults; an unbound parameter is open |
+| `NS.T` with `import * as NS from "./x"` | `T` exported by `./x` |
+
+**Open.** Anything else marks the props open and contributes only what is known: names imported from
+a package (`react`, `ComponentProps<'button'>`, `HTMLAttributes<...>`, `React.*`), a module that is
+missing or does not parse, `any` / `unknown` / `object`, an index signature or mapped type,
+conditional types, `typeof`, indexed access, function types, a cycle (an alias or interface reached
+again while being expanded) and depth > 32 or > 16 import hops. Destructured names still count. An
+untyped parameter (JavaScript) is not open: there is no type to resolve; `...rest` stays the
+separate `Rest` column. Report: `Props` shows `9+`; EDN `:props {... :open true}` (always present).
+
+**Violations with open props.** Open never suppresses or invents a violation: the known counts are
+lower bounds (more members can only add props, booleans, optionals, callbacks), so a known count
+above a limit is a real violation, and an open unit under the limit is reported as is (`2+`) without
+offending. Thresholds are unchanged.
+
+**Side fix.** Quoted member names (`"data-testid": string`) are now unquoted like destructured keys,
+so a quoted prop that is both typed and destructured is counted once (it was counted twice).
+
+### Calibration (excalidraw `dd2f8fc`, whole repo, `--no-coverage`)
+
+314 components. Before: 25 had a props type the in-file resolver could not fully read (imports,
+`Omit`/`Pick`, library types), silently. After: 4 of them resolve completely (e.g. `ExcalidrawBase`,
+whose `ExcalidrawProps` is imported: 52 → 53 props, optional 6 → 53, booleans 4 → 11), 21 stay open,
+all on React's attribute types, directly or through an imported props type
+(`& React.HTMLAttributes<HTMLDivElement>`, `Omit<React.ButtonHTMLAttributes<...>, ...>`,
+`React.RefAttributes`, `DetailedHTMLProps`); none newly open. 15 units' props changed.
+Violations 145 → 147: new `props` on `ConfirmDialog` (10, `extends Omit<DialogProps, ...>` from
+`./Dialog`), `DropdownMenuItemCheckbox` (8+), `IconButton` (21, a three-branch union over a shared
+base) and `IconButton` boolean-props (6); gone `props` on `Island` and `ToolPopover` (8 → 6 and 8 → 7:
+the quoted-name double count). Runtime unchanged within noise (~0.5 s user before and after; every
+imported module is parsed once).

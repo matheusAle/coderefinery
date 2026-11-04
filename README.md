@@ -151,7 +151,12 @@ hides. Design and exact definitions: [docs/design-react.md](docs/design-react.md
   early returns, plus `.map` lists. Logic counts the rest of the body.
 - **Props**: count, boolean flags, optional, callbacks (`on*`), rest spread,
   and pass-through props (props only forwarded unchanged to a child
-  component, which signals prop drilling).
+  component, which signals prop drilling). The props type is followed
+  across the project's modules (imports, re-exports, index files, tsconfig
+  `paths`) and through `extends`, `&`, `|`, `Omit`, `Pick`, `Partial`,
+  `Required`, `Readonly` and generic defaults. A type that cannot be read
+  (React's DOM attributes, library, mapped or conditional types) makes the
+  props "open": only known props count, shown as `2+`.
 - **Hooks**: `useState` count, effects, largest dependency array, and effects
   that only call state setters (the derived-state smell).
 - **Render cost**: JSX depth, element count, inline function and
@@ -194,6 +199,9 @@ IconButton                     component IconButton                             
 TodoList.TodoRow.onClick       handler   TodoList                               14    1     N/A      N/A
 TodoList.onChange              handler   TodoList                               23    1     N/A      N/A
 TodoList.onClick               handler   TodoList                               32    1     N/A      N/A
+Toolbar                        component Toolbar                                12    1     N/A      N/A
+Toolbar.onClick                handler   Toolbar                                16    1     N/A      N/A
+ToolbarGroup                   component Toolbar                                25    1     N/A      N/A
 useCounter                     hook      useCounter                              3    1     N/A      N/A
 useCounter.reset               handler   useCounter                             11    1     N/A      N/A
 
@@ -204,12 +212,14 @@ Component                      Namespace                           Render Logic 
 SettingsPanel                  SettingsPanel                            6     1     9    5   5  2    -    0     0   0    0     0     2     5    0     0    0
 Cart                           Cart                                     5     1     4    0   1  1    -    0     4   2    2     1     3     9    0     0    0
 TodoList                       TodoList                                 2     2     2    0   0  1    -    0     1   0    0     0     3     7    2     2    1
+Toolbar                        Toolbar                                  2     1     8    2   3  2  yes    0     0   0    0     0     2     2    1     0    0
 Dashboard                      Dashboard                                1     1     5    0   0  1    -    5     0   0    0     0     1     1    0     0    0
 Layout                         Dashboard                                1     1     5    0   0  1    -    4     0   0    0     0     2     2    0     0    0
 Badge                          Badge                                    2     1     2    0   0  0    -    0     0   0    0     0     1     1    0     0    0
 Sidebar                        Dashboard                                2     1     4    0   0  1    -    0     0   0    0     0     2     4    0     0    0
 TodoList.TodoRow               TodoList                                 2     1     1    0   0  0    -    0     0   0    0     0     1     1    1     1    0
 IconButton                     IconButton                               1     1     3    1   1  0  yes    0     0   0    0     0     1     1    0     0    0
+ToolbarGroup                   Toolbar                                  1     1    2+    0   0  0  yes    0     0   0    0     0     2     2    0     0    0
 useCounter                     useCounter                               1     1     -    -   -  -    -    -     2   1    2     0     0     0    0     0    0
 
 Threshold violations
@@ -221,6 +231,7 @@ SettingsPanel                  SettingsPanel                       props 9 > 7
 SettingsPanel                  SettingsPanel                       boolean-props 5 > 2
 Cart                           Cart                                setter-effects 1 > 0
 TodoList                       TodoList                            nested-components 1 > 0
+Toolbar                        Toolbar                             props 8 > 7
 Dashboard                      Dashboard                           pass-through 5 > 3
 Layout                         Dashboard                           pass-through 4 > 3
 ```
