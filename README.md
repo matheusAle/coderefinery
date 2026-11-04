@@ -31,7 +31,7 @@ npx skills add matheusAle/coderefinery -g -a claude-code  # every project
 
 This uses the [`skills`](https://github.com/vercel-labs/skills) CLI
 (Node.js 22.20+). It copies `skills/coderefinery/` (`SKILL.md`, `LICENSE`,
-`scripts/coderefinery`) into each agent's skills directory, for example
+`references/`, `scripts/coderefinery`) into each agent's skills directory, for example
 `.claude/skills/coderefinery/`. Then run `/coderefinery`. To install by hand, copy
 `skills/coderefinery/` to `~/.claude/skills/coderefinery/` (or your agent's skills
 directory). How discovery and installation work: [docs/skills-manager.md](docs/skills-manager.md).
@@ -345,7 +345,8 @@ coderefinery mutate --react --scan --no-coverage src/components
 ## Layout
 
 ```
-skills/coderefinery/ the skill: SKILL.md, LICENSE (upstream MIT), scripts/coderefinery (launcher)
+skills/coderefinery/ the skill: SKILL.md, LICENSE (upstream MIT), references/ (per-language,
+                    testing, react, install details), scripts/coderefinery (launcher)
 go.mod, Makefile    Go module github.com/matheusAle/coderefinery
 cmd/, internal/     the binary (cmd/coderefinery) and its packages
 tools/, testdata/   parser-parity tools (treediff, oracles) and their corpus
