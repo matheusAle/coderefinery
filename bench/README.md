@@ -1,6 +1,6 @@
-# ubgate benchmarks
+# coderefinery benchmarks
 
-Times `ubgate` against Uncle Bob's Python originals (crapper, dryer, mutator)
+Times `coderefinery` against Uncle Bob's Python originals (crapper, dryer, mutator)
 on pinned open-source repos: wall time, CPU time (user+sys), peak memory (max
 RSS), and whether the outputs still match. Results and analysis:
 [RESULTS.md](RESULTS.md).
@@ -29,7 +29,7 @@ cd /Users/matheusale/workspaces/ub-mode
 OUT=.local/bench/results/$(date +%Y%m%d) bench/run.sh          # everything (about 1.5 h on an M4, dominated by dry)
 bench/run.sh build crap report                                  # one workload into .local/bench/results/latest
 REPOS="flask fzf" RUNS=5 bench/run.sh crap dry parity report    # a subset
-PROFILE_CASE="dry typescript" bench/run.sh profile              # CPU + heap profile of ubgate
+PROFILE_CASE="dry typescript" bench/run.sh profile              # CPU + heap profile of coderefinery
 ```
 
 Phases, in default order: `fetch build env help crap dry mutate-scan
@@ -50,12 +50,12 @@ Knobs (environment variables): `RUNS=3`, `WARMUP=1`, `TIMEOUT=30m`,
 `SLOW=120s` (a warm-up slower than this becomes the single measured run),
 `MAX_LOAD=4` / `LOAD_WAIT=3m` (wait for the 1-minute load average before
 each run, then run anyway and record it), `REPOS`, `IMPLS`, `OUT`,
-`UBGATE_SRC=worktree` (benchmark the working tree instead of a `git archive`
+`CODEREFINERY_SRC=worktree` (benchmark the working tree instead of a `git archive`
 of `HEAD`).
 
 Outputs in `$OUT`: `results.jsonl` (one line per run), `parity.jsonl`,
 `summary.md`, `summary.csv`, `env.txt`, `counts.jsonl`, and
-`out/<workload>/<repo>/{upstream,ubgate}.{stdout,stderr,root,metricsdir,metrics.<stamp>/}`
+`out/<workload>/<repo>/{upstream,coderefinery}.{stdout,stderr,root,metricsdir,metrics.<stamp>/}`
 from the last run of each case.
 
 ## How a run is measured
@@ -73,7 +73,7 @@ from the last run of each case.
   bytes. This is the peak of the **single largest process** in the tree, not
   a sum: rusage merges children with `max`, not `+`. For single-process
   workloads (everything except mutate-full) that is exactly the tool's peak.
-  For mutate-full it is the largest of mutator/ubgate and the test processes.
+  For mutate-full it is the largest of mutator/coderefinery and the test processes.
 * **load**: 1- and 5-minute load average just before the run.
 
 Each case gets a warm-up run that is recorded but excluded from the stats
@@ -95,16 +95,16 @@ before every run (untimed), and nothing is deleted by a variable path:
   `<impl>.metricsdir` points at it.
 * The only recursive deletes in `bench/` are literal paths under
   `.local/bench/` (`work`, `src`, `runs`, `cover/fzf`, `profile/src`,
-  `profile/work`), run after `cd` to the ub-mode root. `fetch.sh` updates
+  `profile/work`), run after `cd` to the repo root. `fetch.sh` updates
   existing checkouts in place.
 
-Each implementation runs on its own copy, upstream first, then ubgate, never
+Each implementation runs on its own copy, upstream first, then coderefinery, never
 at the same time. The load wait happens once per case (`-wait-each` makes it
 wait before every run).
 
 ## Parity
 
-`bench parity` compares upstream and ubgate output of the last run of each
+`bench parity` compares upstream and coderefinery output of the last run of each
 case: stdout and every file under `.metrics/`, byte for byte after masking
 each side's root path as `<ROOT>`. A mismatch also reports a line-level
 match rate (multiset intersection / longer side) and the first differing

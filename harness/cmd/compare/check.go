@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"ubmode/harness/internal/edn"
-	"ubmode/harness/internal/textdiff"
+	"coderefinery/harness/internal/edn"
+	"coderefinery/harness/internal/textdiff"
 )
 
 // Settings shared by every comparison.

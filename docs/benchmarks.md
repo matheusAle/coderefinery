@@ -1,9 +1,9 @@
-# ubgate benchmarks
+# coderefinery benchmarks
 
-This is the permanent record of how `ubgate` was benchmarked against Uncle Bob's
-Python originals and what each run found. `ubgate` (`ubgate/`) is the stdlib-only
-Go port. The originals are `crapper`, `dryer` and `mutator` in `upstream/`
-(Python 3.12 + py-tree-sitter).
+This is the permanent record of how `coderefinery` was benchmarked against
+Uncle Bob's Python originals and what each run found. `coderefinery` (the Go
+module at the repo root) is the stdlib-only Go port. The originals are
+`crapper`, `dryer` and `mutator` in `upstream/` (Python 3.12 + py-tree-sitter).
 
 * Harness: [`bench/`](../bench/) ([README](../bench/README.md), corpus in
   [`repos.txt`](../bench/repos.txt), driver [`run.sh`](../bench/run.sh),
@@ -11,7 +11,7 @@ Go port. The originals are `crapper`, `dryer` and `mutator` in `upstream/`
   [`bench/cmd/bench/`](../bench/cmd/bench/)).
 * Write-up of the last full run: [`bench/RESULTS.md`](../bench/RESULTS.md).
 * Parser divergences found by the benchmarks:
-  [`ubgate/docs/PARSER-BUGS.md`, "Found by benchmarks"](../ubgate/docs/PARSER-BUGS.md#found-by-benchmarks).
+  [`docs/PARSER-BUGS.md`, "Found by benchmarks"](PARSER-BUGS.md#found-by-benchmarks).
 * Raw data: `.local/bench/results/<YYYYMMDD>/` (gitignored).
 
 Sections 1–3 describe the method and change only when the harness changes.
@@ -20,11 +20,15 @@ including the baseline and any run after an optimisation, gets a dated entry
 in [History](#8-history). New entries are appended there; earlier ones are
 never overwritten.
 
+The tool was called `ubgate` until it was renamed to `coderefinery` on
+2026-11-03. Sections 3–6, the History entries and any measurement quoted from
+runs before the rename call it `ubgate`; that data is kept as recorded.
+
 ---
 
 ## 1. Goal and questions answered
 
-Before `ubgate` replaces the Python tools, we want to know whether it is at
+Before `coderefinery` replaces the Python tools, we want to know whether it is at
 least as good on real, large codebases, not just on the parity fixtures:
 
 1. **Speed**: wall time per workload, per repo, and at startup.
@@ -35,7 +39,7 @@ least as good on real, large codebases, not just on the parity fixtures:
    `.metrics/*` on large real repos? The fixture harness (`harness/run.sh`)
    already gates parity on small, curated inputs. This benchmark checks it on
    real ones.
-5. **Where the time goes** in ubgate (profiling), so optimisation targets come
+5. **Where the time goes** in coderefinery (profiling), so optimisation targets come
    from measurements rather than guesses.
 
 ## 2. Strategy and methodology
@@ -104,14 +108,14 @@ least as good on real, large codebases, not just on the parity fixtures:
 * **Warm-up + N runs.** Each case gets `WARMUP=1` run that is recorded but
   excluded (it warms the OS page cache and the upstream `__pycache__`),
   followed by `RUNS=3` measured runs. The report gives the **median** and the
-  min–max. Startup uses 2 warm-ups + 10 runs. ubgate keeps no persistent
+  min–max. Startup uses 2 warm-ups + 10 runs. coderefinery keeps no persistent
   cache, so "warm" only refers to the OS page cache. A truly cold cache
   (`sudo purge`) was not tested.
-* **Speedup** = upstream median wall / ubgate median wall. **CPU ratio** and
-  **mem ratio** are upstream / ubgate, so values > 1 favour ubgate. The
+* **Speedup** = upstream median wall / coderefinery median wall. **CPU ratio** and
+  **mem ratio** are upstream / coderefinery, so values > 1 favour coderefinery. The
   per-workload summary is the **geometric mean** of the per-repo speedups,
   with min and max. "Total" speedups divide sums of per-case medians.
-* **Ordering.** For each case, upstream runs first and ubgate right after,
+* **Ordering.** For each case, upstream runs first and coderefinery right after,
   never both at once, so both see similar machine conditions.
 * **Timeouts.** `TIMEOUT=30m` per run (the process group is killed and the
   run is reported as `> timeout`). `SLOW=120s`: a warm-up slower than this
@@ -122,9 +126,10 @@ least as good on real, large codebases, not just on the parity fixtures:
   average is above `MAX_LOAD=4`, up to `LOAD_WAIT`, then runs anyway. It
   records `load1` / `load5` / `load_waited_s` for every run. (The baseline
   used a 20 s wait, and the load never fell below 4.)
-* **ubgate build.** `git archive HEAD ubgate` is extracted under
+* **coderefinery build.** `git archive HEAD` of the root Go module (`go.mod`,
+  `cmd/`, `internal/`, `tools/`, `testdata/`) is extracted under
   `.local/bench/src` and built with `go build -trimpath`, so concurrent edits
-  in the working tree do not leak in. `UBGATE_SRC=worktree` benchmarks the
+  in the working tree do not leak in. `CODEREFINERY_SRC=worktree` benchmarks the
   working tree instead and records the dirty-file count.
 
 ### 2.4 Fresh inputs between runs
@@ -178,10 +183,11 @@ structurally.
 ### 2.7 Profiling method
 
 `bench/run.sh profile` (case chosen with `PROFILE_CASE`, default
-`"dry typescript"`) copies `ubgate/cmd/ubgate` to `.local/bench/profile/src`
-and adds a throwaway `zz_pprof.go` wrapper. `ubgate/` itself is not modified.
-The wrapper is driven by `UBGATE_CPUPROFILE`, `UBGATE_MEMPROFILE` and
-`UBGATE_HEAPPROFILE`:
+`"dry typescript"`) extracts the root Go module (`git archive HEAD`) to
+`.local/bench/profile/src` and adds a throwaway `zz_pprof.go` wrapper to its
+`cmd/coderefinery`. The repo itself is not modified.
+The wrapper is driven by `CODEREFINERY_CPUPROFILE`, `CODEREFINERY_MEMPROFILE` and
+`CODEREFINERY_HEAPPROFILE`:
 
 * a CPU profile for the whole run;
 * an `allocs` profile (total allocation by site);
@@ -363,7 +369,7 @@ on every workload, and so did both fixture mutation runs (stdout plus all 7
 `.metrics/mutate/*.edn` snapshots).
 
 The three mismatches were all minimised and recorded in
-[`ubgate/docs/PARSER-BUGS.md` → "Found by benchmarks"](../ubgate/docs/PARSER-BUGS.md#found-by-benchmarks):
+[`docs/PARSER-BUGS.md` → "Found by benchmarks"](PARSER-BUGS.md#found-by-benchmarks):
 
 | case | match | cause |
 |---|---|---|
@@ -466,7 +472,7 @@ judged against the optimised Go, not against this baseline.
 
 Prerequisites: the upstream tools and their venvs (`harness/fetch-upstream.sh`
 if `upstream/` is missing), `fixtures/setup.sh` (for mutate-full), Go and git.
-Everything stays inside the ub-mode root, under `.local/bench/` (gitignored).
+Everything stays inside the repo root, under `.local/bench/` (gitignored).
 
 ```bash
 cd /Users/matheusale/workspaces/ub-mode
@@ -485,24 +491,24 @@ OUT=.local/bench/results/<YYYYMMDD> REPOS="axios hugo fzf guava gson tokio ripgr
 bench/run.sh build crap report                                   # into .local/bench/results/latest
 REPOS="flask fzf" RUNS=5 bench/run.sh crap dry parity report
 
-# Benchmark uncommitted ubgate changes (records the dirty-file count):
-UBGATE_SRC=worktree OUT=.local/bench/results/$(date +%Y%m%d)-wip bench/run.sh build dry parity report
+# Benchmark uncommitted coderefinery changes (records the dirty-file count):
+CODEREFINERY_SRC=worktree OUT=.local/bench/results/$(date +%Y%m%d)-wip bench/run.sh build dry parity report
 
-# Profile one ubgate case (CPU, allocs, peak inuse heap):
+# Profile one coderefinery case (CPU, allocs, peak inuse heap):
 PROFILE_CASE="dry typescript" bench/run.sh profile
-go tool pprof -top .local/bench/profile/ubgate-pprof .local/bench/profile/dry-typescript/cpu.pprof
+go tool pprof -top .local/bench/profile/coderefinery-pprof .local/bench/profile/dry-typescript/cpu.pprof
 
 # Check a parity mismatch against tree-sitter:
 go run ./tools/treediff FILE
 ```
 
 Knobs: `RUNS=3`, `WARMUP=1`, `TIMEOUT=30m`, `SLOW=120s`, `MAX_LOAD=4`,
-`LOAD_WAIT=3m` (default), `REPOS`, `IMPLS="upstream ubgate"`, `OUT`,
-`UBGATE_SRC=worktree`, `PROFILE_CASE`.
+`LOAD_WAIT=3m` (default), `REPOS`, `IMPLS="upstream coderefinery"`, `OUT`,
+`CODEREFINERY_SRC=worktree`, `PROFILE_CASE`.
 
 To compare against this baseline, keep the corpus pins and workloads
 unchanged, run on the same machine class, and report both the absolute
-numbers and the ubgate-vs-baseline-ubgate ratios. Because the machine is
+numbers and the coderefinery-vs-baseline-coderefinery ratios. Because the machine is
 shared, record the load range in the entry.
 
 ## 8. History
@@ -510,11 +516,11 @@ shared, record the load range in the entry.
 Newest entries go at the bottom. Each entry uses this template:
 
 ```markdown
-### YYYY-MM-DD: <title> (ubgate `<short sha>`)
+### YYYY-MM-DD: <title> (coderefinery `<short sha>`)
 
-* **Change under test:** what changed in ubgate (or the harness) since the previous entry.
+* **Change under test:** what changed in coderefinery (or the harness) since the previous entry.
 * **Run:** `.local/bench/results/<dir>/`, phases/repos run, RUNS/WARMUP, load range, reruns.
-* **Results:** per-workload ubgate wall/CPU/RSS vs upstream and vs the previous entry (tables or deltas).
+* **Results:** per-workload coderefinery wall/CPU/RSS vs upstream and vs the previous entry (tables or deltas).
 * **Parity:** N/M cases identical; any new or fixed mismatches (link PARSER-BUGS.md).
 * **Notes / next:** surprises, new hotspots, follow-ups.
 ```

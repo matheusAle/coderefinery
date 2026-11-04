@@ -130,7 +130,7 @@ Write order: stdout report, then the stderr `Wrote` line. Clojure warnings are p
 Extensions (exact, case-sensitive suffix):
 `.clj .cljc .cljs .cljd .bb`→clojure, `.java`→java, `.go`→go, `.ts .tsx .mts .cts`→typescript, `.rs`→rust, `.py`→python.
 - A name ending in `.d.ts` → none. `.d.mts` and `.d.cts` are **not** excluded.
-- **JavaScript (`.js .jsx .mjs .cjs`) is not supported upstream.** The ub-mode `fixtures/javascript` tree gives "No source files to analyze."
+- **JavaScript (`.js .jsx .mjs .cjs`) is not supported upstream.** The repo's `fixtures/javascript` tree gives "No source files to analyze."
 - `.tsx` paths use the `tsx` grammar. `.ts .mts .cts` use `typescript`.
 
 `is_test_file(path)` is true when any of these holds:
@@ -525,15 +525,15 @@ Grammar inventory for pack 1.23.1 (visible named kinds): python 123, typescript 
 | **Rust** | hand lexer (raw strings, lifetimes vs chars, nested block comments) + recursive descent | `function_item` (`visibility_modifier`, `function_modifiers`, `parameters`/`parameter`/`self_parameter`, `type_parameters`, `where_clause`); block tail expression is **not** wrapped, while statements are `expression_statement`/`let_declaration` (`mutable_specifier`, `=` kept); `call_expression`/`arguments`; `field_expression`; `scoped_identifier` (path); `generic_function`, `generic_type`, `generic_type_with_turbofish`; `macro_invocation` + `token_tree` (flat tokens: idents, literals, nested `token_tree`, OPERATOR punctuation kept, other punctuation dropped); `closure_expression`/`closure_parameters` (`|` kept); `reference_expression`/`reference_type` (`&`), `try_expression` (`?`), `unary_expression`; `if_expression`/`let_condition`/`let_chain`; `match_expression`/`match_block`/`match_arm`/`match_pattern`; patterns (`tuple_struct_pattern`, `struct_pattern`, `field_pattern`, `shorthand_field_identifier`, `ref_pattern`, `or_pattern`, `range_pattern`); `struct_expression`/`field_initializer_list`; `range_expression`; `type_cast_expression`; `attribute_item`/`attribute`; `lifetime`; `self`/`crate`/`super` leaves | turbofish forms; macro token trees must split tokens the way tree-sitter-rust does; `negative_literal` in patterns; ERROR recovery common in macro-heavy code | **near** typical, **approximate** macro-heavy |
 
 ### 9.3 Risk assessment
-- **Biggest risk: borderline scores.** The ub-mode TS fixture `src/stats.ts:1-11 ~ 13-23` scores **0.821428571429** (23/28) against the 0.82 threshold. One stray or missing wrapper node flips it from reported to silent. So "identical candidate pairs at the default threshold" **requires exact tree isomorphism** for that code. Approximate scores are not enough at the margin.
+- **Biggest risk: borderline scores.** The repo's TS fixture `src/stats.ts:1-11 ~ 13-23` scores **0.821428571429** (23/28) against the 0.82 threshold. One stray or missing wrapper node flips it from reported to silent. So "identical candidate pairs at the default threshold" **requires exact tree isomorphism** for that code. Approximate scores are not enough at the margin.
 - Wrapper-node errors propagate: one wrong node changes the printed string of every ancestor. A single local error in a function's body can cut its self-similarity sharply. Golden diffs pinpoint these immediately.
 - The grammar version is the oracle. Freeze upstream at language-pack 1.23.1. Any pack bump can silently change shapes, as with Python's missing `expression_statement`.
 - Recursion depth: hand parsers and the normalizer must survive 1,200-deep expressions.
 
 ### 9.4 Recommended plan
 1. Shared core: CST type, normalizer, fingerprints, pairing, report, CLI. Clojure reader port gives exact parity from day one.
-2. Build Appendix B's oracle and a corpus: upstream tests, ub-mode `fixtures/`, and a per-language construct catalogue (one function per grammar construct).
-3. Go: `go/ast` translator. Python: hand parser. Then TS/TSX, Java, Rust, ordered by ub-mode needs.
+2. Build Appendix B's oracle and a corpus: upstream tests, the repo's `fixtures/`, and a per-language construct catalogue (one function per grammar construct).
+3. Go: `go/ast` translator. Python: hand parser. Then TS/TSX, Java, Rust, ordered by this repo's needs.
 4. Acceptance per language:
    - (a) every upstream test case reproduces score and verdict
    - (b) the corpus matches printed normalized trees 100% for "exact" languages and ≥ 98% of candidates for "near"
@@ -656,7 +656,7 @@ CLJ (defn a [x] ()) contains "[:list :literal]";  {foo 1} prints == {bar 2};  #{
 - The second run replaces the snapshot: `.metrics/dry.edn` == `"{:candidates []}\n"`.
 - Clojure reader cases: copy `tests/test_clojure.py` verbatim. Warning strings: `"left.clj:6: unterminated list"`, `"2: unterminated string"`, `"1: unterminated string"`, `"1: incomplete character"`, `"1: reader conditional body must be a list"`, `"3: splicing reader conditional needs a collection"`. `"#?(:cljs (inc x) :default (dec x))"` → head `dec`. `"#?((inc x) (dec x))"` → no forms. Namespaced maps `#:foo{:a 1}`, `#::{:a 1}`, `#:{:a 1}` → map with key `a`. Reader macros `'x @x \`x ~x ~@x` → `quote deref syntax-quote unquote unquote-splicing`. `'#_x` → `(quote)`. `:` → `Kw("")`. `#!only` → no forms.
 
-### 10.5 Harness goldens: ub-mode `fixtures/` (upstream on copies, reference stack)
+### 10.5 Harness goldens: the repo's `fixtures/` (upstream on copies, reference stack)
 | `--root` | args | expected `.metrics/dry.edn` candidates |
 |---|---|---|
 | fixtures/go | defaults | 1: go `calc.go` 52-62 ~ 65-75, **1.0**, nodes 97/97 |

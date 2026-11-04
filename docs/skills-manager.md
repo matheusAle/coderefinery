@@ -19,7 +19,7 @@ repo from a local path into a scratch HOME and project.
   also read. Only when nothing is found does it fall back to a recursive search.
 - Duplicate names: the first one found wins.
 
-This repo uses `skills/ub-mode/SKILL.md` (no manifest needed).
+This repo uses `skills/coderefinery/SKILL.md` (no manifest needed).
 
 ## Frontmatter
 
@@ -37,14 +37,14 @@ This repo uses `skills/ub-mode/SKILL.md` (no manifest needed).
   `description` (+ `when_to_use`) is truncated at 1536 chars in the listing;
   `<` and `>` are escaped. It substitutes `${CLAUDE_SKILL_DIR}` (the directory
   holding `SKILL.md`) in skill content, which is how `SKILL.md` points at
-  `scripts/ubgate` regardless of the working directory.
+  `scripts/coderefinery` regardless of the working directory.
 
 ## What gets installed
 
 - The whole skill directory is copied recursively (`scripts/`, `LICENSE`,
   anything else), except `metadata.json` files and `.git`, `__pycache__`,
   `__pypackages__` directories. File modes are kept (`chmod` to the source
-  mode), so `scripts/ubgate` stays executable. Symlinks pointing outside the
+  mode), so `scripts/coderefinery` stays executable. Symlinks pointing outside the
   skill directory are skipped.
 - GitHub sources are fetched with a shallow `git clone`, so the executable bit
   must be committed (git mode 100755) for the launcher to stay executable.
@@ -63,25 +63,25 @@ This repo uses `skills/ub-mode/SKILL.md` (no manifest needed).
 ## Commands used for this repo
 
 ```bash
-npx skills add matheusAle/ub-mode                    # interactive: pick agents
-npx skills add matheusAle/ub-mode -a claude-code -y  # project, Claude Code only
-npx skills add matheusAle/ub-mode -g -a claude-code  # all projects
-npx skills add ./path/to/ub-mode --list              # local checkout: list skills
-npx skills add ./path/to/ub-mode -a claude-code -y   # local checkout: install
+npx skills add matheusAle/coderefinery                    # interactive: pick agents
+npx skills add matheusAle/coderefinery -a claude-code -y  # project, Claude Code only
+npx skills add matheusAle/coderefinery -g -a claude-code  # all projects
+npx skills add ./path/to/coderefinery --list              # local checkout: list skills
+npx skills add ./path/to/coderefinery -a claude-code -y   # local checkout: install
 ```
 
-Other source forms: full GitHub URL, `.../tree/<ref>/skills/ub-mode`, any git
+Other source forms: full GitHub URL, `.../tree/<ref>/skills/coderefinery`, any git
 URL, GitLab/Azure URLs, a direct `SKILL.md` or archive URL. Requires Node.js
 22.20+. Telemetry is off with `DISABLE_TELEMETRY=1` or `DO_NOT_TRACK=1`.
 
 ## Verified locally
 
-`skills add <local checkout> --list` finds exactly `ub-mode`.
-`-a claude-code -y` produced `.claude/skills/ub-mode/{SKILL.md,LICENSE,scripts/ubgate}`
+`skills add <local checkout> --list` finds exactly `coderefinery`.
+`-a claude-code -y` produced `.claude/skills/coderefinery/{SKILL.md,LICENSE,scripts/coderefinery}`
 (launcher still `-rwxr-xr-x`) plus `skills-lock.json`, and nothing in HOME.
-`-a claude-code -a codex` produced `.agents/skills/ub-mode/` with
-`.claude/skills/ub-mode -> ../../.agents/skills/ub-mode`. The installed
-launcher ran `ubgate --version` through `UBGATE_BIN`, `PATH`, a download from a
+`-a claude-code -a codex` produced `.agents/skills/coderefinery/` with
+`.claude/skills/coderefinery -> ../../.agents/skills/coderefinery`. The installed
+launcher ran `coderefinery --version` through `CODEREFINERY_BIN`, `PATH`, a download from a
 local release directory into the cache, and the cache.
 
 ## Sources

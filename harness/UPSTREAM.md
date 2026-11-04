@@ -29,7 +29,7 @@ npm 11.6.2, vitest 3.2.7 + @vitest/coverage-v8 3.2.7, c8 10.1.3, coverage.py
 
 ## Behaviour worth knowing (found while building fixtures and golden files)
 
-These are upstream behaviours the golden files capture as-is. ubgate has to
+These are upstream behaviours the golden files capture as-is. coderefinery has to
 match them to pass the harness, or the spec has to choose to diverge on purpose.
 
 1. **ECMAScript `#private` methods are not entries.** crapper drops `#record()`
@@ -55,7 +55,7 @@ match them to pass the harness, or the spec has to choose to diverge on purpose.
 5. **Coverage-tool output goes to the tool's own stdout.** crapper's (and
    mutator's) coverage commands inherit stdio, so pytest / vitest / node --test /
    go test output comes before the report on stdout, and the `+ (cwd) cmd`
-   lines go to stderr. A byte-compatible ubgate has to run the same commands
+   lines go to stderr. A byte-compatible coderefinery has to run the same commands
    with inherited stdio.
 6. **Python interpreter choice differs between the tools.** crapper runs
    `<project>/.venv/bin/python`, otherwise `python3` from PATH, and

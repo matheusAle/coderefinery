@@ -1,3 +1,3 @@
-module ubmode/bench
+module coderefinery/bench
 
 go 1.26

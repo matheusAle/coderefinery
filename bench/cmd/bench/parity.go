@@ -22,11 +22,11 @@ type Parity struct {
 	Artifact  string   `json:"artifact"` // stdout, .metrics/crap.edn, ...
 	Identical bool     `json:"identical"`
 	LinesA    int      `json:"lines_upstream"`
-	LinesB    int      `json:"lines_ubgate"`
+	LinesB    int      `json:"lines_coderefinery"`
 	Common    int      `json:"common_lines"` // multiset intersection
 	MatchRate float64  `json:"match_rate"`   // common / max(lines)
 	OnlyA     []string `json:"only_upstream,omitempty"`
-	OnlyB     []string `json:"only_ubgate,omitempty"`
+	OnlyB     []string `json:"only_coderefinery,omitempty"`
 	Missing   string   `json:"missing,omitempty"`
 }
 
@@ -37,7 +37,7 @@ func parityMain(args []string) error {
 		repo     = fs.String("repo", "", "repo label")
 		artifact = fs.String("artifact", "stdout", "artifact label")
 		a        = fs.String("a", "", "upstream output file")
-		b        = fs.String("b", "", "ubgate output file")
+		b        = fs.String("b", "", "coderefinery output file")
 		maskA    = fs.String("mask-a", "", "path prefix in -a replaced by <ROOT> (also its /private and symlink-resolved forms)")
 		maskB    = fs.String("mask-b", "", "path prefix in -b replaced by <ROOT>")
 		show     = fs.Int("show", 8, "keep at most this many differing lines per side")
@@ -56,7 +56,7 @@ func parityMain(args []string) error {
 	case ea != nil:
 		p.Missing = "upstream"
 	case eb != nil:
-		p.Missing = "ubgate"
+		p.Missing = "coderefinery"
 	default:
 		da, db = mask(da, *maskA), mask(db, *maskB)
 		if !*keepTime {

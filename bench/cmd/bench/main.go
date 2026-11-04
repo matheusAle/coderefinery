@@ -1,4 +1,4 @@
-// Command bench times commands and summarises upstream-vs-ubgate results.
+// Command bench times commands and summarises upstream-vs-coderefinery results.
 // Stdlib only.
 //
 //	bench run    [flags] -- cmd args...   time a command N times, append JSON lines

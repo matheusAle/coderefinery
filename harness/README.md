@@ -1,6 +1,6 @@
-# ubgate verification harness
+# coderefinery verification harness
 
-This harness runs ubgate and the upstream Python tools (crapper, dryer,
+This harness runs coderefinery and the upstream Python tools (crapper, dryer,
 mutator) on the same fixture projects and compares what they produce: exit
 code, stdout, every file under `.metrics/`, and (for information) stderr.
 Everything lives inside `/Users/matheusale/workspaces/ub-mode`.
@@ -10,7 +10,7 @@ harness/
   env.sh            source first: isolates every cache, venv and toolchain path
   run.sh            matrix runner (wraps cmd/compare)
   matrix.txt        the variant matrix
-  cmd/compare/      the comparison program (stdlib-only Go, module ubmode/harness)
+  cmd/compare/      the comparison program (stdlib-only Go, module coderefinery/harness)
   internal/edn/     EDN parser + structural comparison
   internal/textdiff unified line diff
   golden/<tool>/<fixture>/<variant>/   recorded upstream outputs
@@ -27,8 +27,8 @@ cd /Users/matheusale/workspaces/ub-mode
 fixtures/setup.sh                # once: fixture venv, .venv symlink, node_modules
 harness/run.sh test              # harness unit tests
 harness/run.sh selftest          # upstream vs golden: must be 36/36 PASS
-harness/run.sh check             # ubgate vs golden (ubgate/bin/ubgate)
-harness/run.sh live              # ubgate vs upstream, both running at the same time
+harness/run.sh check             # coderefinery vs golden (bin/coderefinery)
+harness/run.sh live              # coderefinery vs upstream, both running at the same time
 ```
 
 `run.sh` modes:
@@ -46,7 +46,7 @@ Extra arguments go to `cmd/compare`. The useful ones:
 
 ```
 -tool crap,dry,mutate     -fixture python,go     -variant default,full     (filters; default all)
--ours '<template>'        default: /Users/matheusale/workspaces/ub-mode/ubgate/bin/ubgate {tool} {args}
+-ours '<template>'        default: /Users/matheusale/workspaces/ub-mode/bin/coderefinery {tool} {args}
                           'upstream' = the upstream tool itself
 -upstream '<template>'    default: {upstream}/{upstream_tool}/{upstream_tool} {args}
 -live [-serial]           live mode. -serial runs upstream, then ours (no CPU contention)
@@ -62,12 +62,12 @@ Extra arguments go to `cmd/compare`. The useful ones:
 ```
 
 Template placeholders: `{tool}` (crap|dry|mutate), `{upstream_tool}`
-(crapper|dryer|mutator), `{upstream}`, `{ubmode}`, `{fixture}`, `{variant}`,
+(crapper|dryer|mutator), `{upstream}`, `{repo_root}`, `{fixture}`, `{variant}`,
 and `{args}`, which must be a word of its own and expands to the case's
 arguments. Examples:
 
 ```bash
-harness/run.sh check -ours 'go run ./ubgate/cmd/ubgate {tool} {args}' -tool crap
+harness/run.sh check -ours 'go run ./cmd/coderefinery {tool} {args}' -tool crap
 harness/run.sh live -fixture go -variant full -max-diffs 20
 ```
 
@@ -90,7 +90,7 @@ matches. The pristine fixtures are never written to.
 | STDERR  | equal after normalisation. Informational unless `-strict-stderr` |
 | METRICS | every file under `.metrics/` exists on both sides, and each `.edn` is structurally equal: maps compared without regard to key order, vectors and lists by position, ints and floats are different types (`1` ≠ `1.0`), floats exact unless `-float-tol` is set, `-ignore-keys` skipped. Non-EDN files are compared byte for byte. `ok n/m` counts the equal files. |
 | RAW     | byte-identical `.metrics` files out of the total, after masking only `:tested-at "..."` |
-| RESULT  | PASS = EXIT, STDOUT and METRICS all ok (and STDERR with `-strict-stderr`). ERROR = something could not run, e.g. ubgate is missing |
+| RESULT  | PASS = EXIT, STDOUT and METRICS all ok (and STDERR with `-strict-stderr`). ERROR = something could not run, e.g. coderefinery is missing |
 
 After the table, the first `-max-diffs` failing cases are printed: exit codes,
 a unified diff of stdout, and EDN differences with paths such as
@@ -103,7 +103,7 @@ SUMMARY mode=golden cases=36 PASS=36 FAIL=0 ERROR=0 | metrics files=55 semantic-
 ### Normalisation (applied to both sides)
 
 * The scratch root (plus its `/private` and symlink-resolved forms) becomes
-  `<ROOT>`, and the ub-mode path becomes `<UBMODE>`.
+  `<ROOT>`, and the repo root becomes `<REPO_ROOT>`.
 * Test-runner timings become `<DUR>` / `<TIME>`: vitest `Start at` and
   `Duration`, node `--test` `(1.2ms)` and `duration_ms`, `go test`
   `ok pkg 0.8s` / `(cached)`, pytest ` in 0.02s`, and any other `<n>ms` or

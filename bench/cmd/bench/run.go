@@ -21,7 +21,7 @@ import (
 type Result struct {
 	Workload string   `json:"workload"` // crap | dry | mutate-scan | help | ...
 	Repo     string   `json:"repo"`     // corpus repo or fixture name
-	Impl     string   `json:"impl"`     // upstream | ubgate
+	Impl     string   `json:"impl"`     // upstream | coderefinery
 	Variant  string   `json:"variant,omitempty"`
 	Batch    string   `json:"batch"` // one id per `bench run` invocation; report keeps the latest batch
 	Run      int      `json:"run"`   // 0 = warm-up
@@ -59,7 +59,7 @@ func runMain(args []string) error {
 	var (
 		workload = fs.String("workload", "", "workload label (crap, dry, mutate-scan, help, ...)")
 		repo     = fs.String("repo", "", "repo / fixture label")
-		impl     = fs.String("impl", "", "implementation label (upstream, ubgate)")
+		impl     = fs.String("impl", "", "implementation label (upstream, coderefinery)")
 		variant  = fs.String("variant", "", "optional variant label (e.g. cold, warm)")
 		dir      = fs.String("dir", ".", "working directory of the command")
 		runs     = fs.Int("runs", 3, "measured runs")
@@ -159,7 +159,7 @@ func runMain(args []string) error {
 }
 
 // freshRoot is where -fresh clones go, relative to bench's cwd (run.sh runs
-// from the ub-mode root, so .local/bench/runs, which run.sh clears with one
+// from the repo root, so .local/bench/runs, which run.sh clears with one
 // literal rm). The runner itself never deletes anything.
 const freshRoot = ".local/bench/runs"
 

@@ -1,3 +1,3 @@
-module ubmode/harness
+module coderefinery/harness
 
 go 1.26

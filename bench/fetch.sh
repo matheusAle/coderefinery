@@ -4,11 +4,11 @@
 # Repos with sha "-" are fetched at the default branch HEAD; the resolved SHA is printed so it
 # can be pinned in repos.txt. Existing checkouts at the right SHA are left alone.
 set -euo pipefail
-UBMODE="${UBMODE:-/Users/matheusale/workspaces/ub-mode}"
+REPO_ROOT="${REPO_ROOT:-/Users/matheusale/workspaces/ub-mode}"
 # shellcheck disable=SC1091
-source "$UBMODE/harness/env.sh"
-REPOS_TXT="$UBMODE/bench/repos.txt"
-DEST="$UBMODE_LOCAL/bench/repos"
+source "$REPO_ROOT/harness/env.sh"
+REPOS_TXT="$REPO_ROOT/bench/repos.txt"
+DEST="$REPO_LOCAL/bench/repos"
 mkdir -p "$DEST"
 
 want=" $* "

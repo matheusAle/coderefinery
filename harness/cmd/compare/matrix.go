@@ -9,7 +9,7 @@ import (
 
 // Case is one (tool, fixture, variant) row of the matrix.
 type Case struct {
-	Tool    string // ubgate subcommand: crap, dry, mutate
+	Tool    string // coderefinery subcommand: crap, dry, mutate
 	Fixture string
 	Variant string
 	Args    []string
@@ -124,8 +124,8 @@ func splitWords(s string) ([]string, error) {
 
 // expandTemplate turns a command template into argv. A word that is exactly
 // {args} becomes the case's arguments; {tool}, {upstream_tool}, {upstream},
-// {ubmode}, {fixture} and {variant} are substituted inside any word.
-func expandTemplate(tmpl string, c Case, ubmode string) ([]string, error) {
+// {repo_root}, {fixture} and {variant} are substituted inside any word.
+func expandTemplate(tmpl string, c Case, repoRoot string) ([]string, error) {
 	words, err := splitWords(tmpl)
 	if err != nil {
 		return nil, err
@@ -133,8 +133,8 @@ func expandTemplate(tmpl string, c Case, ubmode string) ([]string, error) {
 	repl := strings.NewReplacer(
 		"{tool}", c.Tool,
 		"{upstream_tool}", upstreamNames[c.Tool],
-		"{upstream}", ubmode+"/upstream",
-		"{ubmode}", ubmode,
+		"{upstream}", repoRoot+"/upstream",
+		"{repo_root}", repoRoot,
 		"{fixture}", c.Fixture,
 		"{variant}", c.Variant,
 	)

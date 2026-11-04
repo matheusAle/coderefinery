@@ -2,7 +2,7 @@
 
 Reference: `upstream/mutator` @ `a5a0cb8` (2026-10-21), `upstream/crapper` @ `6fd92c4`.
 All 76 upstream tests pass. Facts marked **[probe]** were checked by running upstream against
-tree-sitter 0.26.0 + tree-sitter-language-pack 1.23.1 in a throwaway venv (`/tmp/tsvenv`, outside ub-mode).
+tree-sitter 0.26.0 + tree-sitter-language-pack 1.23.1 in a throwaway venv (`/tmp/tsvenv`, outside the repo).
 Function discovery, namespaces, coverage generation and LCOV/Go-profile/JaCoCo parsing belong to
 crapper. Mutator only consumes them, so see `docs/spec-crapper.md` for those. This spec says exactly
 which crapper outputs mutator reads.
@@ -262,7 +262,7 @@ Disambiguations tree-sitter makes, which a port must reproduce **[probe]**:
   1. `normalize`: URL-unquote, `\`→`/`, strip the `file:` prefix, strip leading `./` repeatedly, collapse `//`.
   2. Exact: a normalized key equals the normalized absolute source path.
   3. Suffix rank over `/`-split non-empty parts. If the key ends with the source parts → rank `(0, extra)`. Else, if the source is strictly longer and ends with the key → `(1, missing)`. Keep the minimum rank. If the keys at that rank (deduped by parts) number ≠1 → None. Effectively, the relative report key that is the longest suffix of the absolute path wins, and `b/app.py` never steals `a/b/app.py`.
-- **UPSTREAM BUG [probe]**: Go profile keys are import paths (`example.com/ubfix/calc.go`). They are only a suffix of the absolute path when the directory tree mirrors the module path. For any ordinary module (`module example.com/x`) the lookup returns None, so every Go site is **UNCOVERED** and nothing runs unless `--no-coverage` is given. The ub-mode `fixtures/go` (`example.com/ubfix`) hits this. Decide: replicate (exact parity) or map the import path → file through `go.mod` (recommended, behind a parity flag).
+- **UPSTREAM BUG [probe]**: Go profile keys are import paths (`example.com/ubfix/calc.go`). They are only a suffix of the absolute path when the directory tree mirrors the module path. For any ordinary module (`module example.com/x`) the lookup returns None, so every Go site is **UNCOVERED** and nothing runs unless `--no-coverage` is given. The repo's `fixtures/go` (`example.com/ubfix`) hits this. Decide: replicate (exact parity) or map the import path → file through `go.mod` (recommended, behind a parity flag).
 
 ### 4.3 Site coverage
 - `--no-coverage` → every site covered.

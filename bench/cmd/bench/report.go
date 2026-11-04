@@ -82,7 +82,7 @@ func reportMain(args []string) error {
 		csvOut  = fs.String("csv", "", "write per-case CSV here")
 		order   = fs.String("order", "help,crap,dry,mutate-scan,mutate-full", "workload order")
 		base    = fs.String("base", "upstream", "baseline implementation")
-		cand    = fs.String("cand", "ubgate", "candidate implementation")
+		cand    = fs.String("cand", "coderefinery", "candidate implementation")
 	)
 	fs.Parse(args)
 	var results []Result

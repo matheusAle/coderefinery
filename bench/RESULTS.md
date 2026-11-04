@@ -5,6 +5,10 @@ Run of 2026-11-03 (`.local/bench/results/20261103`, rerun with
 port; upstream is Uncle Bob's crapper / dryer / mutator (Python 3.12 +
 py-tree-sitter).
 
+The tool was renamed from `ubgate` to `coderefinery` on 2026-11-03. This run
+predates the rename, so the results below call it `ubgate`; the measured data
+is kept as recorded.
+
 ## Headline
 
 Totals over the 12 repos (sum of per-case medians), plus startup and the fixture runs:
@@ -186,7 +190,7 @@ Per-workload geometric mean of the wall-time speedups:
 36 of 39 timed cases (excluding `--help`) produce byte-identical stdout and
 `.metrics/*` on both sides. That is 65 of 70 compared artifacts, after
 masking each side's root path and mutator's `:tested-at` timestamp. The three
-mismatches, all minimised and appended to `ubgate/docs/PARSER-BUGS.md` under
+mismatches, all minimised and appended to `docs/PARSER-BUGS.md` under
 "Found by benchmarks":
 
 | case | match | cause | repro |

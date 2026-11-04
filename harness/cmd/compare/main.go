@@ -1,4 +1,4 @@
-// Command compare checks ubgate against the upstream crapper / dryer /
+// Command compare checks coderefinery against the upstream crapper / dryer /
 // mutator, case by case, from golden outputs or side by side (-live).
 //
 //	compare -record                      run upstream, (re)write golden/
@@ -19,7 +19,7 @@ import (
 	"sync"
 	"time"
 
-	"ubmode/harness/internal/edn"
+	"coderefinery/harness/internal/edn"
 )
 
 const upstreamTemplate = "{upstream}/{upstream_tool}/{upstream_tool} {args}"
@@ -29,16 +29,16 @@ func main() {
 }
 
 func run() int {
-	ubmode := envOr("UBMODE", "/Users/matheusale/workspaces/ub-mode")
+	repoRoot := envOr("REPO_ROOT", "/Users/matheusale/workspaces/ub-mode")
 	var (
-		matrix    = flag.String("matrix", filepath.Join(ubmode, "harness/matrix.txt"), "matrix file")
-		golden    = flag.String("golden", filepath.Join(ubmode, "harness/golden"), "golden directory")
-		fixtures  = flag.String("fixtures", filepath.Join(ubmode, "fixtures"), "pristine fixture projects")
-		scratch   = flag.String("scratch", envOr("SCRATCH_ROOT", filepath.Join(ubmode, ".local/scratch")), "where fixture copies are made")
+		matrix    = flag.String("matrix", filepath.Join(repoRoot, "harness/matrix.txt"), "matrix file")
+		golden    = flag.String("golden", filepath.Join(repoRoot, "harness/golden"), "golden directory")
+		fixtures  = flag.String("fixtures", filepath.Join(repoRoot, "fixtures"), "pristine fixture projects")
+		scratch   = flag.String("scratch", envOr("SCRATCH_ROOT", filepath.Join(repoRoot, ".local/scratch")), "where fixture copies are made")
 		tools     = flag.String("tool", "all", "comma list of tools: crap,dry,mutate")
 		fixtureF  = flag.String("fixture", "all", "comma list of fixtures")
 		variants  = flag.String("variant", "all", "comma list of variants")
-		ours      = flag.String("ours", filepath.Join(ubmode, "ubgate/bin/ubgate")+" {tool} {args}", "command template for ours; 'upstream' = the upstream tool (self-test)")
+		ours      = flag.String("ours", filepath.Join(repoRoot, "bin/coderefinery")+" {tool} {args}", "command template for ours; 'upstream' = the upstream tool (self-test)")
 		upstream  = flag.String("upstream", upstreamTemplate, "command template for upstream")
 		record    = flag.Bool("record", false, "run upstream and write golden outputs")
 		live      = flag.Bool("live", false, "run upstream and ours side by side instead of reading golden")
@@ -89,7 +89,7 @@ func run() int {
 		defer os.RemoveAll(runDir)
 	}
 	exec1 := func(side string, tmpl string, c Case) Run {
-		argv, err := expandTemplate(tmpl, c, ubmode)
+		argv, err := expandTemplate(tmpl, c, repoRoot)
 		if err != nil {
 			return Run{Err: err.Error(), Exit: -1}
 		}
@@ -112,7 +112,7 @@ func run() int {
 		}
 	}
 	settings := Settings{
-		Norm:         Normaliser{UBMode: ubmode, Timing: !*noNorm},
+		Norm:         Normaliser{RepoRoot: repoRoot, Timing: !*noNorm},
 		EDN:          edn.Options{FloatTolerance: *floatTol, IgnoreKeys: ignoreKeys, MaxDiffs: 25},
 		StrictStderr: *strictErr,
 		DiffLines:    *diffLines,

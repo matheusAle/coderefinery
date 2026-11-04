@@ -11,7 +11,7 @@ permissions:
 
 env:
   # harness/env.sh defaults to the author's checkout path; point it here.
-  UBMODE: ${{ github.workspace }}
+  REPO_ROOT: ${{ github.workspace }}
 
 jobs:
   ci:
@@ -27,14 +27,14 @@ jobs:
         with:
           go-version-file: .tool-versions
       - name: Point env.sh at this Go
-        run: echo "UBMODE_GOROOT_BIN=$(go env GOROOT)/bin" >> "$GITHUB_ENV"
+        run: echo "REPO_GOROOT_BIN=$(go env GOROOT)/bin" >> "$GITHUB_ENV"
       - name: gofmt, vet, test, build
-        run: make -C ubgate ci
+        run: make ci
       - name: Skill launcher tests
         run: tests/launcher_test.sh
 
   parity:
-    # Golden mode: ubgate vs harness/golden, recorded from upstream on macOS
+    # Golden mode: coderefinery vs harness/golden, recorded from upstream on macOS
     # with the toolchain in harness/UPSTREAM.md. No upstream checkout needed.
     # Test-runner banners (pytest prints the platform and Python version) are
     # part of the golden stdout, so the platform and versions are pinned.
@@ -51,7 +51,7 @@ jobs:
         with:
           node-version: '24.13.0'
       - name: Point env.sh at this Go
-        run: echo "UBMODE_GOROOT_BIN=$(go env GOROOT)/bin" >> "$GITHUB_ENV"
+        run: echo "REPO_GOROOT_BIN=$(go env GOROOT)/bin" >> "$GITHUB_ENV"
       - name: Pin the fixture venv to the golden recording
         # fixtures/setup.sh pins pytest and coverage only; pytest's banner also
         # prints pluggy's version. Pre-create the venv with the recorded set,
@@ -63,7 +63,7 @@ jobs:
             packaging==26.3 Pygments==2.21.0
       - name: Fixture dependencies
         run: fixtures/setup.sh
-      - name: Build ubgate
-        run: make -C ubgate build
+      - name: Build coderefinery
+        run: make build
       - name: Parity check (36 cases vs golden)
         run: harness/run.sh check

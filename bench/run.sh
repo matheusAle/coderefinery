@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Benchmark matrix: ubgate vs the upstream Python tools (crapper, dryer, mutator).
+# Benchmark matrix: coderefinery vs the upstream Python tools (crapper, dryer, mutator).
 #
 #   bench/run.sh [phase ...]        default: fetch build env help crap dry mutate-scan mutate-full cover parity report
 #
 # Phases
 #   fetch        clone the pinned repos (bench/fetch.sh) and make one work copy per implementation
-#   build        build bench and a pinned ubgate snapshot (git HEAD of ubgate/, or UBGATE_SRC=worktree)
+#   build        build bench and a pinned coderefinery snapshot (git HEAD of the root Go module, or CODEREFINERY_SRC=worktree)
 #   env          record machine / toolchain info
 #   help         startup cost: `--help` of each tool, both implementations
 #   crap         crap --no-coverage on every repo
@@ -13,9 +13,9 @@
 #   mutate-scan  mutate --scan on every repo
 #   mutate-full  full mutation run (--no-coverage) on fixtures/python and fixtures/go
 #   cover        crap --use-existing-coverage on fzf (Go profile produced once, untimed)
-#   parity       diff stdout and .metrics between upstream and ubgate for every case
+#   parity       diff stdout and .metrics between upstream and coderefinery for every case
 #   report       results.jsonl + parity.jsonl -> summary.md + summary.csv
-#   profile      CPU + heap profile of ubgate on PROFILE_CASE (default "dry typescript")
+#   profile      CPU + heap profile of coderefinery on PROFILE_CASE (default "dry typescript")
 #
 # Knobs (environment)
 #   RUNS=3 WARMUP=1       measured runs and warm-up runs per case
@@ -23,17 +23,17 @@
 #   SLOW=120s             if the warm-up takes longer, it becomes the single measured run
 #   MAX_LOAD=4            wait (up to LOAD_WAIT=3m) for the 1-min load average to drop below this
 #   REPOS="django ..."    subset of bench/repos.txt names (default: all)
-#   IMPLS="upstream ubgate"
+#   IMPLS="upstream coderefinery"
 #   OUT=.local/bench/results/<name>   results directory (default: .local/bench/results/latest)
 set -euo pipefail
-UBMODE="${UBMODE:-/Users/matheusale/workspaces/ub-mode}"
+REPO_ROOT="${REPO_ROOT:-/Users/matheusale/workspaces/ub-mode}"
 # shellcheck disable=SC1091
-source "$UBMODE/harness/env.sh"
+source "$REPO_ROOT/harness/env.sh"
 
-# Recursive deletes below use literal paths relative to the ub-mode root only.
-cd "$UBMODE"
-BENCH_LOCAL="$UBMODE_LOCAL/bench"
-export GOTMPDIR="$UBMODE_LOCAL/tmp"   # go build scratch stays inside ub-mode too
+# Recursive deletes below use literal paths relative to the repo root only.
+cd "$REPO_ROOT"
+BENCH_LOCAL="$REPO_LOCAL/bench"
+export GOTMPDIR="$REPO_LOCAL/tmp"   # go build scratch stays inside the repo too
 mkdir -p "$GOTMPDIR"
 BIN="$BENCH_LOCAL/bin"
 WORK="$BENCH_LOCAL/work"
@@ -44,15 +44,17 @@ TIMEOUT="${TIMEOUT:-30m}"
 SLOW="${SLOW:-120s}"
 MAX_LOAD="${MAX_LOAD:-4}"
 LOAD_WAIT="${LOAD_WAIT:-3m}"
-IMPLS="${IMPLS:-upstream ubgate}"
-ALL_REPOS=$(grep -v '^\s*#' "$UBMODE/bench/repos.txt" | awk 'NF {print $1}' | tr '\n' ' ')
+IMPLS="${IMPLS:-upstream coderefinery}"
+ALL_REPOS=$(grep -v '^\s*#' "$REPO_ROOT/bench/repos.txt" | awk 'NF {print $1}' | tr '\n' ' ')
 REPOS="${REPOS:-$ALL_REPOS}"
 PROFILE_CASE="${PROFILE_CASE:-dry typescript}"
+# The root Go module's files: what the coderefinery snapshots are built from.
+MODULE_PATHS="go.mod cmd internal tools testdata"
 mkdir -p "$OUT/out" "$BIN" "$WORK"
 
 log() { printf '\n== %s\n' "$*" >&2; }
 
-# upstream_cmd TOOL -> argv prefix of the upstream tool; ubgate_cmd TOOL likewise.
+# upstream_cmd TOOL -> argv prefix of the upstream tool; coderefinery_cmd TOOL likewise.
 upstream_cmd() {
   case "$1" in
     crap) echo "$UPSTREAM/crapper/crapper" ;;
@@ -61,7 +63,7 @@ upstream_cmd() {
   esac
 }
 impl_cmd() { # impl tool
-  if [ "$1" = upstream ]; then upstream_cmd "$2"; else echo "$BIN/ubgate $2"; fi
+  if [ "$1" = upstream ]; then upstream_cmd "$2"; else echo "$BIN/coderefinery $2"; fi
 }
 
 # bench_case WORKLOAD REPO IMPL DIR PRE [extra bench flags...] -- ARGS...
@@ -104,10 +106,10 @@ clean_metrics() { printf "rm -f '%s/.metrics/crap.edn' '%s/.metrics/dry.edn'; rm
 phase_fetch() {
   log fetch
   # shellcheck disable=SC2086
-  "$UBMODE/bench/fetch.sh" $REPOS
+  "$REPO_ROOT/bench/fetch.sh" $REPOS
   # fresh work copies of every repo: clear the whole (literal) work dir first
   rm -rf .local/bench/work
-  for impl in upstream ubgate; do
+  for impl in upstream coderefinery; do
     mkdir -p "$WORK/$impl"
     for r in $ALL_REPOS; do
       cp -c -R "$BENCH_LOCAL/repos/$r" "$WORK/$impl/$r" 2>/dev/null || cp -R "$BENCH_LOCAL/repos/$r" "$WORK/$impl/$r"
@@ -117,18 +119,20 @@ phase_fetch() {
 
 phase_build() {
   log build
-  (cd "$UBMODE/bench" && go build -o "$BIN/bench" ./cmd/bench)
-  if [ "${UBGATE_SRC:-head}" = worktree ]; then
-    (cd "$UBMODE/ubgate" && go build -trimpath -o "$BIN/ubgate" ./cmd/ubgate)
-    echo "worktree $(git -C "$UBMODE" rev-parse HEAD) dirty=$(git -C "$UBMODE" status --porcelain -- ubgate | wc -l | tr -d ' ')" > "$BIN/ubgate.version"
+  (cd "$REPO_ROOT/bench" && go build -o "$BIN/bench" ./cmd/bench)
+  if [ "${CODEREFINERY_SRC:-head}" = worktree ]; then
+    (cd "$REPO_ROOT" && go build -trimpath -o "$BIN/coderefinery" ./cmd/coderefinery)
+    # shellcheck disable=SC2086 # MODULE_PATHS is a word list
+    echo "worktree $(git -C "$REPO_ROOT" rev-parse HEAD) dirty=$(git -C "$REPO_ROOT" status --porcelain -- $MODULE_PATHS | wc -l | tr -d ' ')" > "$BIN/coderefinery.version"
   else
     rm -rf .local/bench/src
     mkdir -p "$BENCH_LOCAL/src"
-    git -C "$UBMODE" archive HEAD ubgate | tar -x -C "$BENCH_LOCAL/src"
-    (cd "$BENCH_LOCAL/src/ubgate" && go build -trimpath -o "$BIN/ubgate" ./cmd/ubgate)
-    echo "head $(git -C "$UBMODE" rev-parse HEAD)" > "$BIN/ubgate.version"
+    # shellcheck disable=SC2086 # MODULE_PATHS is a word list
+    git -C "$REPO_ROOT" archive HEAD $MODULE_PATHS | tar -x -C "$BENCH_LOCAL/src"
+    (cd "$BENCH_LOCAL/src" && go build -trimpath -o "$BIN/coderefinery" ./cmd/coderefinery)
+    echo "head $(git -C "$REPO_ROOT" rev-parse HEAD)" > "$BIN/coderefinery.version"
   fi
-  cat "$BIN/ubgate.version"
+  cat "$BIN/coderefinery.version"
 }
 
 phase_env() {
@@ -142,7 +146,7 @@ phase_env() {
     echo "go: $(go version)"
     echo "python (upstream venvs): $("$UPSTREAM/crapper/.venv/bin/python" --version 2>&1)"
     echo "tree-sitter (upstream): $("$UPSTREAM/crapper/.venv/bin/python" -c 'import importlib.metadata as m; print(m.version("tree-sitter"), "/ language-pack", m.version("tree-sitter-language-pack"))' 2>&1)"
-    echo "ubgate: $(cat "$BIN/ubgate.version" 2>/dev/null)"
+    echo "coderefinery: $(cat "$BIN/coderefinery.version" 2>/dev/null)"
     echo "upstream: crapper $(git -C "$UPSTREAM/crapper" rev-parse --short HEAD), dryer $(git -C "$UPSTREAM/dryer" rev-parse --short HEAD), mutator $(git -C "$UPSTREAM/mutator" rev-parse --short HEAD)"
     echo "load (start): $(sysctl -n vm.loadavg 2>/dev/null || cat /proc/loadavg)"
     echo "top CPU processes (start):"
@@ -182,7 +186,7 @@ phase_mutate_full() {
   rm -rf .local/bench/runs
   for fx in python go; do
     for impl in $IMPLS; do
-      bench_case mutate-full "$fx" "$impl" "$UBMODE/fixtures/$fx" "" -fresh "$UBMODE/fixtures/$fx" -- --no-coverage
+      bench_case mutate-full "$fx" "$impl" "$REPO_ROOT/fixtures/$fx" "" -fresh "$REPO_ROOT/fixtures/$fx" -- --no-coverage
     done
   done
 }
@@ -208,15 +212,15 @@ phase_parity() {
   log parity
   : > "$OUT/parity.jsonl"
   for o in "$OUT"/out/*/*; do
-    [ -f "$o/upstream.stdout" ] && [ -f "$o/ubgate.stdout" ] || continue
+    [ -f "$o/upstream.stdout" ] && [ -f "$o/coderefinery.stdout" ] || continue
     local workload repo ra rb
     workload=$(basename "$(dirname "$o")"); repo=$(basename "$o")
     case "$workload" in help-*) continue ;; esac
-    ra=$(cat "$o/upstream.root"); rb=$(cat "$o/ubgate.root")
+    ra=$(cat "$o/upstream.root"); rb=$(cat "$o/coderefinery.root")
     "$BIN/bench" parity -workload "$workload" -repo "$repo" -artifact stdout \
-      -a "$o/upstream.stdout" -b "$o/ubgate.stdout" -mask-a "$ra" -mask-b "$rb" -out "$OUT/parity.jsonl"
+      -a "$o/upstream.stdout" -b "$o/coderefinery.stdout" -mask-a "$ra" -mask-b "$rb" -out "$OUT/parity.jsonl"
     local files ma mb
-    ma=$(cat "$o/upstream.metricsdir" 2>/dev/null || true); mb=$(cat "$o/ubgate.metricsdir" 2>/dev/null || true)
+    ma=$(cat "$o/upstream.metricsdir" 2>/dev/null || true); mb=$(cat "$o/coderefinery.metricsdir" 2>/dev/null || true)
     files=$( { [ -n "$ma" ] && (cd "$ma" && find . -type f); [ -n "$mb" ] && (cd "$mb" && find . -type f); true; } | sed 's#^\./##' | sort -u)
     for f in $files; do
       "$BIN/bench" parity -workload "$workload" -repo "$repo" -artifact ".metrics/$f" \
@@ -233,14 +237,15 @@ phase_report() {
 }
 
 phase_profile() {
-  # A throwaway copy of ubgate's cmd with a pprof wrapper, built under .local (ubgate/ is not touched).
-  log "profile: ubgate $PROFILE_CASE"
+  # A throwaway copy of the module with a pprof wrapper in cmd/coderefinery, built under .local (the repo is not touched).
+  log "profile: coderefinery $PROFILE_CASE"
   local tool=${PROFILE_CASE%% *} repo=${PROFILE_CASE#* }
   local p="$BENCH_LOCAL/profile"
   rm -rf .local/bench/profile/src .local/bench/profile/work
   mkdir -p "$p/src"
-  git -C "$UBMODE" archive HEAD ubgate | tar -x -C "$p/src"
-  local m="$p/src/ubgate/cmd/ubgate"
+  # shellcheck disable=SC2086 # MODULE_PATHS is a word list
+  git -C "$REPO_ROOT" archive HEAD $MODULE_PATHS | tar -x -C "$p/src"
+  local m="$p/src/cmd/coderefinery"
   # rename main() and wrap it
   perl -pi -e 's/^func main\(\) \{/func realMain() {/; s/os\.Exit\(/exitHook(/g' "$m/main.go"
   cat > "$m/zz_pprof.go" <<'GO'
@@ -294,12 +299,12 @@ func stopProfiles() {
 		pprof.StopCPUProfile()
 		cpuFile.Close()
 	}
-	if p := os.Getenv("UBGATE_MEMPROFILE"); p != "" {
+	if p := os.Getenv("CODEREFINERY_MEMPROFILE"); p != "" {
 		f, _ := os.Create(p)
 		pprof.Lookup("allocs").WriteTo(f, 0)
 		f.Close()
 	}
-	if p := os.Getenv("UBGATE_HEAPPROFILE"); p != "" {
+	if p := os.Getenv("CODEREFINERY_HEAPPROFILE"); p != "" {
 		peakMu.Lock()
 		os.WriteFile(p, peakProf.Bytes(), 0o644)
 		peakMu.Unlock()
@@ -315,7 +320,7 @@ func exitHook(code int) { stopProfiles(); os.Exit(code) }
 
 func main() {
 	runtime.MemProfileRate = 64 * 1024
-	if p := os.Getenv("UBGATE_CPUPROFILE"); p != "" {
+	if p := os.Getenv("CODEREFINERY_CPUPROFILE"); p != "" {
 		cpuFile, _ = os.Create(p)
 		pprof.StartCPUProfile(cpuFile)
 	}
@@ -324,18 +329,18 @@ func main() {
 	stopProfiles()
 }
 GO
-  (cd "$p/src/ubgate" && go build -o "$p/ubgate-pprof" ./cmd/ubgate)
+  (cd "$p/src" && go build -o "$p/coderefinery-pprof" ./cmd/coderefinery)
   local c="$p/$tool-$repo" d="$p/work/$repo" args=()
   mkdir -p "$c" "$p/work"
   cp -c -R "$BENCH_LOCAL/repos/$repo" "$d" 2>/dev/null || cp -R "$BENCH_LOCAL/repos/$repo" "$d"
   [ "$tool" = crap ] && args=(--no-coverage)
   [ "$tool" = mutate ] && args=(--scan)
-  (cd "$d" && UBGATE_CPUPROFILE="$c/cpu.pprof" UBGATE_MEMPROFILE="$c/allocs.pprof" UBGATE_HEAPPROFILE="$c/heap.pprof" \
-    "$p/ubgate-pprof" "$tool" ${args[@]+"${args[@]}"} > /dev/null)
-  go tool pprof -top -nodecount=25 "$p/ubgate-pprof" "$c/cpu.pprof" > "$c/cpu.top.txt" 2>/dev/null
-  go tool pprof -top -cum -nodecount=40 "$p/ubgate-pprof" "$c/cpu.pprof" > "$c/cpu.cum.txt" 2>/dev/null
-  go tool pprof -top -sample_index=alloc_space -nodecount=25 "$p/ubgate-pprof" "$c/allocs.pprof" > "$c/alloc_space.top.txt" 2>/dev/null
-  go tool pprof -top -sample_index=inuse_space -nodecount=20 "$p/ubgate-pprof" "$c/heap.pprof" > "$c/inuse.top.txt" 2>/dev/null
+  (cd "$d" && CODEREFINERY_CPUPROFILE="$c/cpu.pprof" CODEREFINERY_MEMPROFILE="$c/allocs.pprof" CODEREFINERY_HEAPPROFILE="$c/heap.pprof" \
+    "$p/coderefinery-pprof" "$tool" ${args[@]+"${args[@]}"} > /dev/null)
+  go tool pprof -top -nodecount=25 "$p/coderefinery-pprof" "$c/cpu.pprof" > "$c/cpu.top.txt" 2>/dev/null
+  go tool pprof -top -cum -nodecount=40 "$p/coderefinery-pprof" "$c/cpu.pprof" > "$c/cpu.cum.txt" 2>/dev/null
+  go tool pprof -top -sample_index=alloc_space -nodecount=25 "$p/coderefinery-pprof" "$c/allocs.pprof" > "$c/alloc_space.top.txt" 2>/dev/null
+  go tool pprof -top -sample_index=inuse_space -nodecount=20 "$p/coderefinery-pprof" "$c/heap.pprof" > "$c/inuse.top.txt" 2>/dev/null
   head -35 "$c/cpu.top.txt"; head -30 "$c/alloc_space.top.txt"
 }
 

@@ -10,8 +10,8 @@ import (
 // Normaliser masks what legitimately differs between two runs of the same
 // tool on the same fixture. Every rule here is documented in harness/README.md.
 type Normaliser struct {
-	UBMode string
-	Timing bool // mask durations and wall-clock times printed by test runners
+	RepoRoot string
+	Timing   bool // mask durations and wall-clock times printed by test runners
 }
 
 type rule struct {
@@ -61,8 +61,8 @@ var testedAt = regexp.MustCompile(`:tested-at "[^"]*"`)
 // Text normalises stdout/stderr of a run whose fixture copy lived at root.
 func (n Normaliser) Text(s, root string) string {
 	s = maskRoot(s, root)
-	if n.UBMode != "" {
-		s = strings.ReplaceAll(s, n.UBMode, "<UBMODE>")
+	if n.RepoRoot != "" {
+		s = strings.ReplaceAll(s, n.RepoRoot, "<REPO_ROOT>")
 	}
 	if n.Timing {
 		for _, r := range timingRules {

@@ -3,7 +3,7 @@
 # Reference checkouts of unclebob's tools — recreate with harness/fetch-upstream.sh
 /upstream/
 # Build outputs
-/ubgate/bin/
+/bin/
 /harness/bin/
 /harness/logs/
 /dist/

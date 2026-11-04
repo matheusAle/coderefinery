@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# (Re)create the fixture dependencies inside ub-mode: the shared Python venv
+# (Re)create the fixture dependencies inside the repo: the shared Python venv
 # (pytest + coverage), the python fixture's .venv symlink, and node_modules.
 set -euo pipefail
 source "$(dirname "$0")/../harness/env.sh"
-F="$UBMODE/fixtures"
+F="$REPO_ROOT/fixtures"
 if [ ! -x "$FIXTURE_VENV/bin/python" ]; then
   python3 -m venv "$FIXTURE_VENV"
 fi

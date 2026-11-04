@@ -1,9 +1,10 @@
 name: release
 
-# Push a tag vX.Y.Z equal to UBGATE_VERSION in skills/ub-mode/scripts/ubgate.
-# Publishes ubgate_<X.Y.Z>_<os>_<arch>.tar.gz + SHA256SUMS (the names the
-# launcher downloads) and tags ubgate/vX.Y.Z so `go install` of the nested
-# module github.com/matheusAle/ub-mode/ubgate resolves @vX.Y.Z too.
+# Push a tag vX.Y.Z equal to CODEREFINERY_VERSION in
+# skills/coderefinery/scripts/coderefinery. Publishes
+# coderefinery_<X.Y.Z>_<os>_<arch>.tar.gz + SHA256SUMS (the names the launcher
+# downloads). The Go module sits at the repo root, so `go install` resolves the
+# same vX.Y.Z tag.
 
 on:
   push:
@@ -13,7 +14,7 @@ permissions:
   contents: write
 
 env:
-  UBMODE: ${{ github.workspace }}
+  REPO_ROOT: ${{ github.workspace }}
   VERSION: ${{ github.ref_name }}
 
 jobs:
@@ -25,37 +26,29 @@ jobs:
         with:
           go-version-file: .tool-versions
       - name: Point env.sh at this Go
-        run: echo "UBMODE_GOROOT_BIN=$(go env GOROOT)/bin" >> "$GITHUB_ENV"
+        run: echo "REPO_GOROOT_BIN=$(go env GOROOT)/bin" >> "$GITHUB_ENV"
       - name: Tag must match the launcher's pinned version
         run: |
-          pinned=$(sed -n 's/^UBGATE_VERSION=//p' skills/ub-mode/scripts/ubgate)
+          pinned=$(sed -n 's/^CODEREFINERY_VERSION=//p' skills/coderefinery/scripts/coderefinery)
           if [ "$pinned" != "$VERSION" ]; then
-            echo "::error::tag $VERSION does not match UBGATE_VERSION=$pinned in skills/ub-mode/scripts/ubgate"
+            echo "::error::tag $VERSION does not match CODEREFINERY_VERSION=$pinned in skills/coderefinery/scripts/coderefinery"
             exit 1
           fi
       - name: gofmt, vet, test, build
-        run: make -C ubgate ci
+        run: make ci
       - name: Build release archives
-        run: make -C ubgate dist VERSION="$VERSION"
+        run: make dist VERSION="$VERSION"
       - name: Smoke test the linux/amd64 binary
         run: |
-          got=$(dist/ubgate_${VERSION#v}_linux_amd64/ubgate --version)
-          test "$got" = "ubgate $VERSION" || { echo "::error::--version printed '$got'"; exit 1; }
+          got=$(dist/coderefinery_${VERSION#v}_linux_amd64/coderefinery --version)
+          test "$got" = "coderefinery $VERSION" || { echo "::error::--version printed '$got'"; exit 1; }
           (cd dist && sha256sum -c SHA256SUMS)
-      - name: Tag the Go module (ubgate/vX.Y.Z)
-        run: |
-          if git ls-remote --exit-code --tags origin "refs/tags/ubgate/$VERSION" >/dev/null; then
-            echo "ubgate/$VERSION already exists"
-          else
-            git tag "ubgate/$VERSION" "$GITHUB_SHA"
-            git push origin "refs/tags/ubgate/$VERSION"
-          fi
       - name: Publish the GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$VERSION" --verify-tag --title "ubgate $VERSION" --generate-notes \
-            dist/ubgate_${VERSION#v}_*.tar.gz dist/SHA256SUMS
+          gh release create "$VERSION" --verify-tag --title "coderefinery $VERSION" --generate-notes \
+            dist/coderefinery_${VERSION#v}_*.tar.gz dist/SHA256SUMS
 
   verify:
     # The skill's launcher, from a clean cache, installs what was just published.
@@ -68,5 +61,5 @@ jobs:
       - uses: actions/checkout@v7
       - name: Launcher downloads, verifies and runs the release
         run: |
-          got=$(env -i HOME="$RUNNER_TEMP/home" PATH=/usr/bin:/bin skills/ub-mode/scripts/ubgate --version)
-          test "$got" = "ubgate $VERSION" || { echo "::error::launcher printed '$got'"; exit 1; }
+          got=$(env -i HOME="$RUNNER_TEMP/home" PATH=/usr/bin:/bin skills/coderefinery/scripts/coderefinery --version)
+          test "$got" = "coderefinery $VERSION" || { echo "::error::launcher printed '$got'"; exit 1; }

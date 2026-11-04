@@ -1,5 +1,5 @@
 # Variant matrix: <tool> <fixture|*> <variant> [args...]
-# tool is the ubgate subcommand (crap = crapper, dry = dryer, mutate = mutator).
+# tool is the coderefinery subcommand (crap = crapper, dry = dryer, mutate = mutator).
 # "*" expands to every fixture on the fixtures line. Args are shell-quoted.
 fixtures python typescript javascript go
 
