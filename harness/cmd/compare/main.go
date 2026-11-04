@@ -52,6 +52,8 @@ func run() int {
 		noNorm    = flag.Bool("no-normalize", false, "do not mask test-runner durations/clock times (paths are always masked)")
 		keep      = flag.Bool("keep", false, "keep scratch copies")
 		timeout   = flag.Duration("timeout", 10*time.Minute, "per-run timeout")
+		oursMut   = flag.String("ours-mutate-args", "--min-timeout 300", "shell-quoted args appended to ours on mutate cases (coderefinery-only; see README)")
+		upMut     = flag.String("upstream-mutate-args", "--timeout-factor 1000", "shell-quoted args appended to upstream on mutate cases, record included (see README)")
 		list      = flag.Bool("list", false, "print the selected cases and exit")
 		verbose   = flag.Bool("v", false, "print each command")
 	)
@@ -66,6 +68,19 @@ func run() int {
 	}
 	if *ours == "upstream" {
 		*ours = upstreamTemplate
+		*oursMut = *upMut // the self-test's "ours" is upstream: give it upstream's args
+	}
+	// Timeout args only: the factor and the floor change when a mutant is
+	// killed for running too long, never what is printed or written. They keep
+	// mutate cases stable under heavy CPU load (README "Mutant timeouts").
+	extra := map[string][]string{}
+	for side, words := range map[string]string{"ours": *oursMut, "upstream": *upMut, "golden": *upMut} {
+		w, err := splitWords(words)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "compare: -%s-mutate-args: %v\n", side, err)
+			return 2
+		}
+		extra[side] = w
 	}
 	all, err := loadMatrix(*matrix)
 	if err != nil {
@@ -89,7 +104,7 @@ func run() int {
 		defer os.RemoveAll(runDir)
 	}
 	exec1 := func(side string, tmpl string, c Case) Run {
-		argv, err := expandTemplate(tmpl, c, repoRoot)
+		argv, err := expandTemplate(tmpl, c.withMutateArgs(extra[side]), repoRoot)
 		if err != nil {
 			return Run{Err: err.Error(), Exit: -1}
 		}

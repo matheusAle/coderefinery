@@ -49,6 +49,8 @@ Extra arguments go to `cmd/compare`. The useful ones:
 -ours '<template>'        default: /Users/matheusale/workspaces/ub-mode/bin/coderefinery {tool} {args}
                           'upstream' = the upstream tool itself
 -upstream '<template>'    default: {upstream}/{upstream_tool}/{upstream_tool} {args}
+-ours-mutate-args '...'   appended to ours on mutate cases (default --min-timeout 300; see "Mutant timeouts")
+-upstream-mutate-args '...'  same for upstream (default --timeout-factor 1000)
 -live [-serial]           live mode. -serial runs upstream, then ours (no CPU contention)
 -float-tol 1e-4           absolute tolerance for EDN floats (default 0 = exact)
 -ignore-keys tested-at    EDN map keys ignored at any depth (comma list)
@@ -114,9 +116,24 @@ SUMMARY mode=golden cases=36 PASS=36 FAIL=0 ERROR=0 | metrics files=55 semantic-
 * `.metrics`: the `:tested-at` value is ignored for semantic equality and
   masked for raw equality.
 
-`UPSTREAM.md` explains why each rule is needed. One source of nondeterminism
-is not masked: mutator's timeouts. Under heavy CPU load a slow mutant can flip
-from survived to killed. Use golden mode, or `-live -serial`, for mutate cases.
+`UPSTREAM.md` explains why each rule is needed. Mutator's timeouts are not
+masked; they are kept out of play instead (next section).
+
+### Mutant timeouts
+
+A mutant's timeout is `max(2 s, 10 × baseline)`, from one baseline run. Under
+heavy CPU load a slow mutant used to flip from survived to killed. Every
+mutate case therefore gets extra arguments on top of its matrix row:
+
+| side | flag | default |
+|---|---|---|
+| ours (`check`, `live`) | `-ours-mutate-args` | `--min-timeout 300` (hidden coderefinery flag, DEVIATIONS.md "mutate --min-timeout") |
+| upstream (`record`, `live`, `selftest`, `selflive`) | `-upstream-mutate-args` | `--timeout-factor 1000` |
+
+Neither value reaches stdout, stderr or `.metrics`: they only decide when a
+run is cut off, and no fixture mutant hangs (the longest case runs under a
+minute at load 170). Pass `-ours-mutate-args ''` to run the bare matrix row.
+`argv.txt` records the arguments the next `record` actually used.
 
 ## Variant matrix (`matrix.txt`)
 

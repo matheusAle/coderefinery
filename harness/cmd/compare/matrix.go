@@ -17,6 +17,15 @@ type Case struct {
 
 func (c Case) Name() string { return c.Tool + "/" + c.Fixture + "/" + c.Variant }
 
+// withMutateArgs appends extra to a mutate case's args (other tools unchanged).
+func (c Case) withMutateArgs(extra []string) Case {
+	if c.Tool != "mutate" || len(extra) == 0 {
+		return c
+	}
+	c.Args = append(append([]string(nil), c.Args...), extra...)
+	return c
+}
+
 var upstreamNames = map[string]string{"crap": "crapper", "dry": "dryer", "mutate": "mutator"}
 
 // loadMatrix reads the matrix file. Syntax, one entry per line:
