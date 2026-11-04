@@ -596,7 +596,9 @@ avatar (`getByAltText("Ada")` would kill `drop prop alt`), the `lang` attribute,
 disappears at zero notifications (`always render <span>`, `> -> >=`). Over the whole fixture
 (`mutate --react --no-coverage src`, 11 min at load 40) the React operators give 47 mutants:
 17 killed, 30 survived (e.g. `noop onClick` on Cart's untested Clear button, every `drop dep` but
-`count` in `useCounter`'s effect, since the tests render once and never change a dependency).
+`count` in `useCounter`'s effect, since the tests render once and never change a dependency). That
+run predates `Clicker` (§11) and `Toolbar` (§10) in the fixture; they add 8 React sites, 55 in all
+(`mutate --react --scan --no-coverage src`).
 
 **Vitest + jsdom gotcha.** mutate runs every mutant in a symlink overlay (`target/mutation-workers`,
 upstream design). Under `environment: "jsdom"` Vitest loads test files through Vite's dev server,
