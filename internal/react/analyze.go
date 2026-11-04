@@ -80,14 +80,9 @@ type File struct {
 	Entries []Entry
 }
 
-// AnalyzeSource parses one file (path relative to the project root) and
-// returns its units and entries in source order.
-func AnalyzeSource(text, path, projectRoot string) (File, error) {
-	return newResolver(projectRoot).analyzeSource(text, path, projectRoot)
-}
-
-// analyzeSource is AnalyzeSource with the run's resolver: props types
-// imported from other modules are followed through it.
+// analyzeSource parses one file (path relative to the project root) and
+// returns its units and entries in source order. Props types imported from
+// other modules are followed through the run's resolver.
 func (r *resolver) analyzeSource(text, path, projectRoot string) (File, error) {
 	abs := path
 	if !filepath.IsAbs(abs) {

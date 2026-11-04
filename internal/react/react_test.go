@@ -8,7 +8,7 @@ import (
 
 func analyze(t *testing.T, path, src string) File {
 	t.Helper()
-	f, err := AnalyzeSource(src, path, "/project")
+	f, err := newResolver("/project").analyzeSource(src, path, "/project")
 	if err != nil {
 		t.Fatalf("parse %s: %v", path, err)
 	}
