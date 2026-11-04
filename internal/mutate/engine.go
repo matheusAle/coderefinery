@@ -204,6 +204,7 @@ type fileOptions struct {
 	maxWorkers      int
 	attribute       bool // --attribute (attribute.go)
 	branches        bool // --branches (branches.go)
+	fixOverlay      bool // --fix-overlay (workers.go packageDirs)
 }
 
 // mutateFile is engine.mutate_file.
@@ -284,6 +285,9 @@ func mutateFile(path, root string, o fileOptions) (RunResult, error) {
 		job := &mutantJob{root: root, relative: key, fileKey: key, original: original, runner: o.runner,
 			command: command, cwd: cwd, timeout: time.Duration(timeout * float64(time.Second)), stderr: o.stderr,
 			outcomes: outcomes, attr: attr, killedBy: killedBy}
+		if o.fixOverlay {
+			job.keepDir = packageDirs(root, language)
+		}
 		if err := runMutants(job, selected, o.maxWorkers); err != nil {
 			return RunResult{}, err
 		}

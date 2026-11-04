@@ -116,7 +116,45 @@ func copyConfigs(worker, root, relative string) error {
 	return nil
 }
 
-func linkChildren(workerDir, realDir string, skip string) error {
+// packageDirNames are the skipLink names that are also ordinary package
+// names (Go internal/coverage, a Python build package, a Java ...build
+// package). Upstream hides them at every depth of the overlay, so a mutant
+// in a sibling package fails to build and counts as killed (self-audit C1).
+var packageDirNames = map[string]bool{"target": true, "dist": true, "build": true, "out": true, "coverage": true}
+
+// packageDirs is --fix-overlay (DEVIATIONS.md M8): it keeps a skip-listed
+// directory in the overlay when it directly holds a source file of the
+// mutated file's language, which build output and coverage reports do not
+// (Maven target/, Cargo target/, Gradle build/ hold only subdirectories and
+// artifacts). root/target is never linked: the worker tree lives in it.
+// typescript (TS and JS) is left alone: dist/ and coverage/ HTML reports
+// hold .js files there. nil = upstream behaviour.
+func packageDirs(root, language string) func(dir, name string) bool {
+	if language == "" || language == "typescript" {
+		return nil
+	}
+	workerHome := filepath.Join(root, "target")
+	return func(dir, name string) bool {
+		p := filepath.Join(dir, name)
+		if !packageDirNames[name] || p == workerHome {
+			return false
+		}
+		entries, err := os.ReadDir(p)
+		if err != nil {
+			return false
+		}
+		for _, e := range entries {
+			if e.Type().IsRegular() && discover.LanguageOf(e.Name()) == language {
+				return true
+			}
+		}
+		return false
+	}
+}
+
+// linkChildren links realDir's children into workerDir, except skip and the
+// skipLink names; keepDir (nil = upstream) rescues skipLink names.
+func linkChildren(workerDir, realDir, skip string, keepDir func(dir, name string) bool) error {
 	if !discover.IsDir(realDir) {
 		return nil
 	}
@@ -126,7 +164,7 @@ func linkChildren(workerDir, realDir string, skip string) error {
 	}
 	for _, e := range entries {
 		name := e.Name()
-		if name == skip || skipLink[name] {
+		if name == skip || skipLink[name] && (keepDir == nil || !keepDir(realDir, name)) {
 			continue
 		}
 		dest := filepath.Join(workerDir, name)
@@ -333,11 +371,11 @@ func copyImporter(worker, root, relative string) error {
 
 // overlay: real directories along the source path, every sibling a link,
 // the file itself a private copy.
-func overlay(worker, root, relative string, original []byte) error {
+func overlay(worker, root, relative string, original []byte, keepDir func(dir, name string) bool) error {
 	segments := strings.Split(relative, "/")
 	for i := range segments[:len(segments)-1] {
 		relDir := filepath.Join(segments[:i+1]...)
-		if err := linkChildren(filepath.Join(worker, relDir), filepath.Join(root, relDir), segments[i+1]); err != nil {
+		if err := linkChildren(filepath.Join(worker, relDir), filepath.Join(root, relDir), segments[i+1], keepDir); err != nil {
 			return err
 		}
 	}
@@ -348,7 +386,7 @@ func overlay(worker, root, relative string, original []byte) error {
 	return os.WriteFile(dest, original, 0o666)
 }
 
-func createWorkers(base, root, relative string, original []byte, count int) ([]string, error) {
+func createWorkers(base, root, relative string, original []byte, count int, keepDir func(dir, name string) bool) ([]string, error) {
 	first, _, _ := strings.Cut(relative, "/")
 	importers := importersOf(root, relative)
 	var created []string
@@ -360,10 +398,10 @@ func createWorkers(base, root, relative string, original []byte, count int) ([]s
 		if err := copyConfigs(worker, root, relative); err != nil {
 			return nil, err
 		}
-		if err := linkChildren(worker, root, first); err != nil {
+		if err := linkChildren(worker, root, first, keepDir); err != nil {
 			return nil, err
 		}
-		if err := overlay(worker, root, relative, original); err != nil {
+		if err := overlay(worker, root, relative, original, keepDir); err != nil {
 			return nil, err
 		}
 		for _, imp := range importers {
@@ -396,8 +434,9 @@ type mutantJob struct {
 	stderr                  io.Writer
 	lock                    sync.Mutex
 	outcomes                map[string]string
-	attr                    *attribution        // --attribute; nil = upstream behaviour
-	killedBy                map[string][]string // :killed-by, updated for every mutant run
+	attr                    *attribution                // --attribute; nil = upstream behaviour
+	killedBy                map[string][]string         // :killed-by, updated for every mutant run
+	keepDir                 func(dir, name string) bool // --fix-overlay; nil = upstream overlay
 }
 
 // execute runs one mutant; by is the --attribute credit of a kill.
@@ -430,7 +469,7 @@ func runMutants(job *mutantJob, sites []Site, maxWorkers int) error {
 		return err
 	}
 	defer deleteTree(base)
-	dirs, err := createWorkers(base, job.root, job.relative, job.original, workerCount(len(sites), maxWorkers))
+	dirs, err := createWorkers(base, job.root, job.relative, job.original, workerCount(len(sites), maxWorkers), job.keepDir)
 	if err != nil {
 		return err
 	}

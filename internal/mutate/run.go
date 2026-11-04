@@ -229,6 +229,9 @@ func mutateFiles(opts Options, root string, files []string, runner Runner, stdou
 			mutateAll: opts.MutateAll, lines: opts.Lines, testCommand: opts.TestCommand,
 			timeoutFactor: opts.TimeoutFactor, minTimeout: opts.MinTimeout, mutationWarning: opts.MutationWarning,
 			baselines: baselines, maxWorkers: opts.MaxWorkers, attribute: opts.Attribute, branches: opts.Branches,
+			// --attribute output is coderefinery's own: credit kills to tests, not to an overlay
+			// that hides a package (M8)
+			fixOverlay: opts.FixOverlay || opts.Attribute,
 		})
 		if err != nil {
 			return 1, err

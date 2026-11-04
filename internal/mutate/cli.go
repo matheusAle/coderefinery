@@ -48,6 +48,10 @@ type Options struct {
 	// fixed 2). Hidden from --help; tests raise it so a load spike cannot
 	// turn a survivor into a timeout kill (DEVIATIONS.md, "mutate --min-timeout").
 	MinTimeout float64
+	// FixOverlay links skip-listed directories that hold the mutated file's
+	// language into worker overlays (DEVIATIONS.md M8). Hidden from --help;
+	// --attribute turns it on too.
+	FixOverlay bool
 }
 
 func take(args []string, i int, opt string) (string, error) {
@@ -164,6 +168,8 @@ func ParseArgs(args []string) Options {
 			opts.Attribute = true
 		case "--branches":
 			opts.Branches = true
+		case "--fix-overlay":
+			opts.FixOverlay = true
 		default:
 			if strings.HasPrefix(arg, "-") {
 				return usage("Unknown option: " + arg)

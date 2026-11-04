@@ -255,7 +255,7 @@ func TestWorkersKeepAPrivateCopyAndLinkTheRest(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	workers, err := createWorkers(base, root, "src/demo.py", original, 2)
+	workers, err := createWorkers(base, root, "src/demo.py", original, 2, nil)
 	if err != nil || len(workers) != 2 {
 		t.Fatalf("workers %v %v", workers, err)
 	}
@@ -304,7 +304,7 @@ func TestNodeImportersAreRealCopiesInTheWorker(t *testing.T) {
 	}
 	base, _ := newRunDir(root)
 	defer deleteTree(base)
-	workers, err := createWorkers(base, root, "src/find.mjs", []byte(readFile(t, src)), 1)
+	workers, err := createWorkers(base, root, "src/find.mjs", []byte(readFile(t, src)), 1, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
