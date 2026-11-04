@@ -133,6 +133,17 @@ func TestHelpAndConflictsUseDifferentStreams(t *testing.T) {
 	if o := ParseArgs([]string{"--fix-go-coverage", "--root", "x"}); !o.FixGoCoverage || o.ExitCode != 0 || o.ProjectRoot != "x" {
 		t.Fatalf("--fix-go-coverage: %+v", o)
 	}
+	if o := ParseArgs(nil); o.MinTimeout != 2 {
+		t.Fatalf("upstream floor: %v", o.MinTimeout)
+	}
+	if o := ParseArgs([]string{"--min-timeout", "300", "--root", "x"}); o.MinTimeout != 300 || o.ExitCode != 0 || o.ProjectRoot != "x" {
+		t.Fatalf("--min-timeout: %+v", o)
+	}
+	for _, bad := range []string{"0", "-1", "inf", "nan", "soon"} {
+		if o := ParseArgs([]string{"--min-timeout", bad}); o.ExitCode != 1 || !strings.HasPrefix(o.Message, "--min-timeout requires a ") {
+			t.Fatalf("--min-timeout %s: %d %q", bad, o.ExitCode, o.Message)
+		}
+	}
 	if o := ParseArgs([]string{"--root"}); o.ExitCode != 1 || !strings.HasPrefix(o.Message, "--root requires a value") {
 		t.Fatal("--root needs a value")
 	}

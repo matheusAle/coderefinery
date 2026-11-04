@@ -134,5 +134,5 @@ func addTest(cwd string, _ time.Duration) int {
 
 func baseOptions(r Runner) fileOptions {
 	return fileOptions{runner: r, stderr: &strings.Builder{}, ignoreCoverage: true, mutateAll: true,
-		testCommand: "fake", timeoutFactor: 10, mutationWarning: 50, baselines: map[string]baseline{}}
+		testCommand: "fake", timeoutFactor: 10, minTimeout: 2, mutationWarning: 50, baselines: map[string]baseline{}}
 }

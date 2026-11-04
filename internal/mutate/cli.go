@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math"
 	"strings"
 
 	"github.com/matheusAle/coderefinery/internal/pyfmt"
@@ -43,6 +44,10 @@ type Options struct {
 	// Branches adds an untested-branch reason to UNCOVERED site lines
 	// (docs/design-tests.md §6). Hidden from --help.
 	Branches bool
+	// MinTimeout is the floor of a mutant's timeout in seconds (upstream: a
+	// fixed 2). Hidden from --help; tests raise it so a load spike cannot
+	// turn a survivor into a timeout kill (DEVIATIONS.md, "mutate --min-timeout").
+	MinTimeout float64
 }
 
 func take(args []string, i int, opt string) (string, error) {
@@ -81,7 +86,7 @@ func ParseArgs(args []string) Options {
 			return Options{Help: true, Message: Help}
 		}
 	}
-	opts := Options{ProjectRoot: ".", TimeoutFactor: 10.0, MutationWarning: 50}
+	opts := Options{ProjectRoot: ".", TimeoutFactor: 10.0, MutationWarning: 50, MinTimeout: 2.0}
 	usage := func(msg string) Options {
 		return Options{Help: true, Message: msg + "\n\n" + Help, ExitCode: 1}
 	}
@@ -89,7 +94,7 @@ func ParseArgs(args []string) Options {
 		arg := args[i]
 		switch arg {
 		case "-s", "--source-root", "--root", "--coverage-command", "--test-command", "--timeout-factor",
-			"--mutation-warning", "--max-workers", "--lines":
+			"--mutation-warning", "--max-workers", "--lines", "--min-timeout":
 			v, err := take(args, i, arg)
 			if err != nil {
 				return usage(err.Error())
@@ -110,6 +115,12 @@ func ParseArgs(args []string) Options {
 					return usage("--timeout-factor requires a positive number")
 				}
 				opts.TimeoutFactor = f
+			case "--min-timeout":
+				f, err := pyfmt.ParseFloat(v)
+				if err != nil || !(f > 0) || math.IsInf(f, 1) {
+					return usage("--min-timeout requires a positive number of seconds")
+				}
+				opts.MinTimeout = f
 			case "--mutation-warning":
 				n, err := pyfmt.ParseInt(v)
 				if err != nil {

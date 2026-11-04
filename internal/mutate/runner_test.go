@@ -76,7 +76,7 @@ func TestAWorkerOverlayIsImportedAheadOfTheEnvironment(t *testing.T) {
 		t.Fatalf("env lacks %s", want)
 	}
 	if py, err := exec.LookPath("python3"); err == nil {
-		res := (&CommandRunner{}).Run(Command{Shell: py + " -c 'import demo; print(demo.VALUE)'"}, worker, 5*time.Second)
+		res := (&CommandRunner{}).Run(Command{Shell: py + " -c 'import demo; print(demo.VALUE)'"}, worker, 120*time.Second) // a hang guard, not a speed check
 		if res.Code != 0 || strings.TrimSpace(res.Output) != "worker" {
 			t.Fatalf("python import %+v", res)
 		}

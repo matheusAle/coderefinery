@@ -85,7 +85,10 @@ func pipeline(t *testing.T, root string, mutateArgs []string, extra ...string) r
 	if code, _, stderr := runCapture([]string{"test", "--root", root}, "v"); code != 0 {
 		t.Fatalf("test exit %d:\n%s", code, stderr)
 	}
-	args := append([]string{"mutate", "--root", root, "--attribute"}, mutateArgs...)
+	// --min-timeout: a mutant's timeout is otherwise max(2 s, 10 × one baseline
+	// run). Under a load spike a mutant (cold in its overlay) outlasts that and
+	// is "killed by <timeout>"; 300 s only waits that long for a real hang.
+	args := append([]string{"mutate", "--root", root, "--attribute", "--min-timeout", "300"}, mutateArgs...)
 	if code, stdout, stderr := runCapture(args, "v"); code != 3 {
 		t.Fatalf("mutate --attribute exit %d (survivors expected: 3):\n%s\n%s", code, stdout, stderr)
 	} else if !strings.Contains(stdout, " · by ") {

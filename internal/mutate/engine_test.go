@@ -173,6 +173,25 @@ func TestTimeoutIsAFactorOfTheBaselineWithATwoSecondFloor(t *testing.T) {
 	}
 }
 
+func TestMinTimeoutRaisesTheFloorButNotAFactorAboveIt(t *testing.T) {
+	root := tempRoot(t)
+	path := writeFile(t, filepath.Join(root, "src", "demo.py"), "def place(x):\n    return x > 0\n")
+	fast := &fakeRunner{seconds: 0.01}
+	o := baseOptions(fast)
+	o.minTimeout = 300
+	mutateOK(t, path, root, o)
+	if len(fast.timeouts) != 3 || fast.timeouts[0] != 0 || fast.timeouts[1] != 300*time.Second || fast.timeouts[2] != 300*time.Second {
+		t.Fatalf("floor 300 s: %v", fast.timeouts)
+	}
+	slow := &fakeRunner{seconds: 60}
+	o = baseOptions(slow)
+	o.minTimeout = 300
+	mutateOK(t, path, root, o)
+	if slow.timeouts[1] != 600*time.Second {
+		t.Fatalf("60 s × 10 beats the floor: %v", slow.timeouts)
+	}
+}
+
 func TestWarningsFollowCoverageAndTheSelectionSize(t *testing.T) {
 	root := tempRoot(t)
 	path := writeFile(t, filepath.Join(root, "src", "demo.py"), "def place(x):\n    return x > 0\n")

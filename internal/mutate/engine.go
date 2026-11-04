@@ -198,6 +198,7 @@ type fileOptions struct {
 	lines           map[int]bool
 	testCommand     string
 	timeoutFactor   float64
+	minTimeout      float64 // seconds; upstream's floor is 2
 	mutationWarning int
 	baselines       map[string]baseline
 	maxWorkers      int
@@ -279,7 +280,7 @@ func mutateFile(path, root string, o fileOptions) (RunResult, error) {
 			}
 			return RunResult{Path: key, BaselineFailed: true, BaselineMessage: msg}, nil
 		}
-		timeout := max(2.0, b.seconds*o.timeoutFactor)
+		timeout := max(o.minTimeout, b.seconds*o.timeoutFactor)
 		job := &mutantJob{root: root, relative: key, fileKey: key, original: original, runner: o.runner,
 			command: command, cwd: cwd, timeout: time.Duration(timeout * float64(time.Second)), stderr: o.stderr,
 			outcomes: outcomes, attr: attr, killedBy: killedBy}

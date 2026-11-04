@@ -227,7 +227,7 @@ func mutateFiles(opts Options, root string, files []string, runner Runner, stdou
 		result, err := mutateFile(p, root, fileOptions{
 			runner: runner, stderr: stderr, coveredLines: lines, ignoreCoverage: opts.NoCoverage,
 			mutateAll: opts.MutateAll, lines: opts.Lines, testCommand: opts.TestCommand,
-			timeoutFactor: opts.TimeoutFactor, mutationWarning: opts.MutationWarning,
+			timeoutFactor: opts.TimeoutFactor, minTimeout: opts.MinTimeout, mutationWarning: opts.MutationWarning,
 			baselines: baselines, maxWorkers: opts.MaxWorkers, attribute: opts.Attribute, branches: opts.Branches,
 		})
 		if err != nil {

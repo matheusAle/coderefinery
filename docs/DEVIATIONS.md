@@ -94,3 +94,18 @@ Without them, crap, dry and mutate keep their stdout, stderr, exit codes and
 | X5 | `crap --branches` | hidden flag | adds an `Untested branches` section after the report; the report, `crap.edn` and exit codes are unchanged; `--no-coverage --branches` is a usage error | `.metrics/branches.edn` |
 | X6 | `dry --tests` | hidden flag | also compares test files (test directories and test file names are not skipped); the report format is unchanged | nothing new (`.metrics/dry.edn` as usual) |
 | X7 | `coderefinery react` (`--root`, `--changed`, `--no-coverage`, `--use-existing-coverage`, `--coverage-command`, `--crap <n>`, `--max-<metric> <n\|off>`) | new subcommand | React function components and custom hooks: each hook callback (`Cart#useEffect#1`) and handler (`Cart.onSubmit`) is its own CRAP entry, not charged to the component (the Express-route rule); render vs logic complexity; props, hooks and render-cost metrics; exit 0 clean · 1 usage · 2 coverage run failed · 3 a threshold exceeded. Contract: `docs/design-react.md` | `.metrics/react.edn` |
+
+### mutate --min-timeout (test stability)
+
+A mutant's timeout is `max(2 s, --timeout-factor × baseline)`, with the
+baseline measured once, in the real tree, often warm or cached. Under a load
+spike a mutant run in a fresh overlay can outlast it and is reported KILLED
+(or `· by <timeout>` with `--attribute`) although it survives on an idle
+machine. `--min-timeout <seconds>` replaces the fixed 2 s floor; the default
+(2) is upstream's. It only decides when a mutant is cut off, so stdout,
+stderr, exit codes and `.metrics` are those of an untimed run. It is hidden
+from `--help`. The e2e tests in `cmd/coderefinery` and the harness
+(`-ours-mutate-args`, harness/README.md "Mutant timeouts") pass
+`--min-timeout 300`, so a real hang still ends, after 300 s. A larger
+`--timeout-factor` alone is not enough: it multiplies a baseline that can be a
+cached `go test` run of a few milliseconds.
