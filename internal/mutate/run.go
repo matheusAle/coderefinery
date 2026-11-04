@@ -6,19 +6,11 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"path/filepath"
 	"strings"
 
 	"github.com/matheusAle/coderefinery/internal/coverage"
 	"github.com/matheusAle/coderefinery/internal/discover"
 )
-
-func joinRoot(root, p string) string {
-	if filepath.IsAbs(p) {
-		return p
-	}
-	return filepath.Join(root, p)
-}
 
 func skippedPart(rel string) bool {
 	for _, part := range strings.Split(rel, "/") {
@@ -29,82 +21,29 @@ func skippedPart(rel string) bool {
 	return false
 }
 
-func isSource(path string) bool {
-	return discover.LanguageOf(path) != "" && !discover.IsTestFile(path)
-}
-
 // selectFiles is cli.select_files.
 func selectFiles(opts Options, stderr io.Writer) ([]string, error) {
-	root := discover.Resolve(opts.ProjectRoot)
-	var existing, filters []string
-	for _, arg := range opts.Positionals {
-		cand := joinRoot(root, arg)
-		if discover.Exists(cand) {
-			existing = append(existing, discover.Resolve(cand))
-		} else {
-			filters = append(filters, arg)
-		}
-	}
-	var files []string
-	switch {
-	case opts.Changed:
-		changed, err := discover.ChangedFiles(root)
-		if err != nil {
-			return nil, err
-		}
-		for _, p := range changed {
+	return discover.Select(discover.Selection{
+		ProjectRoot: opts.ProjectRoot,
+		SourceRoots: opts.SourceRoots,
+		Positionals: opts.Positionals,
+		Changed:     opts.Changed,
+		Walk:        discover.IterSourceFiles,
+		KeepChanged: func(p, root string) bool {
 			rel, _ := discover.RelativeTo(p, root)
-			if !skippedPart(rel) && isSource(p) {
-				files = append(files, p)
+			return !skippedPart(rel) && discover.IsSource(p)
+		},
+		KeepFile: func(p string) bool {
+			if discover.IsSource(p) {
+				return true
 			}
-		}
-	case len(opts.SourceRoots) > 0:
-		var roots []string
-		for _, p := range opts.SourceRoots {
-			roots = append(roots, discover.Resolve(joinRoot(root, p)))
-		}
-		files = discover.IterSourceFiles(roots)
-	case len(existing) > 0:
-		for _, p := range existing {
-			switch {
-			case discover.IsDir(p):
-				files = append(files, discover.IterSourceFiles([]string{p})...)
-			case isSource(p):
-				files = append(files, p)
-			case discover.IsTestFile(p):
+			if discover.IsTestFile(p) {
 				fmt.Fprintf(stderr, "Skipping test file %s\n", p)
 			}
-		}
-	default:
-		files = discover.IterSourceFiles([]string{root})
-	}
-	if len(filters) > 0 {
-		var kept []string
-		for _, p := range files {
-			for _, f := range filters {
-				if strings.Contains(p, f) {
-					kept = append(kept, p)
-					break
-				}
-			}
-		}
-		files = kept
-	}
-	seen := map[string]bool{}
-	var out []string
-	for _, p := range files {
-		r := discover.Resolve(p)
-		if _, ok := discover.RelativeTo(r, root); !ok {
-			fmt.Fprintf(stderr, "Skipping %s; it is outside %s\n", p, root)
-			continue
-		}
-		if !seen[r] {
-			seen[r] = true
-			out = append(out, r)
-		}
-	}
-	sortStable(out, func(a, b string) bool { return a < b })
-	return out, nil
+			return false
+		},
+		Outside: func(p, root string) { fmt.Fprintf(stderr, "Skipping %s; it is outside %s\n", p, root) },
+	})
 }
 
 // Run executes a parsed invocation; err is an internal failure (upstream

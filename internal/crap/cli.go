@@ -161,77 +161,17 @@ func ParseArgs(args []string) Options {
 	return opts
 }
 
-func joinRoot(root, p string) string {
-	if filepath.IsAbs(p) {
-		return p
-	}
-	return filepath.Join(root, p)
-}
-
 // SelectFiles is cli.select_files.
 func SelectFiles(opts Options) ([]string, error) {
-	root := discover.Resolve(opts.ProjectRoot)
-	var existing, filters []string
-	for _, arg := range opts.Positionals {
-		candidate := joinRoot(root, arg)
-		if discover.Exists(candidate) {
-			existing = append(existing, discover.Resolve(candidate))
-		} else {
-			filters = append(filters, arg)
-		}
-	}
-	var files []string
-	switch {
-	case opts.Changed:
-		changed, err := discover.ChangedFiles(root)
-		if err != nil {
-			return nil, err
-		}
-		for _, p := range changed {
-			if discover.LanguageOf(p) != "" && !discover.IsTestFile(p) {
-				files = append(files, p)
-			}
-		}
-	case len(opts.SourceRoots) > 0:
-		var roots []string
-		for _, p := range opts.SourceRoots {
-			roots = append(roots, discover.Resolve(joinRoot(root, p)))
-		}
-		files = discover.IterSourceFiles(roots)
-	case len(existing) > 0:
-		for _, p := range existing {
-			if discover.IsDir(p) {
-				files = append(files, discover.IterSourceFiles([]string{p})...)
-			} else if discover.LanguageOf(p) != "" {
-				files = append(files, p)
-			}
-		}
-	default:
-		files = discover.IterSourceFiles([]string{root})
-	}
-	if len(filters) > 0 {
-		var kept []string
-		for _, p := range files {
-			for _, f := range filters {
-				if strings.Contains(p, f) {
-					kept = append(kept, p)
-					break
-				}
-			}
-		}
-		files = kept
-	}
-	seen := map[string]bool{}
-	var out []string
-	for _, p := range files {
-		r := discover.Resolve(p)
-		if !seen[r] {
-			seen[r] = true
-			out = append(out, r)
-		}
-	}
-	sort.Strings(out)
-	return out, nil
+	return discover.Select(discover.Selection{
+		ProjectRoot: opts.ProjectRoot,
+		SourceRoots: opts.SourceRoots,
+		Positionals: opts.Positionals,
+		Changed:     opts.Changed,
+		Walk:        discover.IterSourceFiles,
+		KeepChanged: func(p, _ string) bool { return discover.IsSource(p) },
+		KeepFile:    func(p string) bool { return discover.LanguageOf(p) != "" },
+	})
 }
 
 func sourcePath(file, root string) string {
