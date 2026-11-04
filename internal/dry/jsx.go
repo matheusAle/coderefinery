@@ -128,7 +128,8 @@ type jsxScan struct {
 // comments, normalized by dryer's rules (locals become :symbol, literals
 // :literal, callees keep their names; JSX inside them is normalized here);
 // text and character references are dropped. <A/> and <A></A> normalize
-// alike. A spread {...props} attribute stays as an expression.
+// alike. A spread {...props} attribute stays as an expression; key is
+// dropped.
 func (s *jsxScan) element(z normalizer, n *syntax.Node) *Value {
 	count := s.elements
 	open := n
@@ -167,7 +168,11 @@ func (s *jsxScan) attribute(z normalizer, a *syntax.Node) *Value {
 	if a.Type == "jsx_expression" { // {...props}
 		return s.expression(z, a)
 	}
-	out := List(K("attr"), Str(a.Children[0].Text(s.src)))
+	name := a.Children[0].Text(s.src)
+	if name == "key" { // reconciliation, not markup: list items have it, the same markup outside a .map does not
+		return nil
+	}
+	out := List(K("attr"), Str(name))
 	if value := a.Children[len(a.Children)-1]; len(a.Children) == 3 && holdsJSX(value) {
 		out.append(z.norm(value, false))
 	}
