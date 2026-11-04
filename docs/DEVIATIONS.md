@@ -74,3 +74,21 @@ an entry whenever you introduce one.
 | M5 | The Clojure tree comes from tree-sitter-clojure. | A small reader in `internal/mutate/clojure.go` emits the node types the site rules read (`list_lit`, `sym_lit` with its metadata, `bool_lit`, `num_lit`, quoting/comment/string nodes, `dis_expr`, ...). It matches upstream on the probes in `testdata/raw_sites.jsonl`. It does not reproduce tree-sitter's ERROR recovery on malformed input. | No tree-sitter. |
 | M6 | EDN integers are unbounded Python ints. | An integer outside int64 makes that snapshot unreadable (skipped, like any parse error). | Never written by the tools. |
 | M7 | `json.loads` of an outcome key accepts `NaN`/`Infinity` and lone surrogates. | Decoded with `encoding/json`: such keys count as "not a mutation id". | Never written by the tools. |
+
+## Additions (opt-in)
+
+Not upstream behaviour: none of these exist in crapper, dryer or mutator.
+Each is opt-in. The hidden flags are left out of the upstream `--help` text,
+which stays byte-identical (the `mutate --fix-go-coverage` precedent, M1);
+`test` and `tests` are listed only in the top-level `coderefinery --help`.
+Without them, crap, dry and mutate keep their stdout, stderr, exit codes and
+`.metrics` bytes (harness 36/36). Contract: `docs/design-tests.md`.
+
+| # | addition | kind | what it does | writes |
+|---|---|---|---|---|
+| X1 | `coderefinery test` (`--root`, `--test-command`, `--no-coverage`, `--repeat <n>`, `--changed`, `--verbose`) | new subcommand | runs each project's tests once with a JUnit reporter (`go test -json` for Go) and branch coverage; exit 0 pass · 1 usage / missing tool · 2 failures | `.metrics/tests/runs.edn`, `.metrics/tests/<lang>[/<module>]/results.xml` or `results.json`, `coverage/`; `.metrics/tests/command/` for `--test-command` |
+| X2 | `coderefinery tests` (`--root`, `--group`, `--changed`) | new subcommand | test relevance: kills, unique kills, covering set, shadowed and zero-kill tests, levels; exit 0 clean · 1 usage / no attribution data · 2 failing results · 3 offenders | `.metrics/tests.edn` |
+| X3 | `mutate --attribute` | hidden flag | runs each mutant with a JUnit reporter and credits the kill to the failing tests (`<timeout>` / `<build>` when none); KILLED lines get ` · by <id>`; exit 2 adds `failing tests: <ids>` | `:killed-by`, a new last key in `.metrics/mutate/<ns>.edn` (only when non-empty; upstream ignores it) |
+| X4 | `mutate --branches` | hidden flag | UNCOVERED lines get a reason (` · in the <arm> arm of :<line> (<decision>), never taken`, ` · line never executed`, ` · no coverage data for file`) | nothing new |
+| X5 | `crap --branches` | hidden flag | adds an `Untested branches` section after the report; the report, `crap.edn` and exit codes are unchanged; `--no-coverage --branches` is a usage error | `.metrics/branches.edn` |
+| X6 | `dry --tests` | hidden flag | also compares test files (test directories and test file names are not skipped); the report format is unchanged | nothing new (`.metrics/dry.edn` as usual) |

@@ -7,6 +7,8 @@ re-implements Uncle Bob's crapper, dryer and mutator:
 coderefinery crap   [flags] [paths]   # crapper
 coderefinery dry    [flags] [paths]   # dryer
 coderefinery mutate [flags] [paths]   # mutator
+coderefinery test   [flags] [paths]   # addition: run the tests, JUnit results + branch coverage
+coderefinery tests  [flags]           # addition: test relevance from mutate --attribute kills
 ```
 
 Same flags, stdout, exit codes and `.metrics/` files as the Python originals.
@@ -58,11 +60,53 @@ tree. Parser parity is proven differentially (`tools/treediff`, see
 | `tools/treediff` | — | CLI over `internal/treediff` |
 | `tools/dryoracle` | — | dryer parity per candidate: `dryer_oracle.py` (upstream dryer venv) vs `internal/dry` on spans, node counts and printed normalized forms; `go run ./tools/dryoracle PATH...` |
 
+Additions (opt-in, no upstream counterpart; contract in `docs/design-tests.md`):
+
+| package | role |
+|---|---|
+| `internal/testplan` | the mutator test plan (command + cwd per language, upstream `runner.py test_plan`), moved out of `internal/mutate` so `test` and `mutate` share it |
+| `internal/testresult` | JUnit XML (pytest, Vitest, jest-junit, Mocha, Surefire, Gradle, nextest, Kaocha, test2junit) and `go test -json` parsed into one `Run` of `Case`s with canonical, tool-stable test IDs |
+| `internal/testrun` | `coderefinery test`: runs each project once with a JUnit reporter and branch coverage, writes `.metrics/tests/` (`runs.edn`, results, coverage); the reporter injection `mutate --attribute` reuses |
+| `internal/testreport` | `coderefinery tests`: kill matrix from `:killed-by`, unique kills, greedy covering set, shadowed and zero-kill tests, levels, `.metrics/tests.edn` |
+| `internal/branch` | maps tool branch data onto the decisions crap counts and renders the `crap --branches` section and `.metrics/branches.edn` |
+| `internal/coverage/branch*.go` | branch loaders: coverage.py arcs (branch), Istanbul JSON (branch) / V8 / LCOV `BRDA` (branch-count), JaCoCo `mb`/`cb` (branch-count), Go profile (block), llvm-cov (region, or branch with `--branch`), Cloverage (form) |
+
+Inside existing packages: `internal/crap/decisions.go` (decision nodes with
+their arms) and `branches.go` (`--branches`); `internal/mutate/attribute.go`
+(`--attribute`, the `:killed-by` snapshot key) and `branches.go` (UNCOVERED
+reasons); `internal/discover/tests.go` (`IterFilesWith`, for `dry --tests`).
+
 Dependency direction: `cmd -> crap/dry/mutate -> coverage, discover, lang -> syntax`.
 `coverage` imports `model`, `discover`, `source`; it never imports `crap`.
 Mutator must reuse `crap.FunctionsInFile`, `discover.*` and
 `coverage.LoadBundle/NormalizePath/ParseJacocoIndex` (upstream mutator
 imports these crapper internals).
+
+Additions: `testplan -> coverage, discover`; `testrun -> testplan, testresult,
+crap, coverage`; `mutate -> testplan, testresult, testrun, branch`;
+`testreport -> mutate, testresult, testrun`; `crap -> branch -> coverage`.
+`testresult` imports nothing internal.
+
+## Test-relevance data flow (additions)
+
+```
+coderefinery test          -> .metrics/tests/runs.edn
+                              .metrics/tests/<lang>[/<module>]/results.{xml,json}, coverage/
+coderefinery mutate --attribute
+                           -> each mutant run gets a JUnit reporter; the failing
+                              case IDs of a killed mutant -> :killed-by in
+                              .metrics/mutate/<ns>.edn (or "<timeout>" / "<build>")
+                              (Python: per-test contexts from test's coverage narrow the run)
+coderefinery tests         <- :killed-by + .metrics/tests/ results (the test universe,
+                              durations, flaky)
+                           -> report on stdout, .metrics/tests.edn
+coderefinery crap --branches
+                           <- .metrics/tests/<lang>/ coverage, else the CRAP reports on disk
+                           -> "Untested branches" section, .metrics/branches.edn
+```
+
+Default crap and mutate runs never read `.metrics/tests/`, so these
+files cannot change default output.
 
 ## The Node contract
 
