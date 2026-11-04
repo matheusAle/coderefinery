@@ -45,6 +45,7 @@ an entry whenever you introduce one.
 |---|---|---|---|
 | T1 | Files tree-sitter cannot parse cleanly: `export type * from "m"`, a bare `&` in JSX text (`<a>Docs & Guides</a>`), `a ?.5 : 1`, `useState<import("m").T[]>([])` | partial tree with ERROR/MISSING nodes | parse error (A2), except `f<typeof import("m")>()` / `f<import("m").T>()` where the comparison reading fails: reparsed as a typed call |
 | T2 | Trailing same-line comment after a non-empty block in a `.js` file in a context not probed (the JS scanner's block rule is reproduced from observed cases only) | comment inside or after the block | rule of `asi.go`; only the comment's parent can differ, never a node the tools count |
+| T3 | An incomplete `\u` / `\x` escape in a string or template: `"\u004"`, `"\x4"`, `` `\u004` ``, `"\u{}"` (found by the compaction tests of `escapeEnd`) | the escape does not match tree-sitter's `escape_sequence` token: `string(ERROR (UNEXPECTED '"'))` (`template_string(ERROR ...)`) | accepted: `escape_sequence` `\u` / `\x` (the backslash and the letter), the rest a `string_fragment` (`escapeEnd`, `internal/lang/typescript/lexer.go`). Only the literal's children differ; the file parses where tree-sitter recovers with ERROR (the reverse of A2). Repro: `go run ./tools/treediff` on a file holding `x = "\u004";` |
 
 ## crapper
 
