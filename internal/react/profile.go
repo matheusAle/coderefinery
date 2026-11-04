@@ -127,8 +127,15 @@ func (r RenderRow) UpdatesPerMount() float64 {
 // shortName is the runtime name of a unit: TodoList.TodoRow renders as TodoRow.
 func shortName(name string) string { return name[strings.LastIndex(name, ".")+1:] }
 
+// esbuildName undoes esbuild's rename of an inner function that shadows
+// its binding: `const Label = memo(function Label() {})` runs as Label2.
+func esbuildName(name string) string {
+	return strings.TrimRight(name, "0123456789")
+}
+
 // JoinRenders joins the profile to the component units by name (React
-// reports a component's function name or displayName, not its file).
+// reports a component's function name or displayName, not its file); a
+// name no unit has falls back to its esbuild-renamed form (Label2 -> Label).
 // Runtime names that match no unit (library components, test helpers) are
 // dropped; a name shared by several units gets one unjoined row. notRendered
 // lists the components the tests never rendered, in units order.
@@ -139,23 +146,31 @@ func JoinRenders(units []Unit, p Profile) (rows []RenderRow, notRendered []strin
 			byName[shortName(u.Name)] = append(byName[shortName(u.Name)], u)
 		}
 	}
+	joined := map[string]RenderStats{}
 	for name, stats := range p.Components {
-		matches := byName[name]
-		switch len(matches) {
-		case 0:
-			continue
-		case 1:
-			u := matches[0]
-			row := RenderRow{Name: u.Name, Namespace: u.Namespace, Path: u.Path, Stats: stats,
-				Inline: u.Cost.InlineFunctions + u.Cost.InlineObjects}
-			row.Flagged = row.Inline > 0 && row.UpdatesPerMount() >= HotUpdatesPerMount
-			rows = append(rows, row)
-		default:
-			rows = append(rows, RenderRow{Name: name, Ambiguous: len(matches), Stats: stats})
+		if len(byName[name]) == 0 {
+			name = esbuildName(name)
 		}
+		if len(byName[name]) == 0 {
+			continue
+		}
+		s := joined[name]
+		joined[name] = RenderStats{s.Renders + stats.Renders, s.Mounts + stats.Mounts, s.TotalMs + stats.TotalMs,
+			max(s.MaxMs, stats.MaxMs)}
+	}
+	for name, stats := range joined {
+		if matches := byName[name]; len(matches) > 1 {
+			rows = append(rows, RenderRow{Name: name, Ambiguous: len(matches), Stats: stats})
+			continue
+		}
+		u := byName[name][0]
+		row := RenderRow{Name: u.Name, Namespace: u.Namespace, Path: u.Path, Stats: stats,
+			Inline: u.Cost.InlineFunctions + u.Cost.InlineObjects}
+		row.Flagged = row.Inline > 0 && row.UpdatesPerMount() >= HotUpdatesPerMount
+		rows = append(rows, row)
 	}
 	for _, u := range units {
-		if _, ok := p.Components[shortName(u.Name)]; u.Kind == KindComponent && !ok {
+		if _, ok := joined[shortName(u.Name)]; u.Kind == KindComponent && !ok {
 			notRendered = append(notRendered, u.Name)
 		}
 	}

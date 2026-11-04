@@ -90,7 +90,8 @@ func profiledUnits() []Unit {
 func TestJoinRendersJoinsByNameAndFlagsHotInlineProps(t *testing.T) {
 	p := Profile{Renderers: 1, Components: map[string]RenderStats{
 		"Clicker":       {Renders: 4, Mounts: 1, TotalMs: 2, MaxMs: 1},
-		"Label":         {Renders: 4, Mounts: 1, TotalMs: 1, MaxMs: 0.5},
+		"Label2":        {Renders: 3, Mounts: 1, TotalMs: 1, MaxMs: 0.5},
+		"Label":         {Renders: 1, Mounts: 0, TotalMs: 0.25, MaxMs: 0.75},
 		"TodoList":      {Renders: 2, Mounts: 1},
 		"Row":           {Renders: 3, Mounts: 3},
 		"TestComponent": {Renders: 9, Mounts: 1},
@@ -99,7 +100,7 @@ func TestJoinRendersJoinsByNameAndFlagsHotInlineProps(t *testing.T) {
 	rows, notRendered := JoinRenders(profiledUnits(), p)
 	want := []RenderRow{
 		{Name: "Clicker", Namespace: "Clicker", Path: "src/Clicker.tsx", Stats: p.Components["Clicker"], Inline: 3, Flagged: true},
-		{Name: "Label", Namespace: "Clicker", Path: "src/Clicker.tsx", Stats: p.Components["Label"]},
+		{Name: "Label", Namespace: "Clicker", Path: "src/Clicker.tsx", Stats: RenderStats{Renders: 4, Mounts: 1, TotalMs: 1.25, MaxMs: 0.75}},
 		{Name: "TodoList", Namespace: "TodoList", Path: "src/TodoList.tsx", Stats: p.Components["TodoList"], Inline: 2},
 		{Name: "Row", Ambiguous: 2, Stats: p.Components["Row"]},
 	}
