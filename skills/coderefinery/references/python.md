@@ -21,6 +21,10 @@ leading `src/` removed; methods are `module.Class`.
 - The LCOV has no branch data, so Python CRAP uses line coverage.
 - mutate runs `<py> -m pytest` or `<py> -m unittest discover` in the nearest
   `pyproject.toml`/`pytest.ini`/`setup.cfg` directory, once per mutant.
+- A package directory named `build`, `coverage`, `out`, `dist` or `target` is
+  left out of the worker copy (upstream), so mutants in modules that import it
+  are false KILLED (`· by <build>` with `--attribute`). Add `--fix-overlay`
+  (on with `--attribute`): it links such a directory when it holds `.py` files.
 - stderr `Python tests exited <n> in <pkg>. Coverage was still recorded.` means
   tests failed: fix them before trusting CRAP. `coverage is missing in <pkg>`
   means every function scores 0%.

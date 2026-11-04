@@ -25,6 +25,15 @@ directories every site is `UNCOVERED` and stderr says
 it maps each file through the nearest `go.mod` first. It is a coderefinery
 addition, hidden from `mutate --help`. crap is not affected.
 
+## --fix-overlay (mutate)
+
+A package directory named `coverage`, `build`, `out`, `dist` or `target` (Go's
+own `internal/coverage`, for example) is left out of upstream's worker copy, so
+every mutant in a package that imports it fails to build and is reported KILLED
+(`· by <build>` with `--attribute`). `--fix-overlay` links such a directory
+when it directly holds `.go` files. `--attribute` turns it on. A coderefinery
+addition, hidden from `mutate --help`.
+
 ## coderefinery test
 
 - `go test -json -count=1 -covermode=count -coverprofile=<file> ./...` per

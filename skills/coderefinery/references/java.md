@@ -18,6 +18,11 @@ Namespace: `package.Class`, the function name is the method name.
 - Gradle: crap and mutate have no Gradle plan (upstream). Pass
   `--coverage-command` (it must leave `target/site/jacoco/jacoco.xml`) and, for
   mutate, `--test-command`.
+- A package directory named `build`, `coverage`, `out`, `dist` or `target`
+  (`com.acme.build`) is left out of the worker copy (upstream), so mutants that
+  need it are false KILLED (`· by <build>` with `--attribute`). Add
+  `--fix-overlay` (on with `--attribute`): it links such a directory when it
+  holds `.java` files. `target/` at the project root is never linked.
 - stderr `Java coverage exited <n> in <module>. Java coverage will score 0%.`
   means a failed build or tests.
 

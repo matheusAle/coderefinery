@@ -4,7 +4,8 @@ Files: `.ts .tsx .mts .cts .js .jsx .mjs .cjs`. Skipped: `*.test.*`, `*.spec.*`,
 `__tests__/`, `node_modules/`, `dist/`, `build/`, `coverage/` and the other test
 directories. Namespace: the dotted module path; methods are `module.Class`.
 `dry` compares TypeScript and TSX only; plain JavaScript (`.js .mjs .cjs .jsx`)
-is never compared. For React components and hooks, also run `coderefinery react`
+is never compared, except JSX subtrees under `dry --jsx` (`.tsx .jsx .js`; see
+`react.md`). For React components and hooks, also run `coderefinery react`
 (see `react.md`): crap charges every hook callback and handler to its component.
 
 ## crap and mutate: coverage
@@ -23,7 +24,29 @@ Per nearest `package.json`:
 
 Coverage per function is the LCOV branch percent when the range has `BRDA`
 records, else line percent. mutate runs `npm test` in the nearest
-`package.json` directory.
+`package.json` directory. For React projects add `mutate --react` (see
+`react.md`).
+
+## --fix-overlay (mutate)
+
+mutate runs each mutant in a worker that links the project's files (upstream).
+Test runners see through the links:
+
+- Vitest with `environment: "jsdom"`: Vite resolves a linked test or setup file
+  to its real path, outside the worker, and refuses to load it
+  (`Failed to load url ... Does the file exist?`). Every run fails, so **every
+  mutant is reported KILLED**.
+- Jest skips symlinked files: linked test files do not run, so a test that
+  reaches the mutated file through a non-relative import (an alias,
+  `moduleDirectories`) never kills it, and the mutant is reported SURVIVED.
+
+`--fix-overlay` makes the worker hold real directories and copies of the
+project's `.ts .tsx .mts .cts .js .jsx .mjs .cjs` files (other files,
+`node_modules` and dot-directories stay links). The project and its config are
+not touched; no `server.fs` setting is needed. `--attribute` turns it on.
+Cost: one copy of the JS/TS sources per worker. The skip list stays upstream's
+here: `dist/`, `build/`, `coverage/`, `out/` and `target/` hold build output and
+reports in these projects. A coderefinery addition, hidden from `mutate --help`.
 
 ## coderefinery test
 

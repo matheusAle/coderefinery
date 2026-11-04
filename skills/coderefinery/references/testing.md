@@ -6,7 +6,7 @@ Open this before you run these commands, and before you delete or merge a test.
 
 - Order and files
 - coderefinery test
-- mutate --attribute
+- mutate --attribute (`<timeout>`, `<build>`, `--fix-overlay`, `--min-timeout`)
 - coderefinery tests: columns and math
 - Per-row actions
 - Proving a deletion
@@ -58,6 +58,21 @@ Open this before you run these commands, and before you delete or merge a test.
   it. The table does not change.
 - A kill credited to no test is `<timeout>` (the mutant timed out) or `<build>`
   (compile or collection error, no report).
+- `--attribute` turns on `--fix-overlay`. Upstream's worker copy of the project
+  leaves out every directory named `coverage`, `build`, `out`, `dist` or
+  `target`, so a package that imports such a package directory (Go
+  `internal/coverage`, a Python `build` package) cannot build in the worker and
+  each of its mutants is a false `<build>` kill. `--fix-overlay` links such a
+  directory when it holds source files of the mutated file's language. Plain
+  `mutate` keeps upstream's copy unless you pass `--fix-overlay`.
+  TypeScript/JavaScript keeps the skip list (`dist/` and coverage reports hold
+  `.js`); there `--fix-overlay` copies the JS/TS sources into the worker instead,
+  so Vitest + jsdom and Jest load the tests inside it (see
+  `typescript-javascript.md`).
+- `<timeout>` kills that come and go between runs are load, not tests. A
+  mutant's timeout is `max(2 s, 10 × baseline)`, and a cached baseline can be a
+  few milliseconds. `--min-timeout <seconds>` (for example 300) raises the 2 s
+  floor; it changes nothing else in the output.
 - The first attributed run re-runs each carried kill once (no `:killed-by` yet).
 - Exit codes as plain mutate (0 all killed, 3 survivors, 2 baseline failed,
   1 usage or error). On exit 2 stderr adds `failing tests: <ids>`. A missing
