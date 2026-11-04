@@ -37,6 +37,13 @@ Options:
   --coverage-command <cmd>  Run this command instead of the TypeScript coverage
                             runner, then read the reports it wrote.
   --crap <number>           An entry offends at CRAP >= this. Default: 10.
+  --profile                 Also run the Vitest or Jest tests with a render
+                            profiler and add "Runtime renders" (renders,
+                            mounts, updates, React actualDuration per
+                            component) to the report and react.edn. Flags
+                            components that re-render often and pass inline
+                            function/object props. Test-run numbers, not
+                            production; durations are noisy.
 `)
 	b.WriteString("  --max-<metric> <n|off>    A component or hook offends when the metric is above n.\n" +
 		"                            Metrics and defaults:\n")
@@ -57,8 +64,9 @@ Options:
 	}
 	b.WriteString("                              " + line + "\n")
 	b.WriteString(`
-Exit codes: 0 no violations · 1 usage or error · 2 the coverage run failed
-(failing tests; fix them or use --no-coverage) · 3 a threshold is exceeded.
+Exit codes: 0 no violations · 1 usage or error · 2 the coverage or profiled
+test run failed (failing tests; fix them or use --no-coverage) · 3 a
+threshold is exceeded.
 `)
 	return b.String()
 }
@@ -74,6 +82,7 @@ type Options struct {
 	NoCoverage          bool
 	UseExistingCoverage bool
 	CoverageCommand     string
+	Profile             bool
 	Limits              Limits
 }
 
@@ -94,6 +103,8 @@ func ParseArgs(args []string) Options {
 			opts.NoCoverage = true
 		case arg == "--use-existing-coverage":
 			opts.UseExistingCoverage = true
+		case arg == "--profile":
+			opts.Profile = true
 		case strings.HasPrefix(arg, "-"):
 			if !takesValue(arg) {
 				return usage("Unknown option: " + arg)
@@ -201,6 +212,18 @@ func run(opts Options, stdout, stderr io.Writer) (int, error) {
 		fmt.Fprintln(stderr, "react: the coverage run failed; fix the failing tests or use --no-coverage")
 		return 2, nil
 	}
+	var profile *Profile
+	if opts.Profile {
+		p, failed, err := RunProfile(root, files, stderr)
+		if err != nil {
+			return 0, err
+		}
+		if failed {
+			fmt.Fprintln(stderr, "react: the profiled test run failed; fix the failing tests or drop --profile")
+			return 2, nil
+		}
+		profile = &p
+	}
 	units, entries, err := Analyze(files, root, bundle)
 	if err != nil {
 		return 0, err
@@ -212,13 +235,19 @@ func run(opts Options, stdout, stderr io.Writer) (int, error) {
 	if err := os.MkdirAll(filepath.Dir(metrics), 0o777); err != nil {
 		return 0, err
 	}
-	if err := os.WriteFile(metrics, []byte(RenderEDN(entries, units, violations)), 0o666); err != nil {
+	doc, report := RenderEDN(entries, units, violations), FormatReport(entries, units, violations)
+	if profile != nil {
+		rows, notRendered := JoinRenders(units, *profile)
+		doc = WithRenders(doc, RendersEDN(rows, notRendered, profile.Runners))
+		report += FormatRenders(rows, notRendered, profile.Runners)
+	}
+	if err := os.WriteFile(metrics, []byte(doc), 0o666); err != nil {
 		return 0, err
 	}
 	if len(units) == 0 {
 		fmt.Fprintln(stdout, "No React components or hooks found.")
 	} else {
-		fmt.Fprint(stdout, FormatReport(entries, units, violations))
+		fmt.Fprint(stdout, report)
 	}
 	fmt.Fprintf(stderr, "Wrote %s\n", metrics)
 	if len(violations) > 0 {

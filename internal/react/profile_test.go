@@ -165,3 +165,115 @@ Not rendered by the tests: IconButton, TodoList.Row
 		t.Fatalf("EDN:\n%s\nwant:\n%s", doc, wantDoc)
 	}
 }
+
+func writeTree(t *testing.T, files map[string]string) string {
+	t.Helper()
+	dir := t.TempDir()
+	for name, text := range files {
+		p := filepath.Join(dir, name)
+		if err := os.MkdirAll(filepath.Dir(p), 0o777); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(p, []byte(text), 0o666); err != nil {
+			t.Fatal(err)
+		}
+	}
+	return dir
+}
+
+func TestProfileRunnerPrefersVitestThenJest(t *testing.T) {
+	cases := []struct {
+		files map[string]string
+		want  string
+	}{
+		{map[string]string{"package.json": `{"scripts":{"test":"vitest run"}}`}, "vitest"},
+		{map[string]string{"package.json": `{"scripts":{"test":"jest"}}`, "vitest.config.ts": ""}, "vitest"},
+		{map[string]string{"package.json": `{"scripts":{"test":"jest --ci"}}`}, "jest"},
+		{map[string]string{"package.json": `{"jest":{"testEnvironment":"jsdom"}}`}, "jest"},
+		{map[string]string{"package.json": `{}`, "jest.config.cjs": ""}, "jest"},
+		{map[string]string{"package.json": `{"scripts":{"test":"mocha"}}`}, ""},
+	}
+	for _, c := range cases {
+		if got := ProfileRunner(writeTree(t, c.files)); got != c.want {
+			t.Errorf("%v: runner %q, want %q", c.files, got, c.want)
+		}
+	}
+	if _, err := profileCommand("", t.TempDir(), t.TempDir(), t.TempDir()); err == nil ||
+		!strings.HasPrefix(err.Error(), "--profile: no Vitest or Jest test setup in ") {
+		t.Fatalf("no runner error = %v", err)
+	}
+}
+
+func TestVitestUserConfigFollowsTheScriptThenTheConfigFiles(t *testing.T) {
+	dir := writeTree(t, map[string]string{"package.json": `{"scripts":{"test":"vitest run --config conf/v.ts"}}`,
+		"vitest.config.ts": "", "vite.config.ts": ""})
+	if got := VitestUserConfig(dir); got != filepath.Join(dir, "conf", "v.ts") {
+		t.Fatalf("script config = %q", got)
+	}
+	dir = writeTree(t, map[string]string{"package.json": `{}`, "vite.config.mjs": "", "vitest.config.mts": ""})
+	if got := VitestUserConfig(dir); got != filepath.Join(dir, "vitest.config.mts") {
+		t.Fatalf("vitest config = %q", got)
+	}
+	dir = writeTree(t, map[string]string{"package.json": `{"scripts":{"test":"vitest -c=x"}}`, "vite.config.js": ""})
+	if got := VitestUserConfig(dir); got != filepath.Join(dir, "vite.config.js") {
+		t.Fatalf("vite config = %q", got)
+	}
+}
+
+func TestGeneratedFilesPutTheHookFirst(t *testing.T) {
+	config := VitestConfig("/p/vitest.config.ts", "/p/.metrics/react-profile/setup.vitest.mjs")
+	for _, want := range []string{`import base from "/p/vitest.config.ts";`,
+		`const SETUP = "/p/.metrics/react-profile/setup.vitest.mjs";`, "setupFiles: [SETUP, ...files]",
+		`typeof base === "function" ? async (env) => extend(await base(env))`} {
+		if !strings.Contains(config, want) {
+			t.Errorf("vitest config lacks %q:\n%s", want, config)
+		}
+	}
+	if bare := VitestConfig("", "/s.mjs"); !strings.Contains(bare, "const base = {};") || strings.Contains(bare, "import base") {
+		t.Errorf("config without a user config:\n%s", bare)
+	}
+	setup := VitestSetup(`/p/.metrics/react-profile`)
+	if !strings.HasSuffix(setup, "\nafterAll(__coderefineryFlush);\n") || !strings.Contains(setup, `var OUT = "/p/.metrics/react-profile";`) ||
+		!strings.Contains(setup, "__REACT_DEVTOOLS_GLOBAL_HOOK__") {
+		t.Errorf("vitest setup:\n%s", setup)
+	}
+	jest := JestSetup("/o")
+	if !strings.HasSuffix(jest, "\nglobalThis.__coderefineryFlush = __coderefineryFlush;\n") || !strings.Contains(jest, `require("fs")`) {
+		t.Errorf("jest setup tail:\n%s", jest[len(jest)-200:])
+	}
+}
+
+func TestJestArgsKeepTheUserSetupFiles(t *testing.T) {
+	show := []byte(`{"configs":[{"setupFiles":["/p/polyfill.js"],"setupFilesAfterEnv":["/p/jest.setup.js"]}],"globalConfig":{}}`)
+	got, err := JestArgs(show, "/o/setup.jest.cjs", "/o/after.cjs")
+	want := []string{"--ci", "--coverage=false", "--setupFiles", "/o/setup.jest.cjs", "--setupFiles", "/p/polyfill.js",
+		"--setupFilesAfterEnv", "/p/jest.setup.js", "--setupFilesAfterEnv", "/o/after.cjs"}
+	if err != nil || !reflect.DeepEqual(got, want) {
+		t.Fatalf("args = %q, %v", got, err)
+	}
+	if _, err := JestArgs([]byte(`{"configs":[{},{}]}`), "a", "b"); err == nil || err.Error() != "--profile: Jest projects (2 configs) are not supported" {
+		t.Fatalf("projects error = %v", err)
+	}
+	if _, err := JestArgs([]byte(`nope`), "a", "b"); err == nil || !strings.HasPrefix(err.Error(), "--profile: cannot read jest --showConfig") {
+		t.Fatalf("bad JSON error = %v", err)
+	}
+}
+
+func TestProfileDirIsPerPackage(t *testing.T) {
+	root := t.TempDir()
+	if err := os.MkdirAll(filepath.Join(root, "packages", "ui"), 0o777); err != nil {
+		t.Fatal(err)
+	}
+	if got := ProfileDir(root, root); got != filepath.Join(root, ".metrics", "react-profile") {
+		t.Fatalf("root dir = %q", got)
+	}
+	if got := ProfileDir(root, filepath.Join(root, "packages", "ui")); got != filepath.Join(root, ".metrics", "react-profile", "packages__ui") {
+		t.Fatalf("package dir = %q", got)
+	}
+}
+
+func TestParseArgsProfileFlag(t *testing.T) {
+	if !ParseArgs([]string{"--profile", "--no-coverage"}).Profile || ParseArgs(nil).Profile {
+		t.Fatal("--profile not parsed")
+	}
+}
