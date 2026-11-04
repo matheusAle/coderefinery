@@ -187,9 +187,9 @@ export const Typed: React.FC<PanelProps> = (props) => <div />;
 	cases := map[string]Props{
 		// type: id hidden title dark mode onOpen render data-x; destructured extras: extra onClose quoted
 		"Panel":   {Count: 11, Boolean: 4, Optional: 5, Callback: 3, Rest: true},
-		"Aliased": {Count: 3, Boolean: 1, Optional: 1},
+		"Aliased": {Count: 4, Boolean: 1, Optional: 2}, // a b c + PropsWithChildren's children?
 		"Inline":  {Count: 2, Boolean: 1, Optional: 1, Callback: 1},
-		"Omitted": {Count: 1},
+		"Omitted": {Count: 8, Boolean: 2, Optional: 3, Callback: 2}, // PanelProps' 8 members - dark + x
 		"Typed":   {Count: 8, Boolean: 3, Optional: 3, Callback: 2},
 	}
 	for name, want := range cases {
@@ -350,7 +350,7 @@ func TestRenderEDNAndReport(t *testing.T) {
 ]
  :components [
   {:name "A", :namespace "src.A", :kind :component, :path "src/A.tsx", :line 1, :render 2, :logic 1,
-   :props {:count 2, :boolean 0, :optional 0, :callback 1, :rest false, :pass-through ["x"]},
+   :props {:count 2, :boolean 0, :optional 0, :callback 1, :rest false, :pass-through ["x"], :open false},
    :hooks {:state 0, :effects 1, :max-deps 1, :setter-effects 0},
    :render-cost {:jsx-depth 1, :elements 1, :inline-functions 0, :inline-objects 0, :nested-components 0}}
   {:name "useB", :namespace "src.A", :kind :hook, :path "src/A.tsx", :line 9, :render 1, :logic 1,

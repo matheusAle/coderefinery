@@ -1,6 +1,7 @@
 package react
 
 import (
+	"path/filepath"
 	"sort"
 	"strconv"
 
@@ -25,6 +26,7 @@ type Props struct {
 	Callback    int
 	Rest        bool
 	PassThrough []string // received and only forwarded unchanged to child components
+	Open        bool     // the props type has parts that could not be resolved: the counts are lower bounds
 }
 
 // Hooks summarises a unit's hook usage.
@@ -81,11 +83,26 @@ type File struct {
 // AnalyzeSource parses one file (path relative to the project root) and
 // returns its units and entries in source order.
 func AnalyzeSource(text, path, projectRoot string) (File, error) {
-	tree, err := lang.ParseText(lang.GrammarFor(path), text)
-	if err != nil {
-		return File{}, err
+	return newResolver(projectRoot).analyzeSource(text, path, projectRoot)
+}
+
+// analyzeSource is AnalyzeSource with the run's resolver: props types
+// imported from other modules are followed through it.
+func (r *resolver) analyzeSource(text, path, projectRoot string) (File, error) {
+	abs := path
+	if !filepath.IsAbs(abs) {
+		abs = filepath.Join(r.root, path)
 	}
-	a := &analyzer{src: tree.Source, root: tree.Root, path: path,
+	mod := r.files[abs]
+	if mod == nil {
+		tree, err := lang.ParseText(lang.GrammarFor(path), text)
+		if err != nil {
+			return File{}, err
+		}
+		mod = r.add(abs, tree)
+	}
+	tree := mod.tree
+	a := &analyzer{src: tree.Source, root: tree.Root, path: path, types: r, mod: mod,
 		namespace: crap.TypeScriptModuleNamespace(path, projectRoot)}
 	tree.Root.Descendants(func(n *syntax.Node) bool {
 		if n.Type != "function_declaration" && n.Type != "variable_declarator" {
@@ -113,6 +130,8 @@ type analyzer struct {
 	root      *syntax.Node
 	path      string
 	namespace string
+	types     *resolver
+	mod       *tsModule // this file, as the resolver indexed it
 	out       File
 }
 

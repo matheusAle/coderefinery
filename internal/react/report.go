@@ -105,7 +105,11 @@ func FormatReport(entries []Entry, units []Unit, violations []Violation) string 
 			if u.Props.Rest {
 				rest = "yes"
 			}
-			props = []string{itoa(u.Props.Count), itoa(u.Props.Boolean), itoa(u.Props.Optional),
+			count := itoa(u.Props.Count)
+			if u.Props.Open {
+				count += "+"
+			}
+			props = []string{count, itoa(u.Props.Boolean), itoa(u.Props.Optional),
 				itoa(u.Props.Callback), rest, itoa(len(u.Props.PassThrough))}
 		}
 		rows[i] = append(append([]string{u.Name, u.Namespace, itoa(u.Render), itoa(u.Logic)}, props...),
@@ -181,7 +185,8 @@ func RenderEDN(entries []Entry, units []Unit, violations []Violation) string {
 		if u.Kind == KindComponent {
 			props = "{" + ednInts([]string{"count", "boolean", "optional", "callback"},
 				u.Props.Count, u.Props.Boolean, u.Props.Optional, u.Props.Callback) +
-				", :rest " + strconv.FormatBool(u.Props.Rest) + ", :pass-through " + ednStrings(u.Props.PassThrough) + "}"
+				", :rest " + strconv.FormatBool(u.Props.Rest) + ", :pass-through " + ednStrings(u.Props.PassThrough) +
+				", :open " + strconv.FormatBool(u.Props.Open) + "}"
 		}
 		us = append(us, "  {:name "+edn.String(u.Name)+", :namespace "+edn.String(u.Namespace)+
 			", :kind :"+u.Kind+", :path "+edn.String(u.Path)+", :line "+itoa(u.Line)+

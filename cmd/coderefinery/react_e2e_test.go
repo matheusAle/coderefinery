@@ -84,7 +84,7 @@ func TestReactOnTheFixtureWithoutCoverage(t *testing.T) {
 	}
 	for _, want := range []string{
 		`  {:name "Cart#useEffect#1", :namespace "Cart", :kind :callback, :unit "Cart", :path "src/Cart.tsx", :line 22, :complexity 10, :coverage nil, :crap nil}`,
-		`   :props {:count 5, :boolean 0, :optional 0, :callback 1, :rest false, :pass-through ["locale" "notifications" "onLogout" "user"]},`,
+		`   :props {:count 5, :boolean 0, :optional 0, :callback 1, :rest false, :pass-through ["locale" "notifications" "onLogout" "user"], :open false},`,
 		`  {:name "TodoList", :namespace "TodoList", :path "src/TodoList.tsx", :line 9, :metric :nested-components, :value 1.0, :limit 0.0}`,
 	} {
 		if !strings.Contains(string(edn), "\n"+want+"\n") {

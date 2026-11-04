@@ -267,12 +267,13 @@ func Analyze(files []string, root string, bundle *coverage.Bundle) ([]Unit, []En
 	}
 	var units []Unit
 	var entries []Entry
+	types := newResolver(root)
 	for _, f := range files {
 		text, err := source.Read(f)
 		if err != nil {
 			return nil, nil, err
 		}
-		file, err := AnalyzeSource(text, sourcePath(f, root), root)
+		file, err := types.analyzeSource(text, sourcePath(f, root), root)
 		if err != nil {
 			continue
 		}

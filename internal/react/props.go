@@ -2,7 +2,6 @@ package react
 
 import (
 	"sort"
-	"strings"
 
 	"github.com/matheusAle/coderefinery/internal/syntax"
 )
@@ -34,16 +33,25 @@ func (s *propSet) get(name string) *prop {
 }
 
 // props reads the first parameter: destructured names and defaults, the
-// in-file Props type (interface / type alias / inline object type), and,
-// for a plain `props` parameter, `props.x` reads and `const {x} = props`.
+// members of its Props type (resolved across the project's modules, see
+// types.go), and, for a plain `props` parameter, `props.x` reads and
+// `const {x} = props`.
 func (a *analyzer) props(d definition) Props {
 	set := &propSet{}
 	param, typ := firstParam(d.fn)
 	if typ == nil {
 		typ = typeArgument(a.src, d)
 	}
+	open := false
 	if typ != nil {
-		a.typeMembers(set, typ, 0)
+		ms := a.types.propsMembers(a.mod, typ)
+		for _, name := range ms.order {
+			m, p := ms.by[name], set.get(name)
+			p.optional = p.optional || m.optional
+			p.boolean = p.boolean || m.boolean
+			p.callback = p.callback || m.callback
+		}
+		open = ms.open
 	}
 	body := d.fn.ChildByFieldName("body")
 	propsName := ""
@@ -57,7 +65,7 @@ func (a *analyzer) props(d definition) Props {
 			a.propsReads(set, body, propsName)
 		}
 	}
-	out := Props{Count: len(set.order), Rest: set.rest}
+	out := Props{Count: len(set.order), Rest: set.rest, Open: open}
 	for _, name := range set.order {
 		p := set.byKey[name]
 		out.Boolean += b2i(p.boolean)
@@ -132,114 +140,6 @@ func typeArgument(src []byte, d definition) *syntax.Node {
 		return nil
 	}
 	return types[len(types)-1]
-}
-
-// transparentGenerics keep every member of their type argument.
-var transparentGenerics = map[string]bool{"PropsWithChildren": true, "Readonly": true}
-
-func lastSegment(name string) string {
-	if i := strings.LastIndexByte(name, '.'); i >= 0 {
-		return name[i+1:]
-	}
-	return name
-}
-
-// typeMembers adds the members of a props type resolvable in this file.
-func (a *analyzer) typeMembers(set *propSet, t *syntax.Node, depth int) {
-	if t == nil || depth > 8 {
-		return
-	}
-	switch t.Type {
-	case "type_annotation", "parenthesized_type", "intersection_type", "type_arguments", "extends_type_clause":
-		for _, c := range t.NamedChildren() {
-			a.typeMembers(set, c, depth+1)
-		}
-	case "generic_type": // PropsWithChildren<P>, Readonly<P>; Omit, Pick... stay unresolved
-		if name := t.ChildByFieldName("name"); name != nil && transparentGenerics[lastSegment(name.Text(a.src))] {
-			a.typeMembers(set, t.ChildByFieldName("type_arguments"), depth+1)
-		}
-	case "type_identifier":
-		a.namedType(set, t.Text(a.src), depth)
-	case "object_type", "interface_body":
-		for _, m := range t.NamedChildren() {
-			a.member(set, m)
-		}
-	}
-}
-
-// namedType resolves an interface or type alias declared in the file.
-func (a *analyzer) namedType(set *propSet, name string, depth int) {
-	for _, n := range declarations(a.root) {
-		ident := n.ChildByFieldName("name")
-		if ident == nil || ident.Text(a.src) != name {
-			continue
-		}
-		switch n.Type {
-		case "interface_declaration":
-			a.typeMembers(set, n.ChildOfType("extends_type_clause"), depth+1)
-			a.typeMembers(set, n.ChildByFieldName("body"), depth+1)
-		case "type_alias_declaration":
-			a.typeMembers(set, n.ChildByFieldName("value"), depth+1)
-		}
-		return
-	}
-}
-
-// declarations are the file's top-level (or exported) type declarations.
-func declarations(root *syntax.Node) []*syntax.Node {
-	var out []*syntax.Node
-	for _, c := range root.Children {
-		if c.Type == "export_statement" {
-			if d := c.ChildByFieldName("declaration"); d != nil {
-				c = d
-			}
-		}
-		if c.Type == "interface_declaration" || c.Type == "type_alias_declaration" {
-			out = append(out, c)
-		}
-	}
-	return out
-}
-
-func (a *analyzer) member(set *propSet, m *syntax.Node) {
-	ident := m.ChildByFieldName("name")
-	if ident == nil {
-		return
-	}
-	switch m.Type {
-	case "property_signature":
-		p := set.get(ident.Text(a.src))
-		p.optional = p.optional || m.HasChildOfType("?")
-		if t := m.ChildByFieldName("type"); t != nil {
-			inner := nonComment(t.NamedChildren())
-			if len(inner) == 1 {
-				p.boolean = p.boolean || isBooleanType(a.src, inner[0])
-				p.callback = p.callback || inner[0].Type == "function_type"
-			}
-		}
-	case "method_signature":
-		p := set.get(ident.Text(a.src))
-		p.optional = p.optional || m.HasChildOfType("?")
-		p.callback = true
-	}
-}
-
-func isBooleanType(src []byte, t *syntax.Node) bool {
-	switch t.Type {
-	case "predefined_type":
-		return t.Text(src) == "boolean"
-	case "literal_type":
-		text := t.Text(src)
-		return text == "true" || text == "false"
-	case "union_type":
-		for _, c := range nonComment(t.NamedChildren()) {
-			if !isBooleanType(src, c) && c.Text(src) != "undefined" && c.Text(src) != "null" {
-				return false
-			}
-		}
-		return true
-	}
-	return false
 }
 
 // pattern adds the names of a destructuring pattern `{ a, b = true, c: d, ...rest }`.
