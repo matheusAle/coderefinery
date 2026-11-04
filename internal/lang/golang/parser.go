@@ -37,7 +37,7 @@ func Parse(src []byte) (root *syntax.Node, err error) {
 	}()
 	file := p.sourceFile()
 	attachExtras(file, comments)
-	removeHidden(file, p.hidden)
+	syntax.RemoveHidden(file, p.hidden)
 	if len(file.Children) > 0 {
 		file.StartByte = file.Children[0].StartByte
 	} else {
@@ -120,24 +120,13 @@ func (p *parser) ident(typ string) *syntax.Node {
 	return p.named(typ)
 }
 
-// node builds an inner node, skipping nil children.
+// node builds an inner node over the non-nil children.
 func node(typ string, children ...*syntax.Node) *syntax.Node {
-	kept := make([]*syntax.Node, 0, len(children))
-	for _, c := range children {
-		if c != nil {
-			kept = append(kept, c)
-		}
-	}
-	return syntax.Inner(typ, 0, kept...)
+	return syntax.Build(typ, children...)
 }
 
-func field(name string, n *syntax.Node) *syntax.Node {
-	if n == nil {
-		return nil
-	}
-	n.Field = name
-	return n
-}
+// field sets n's field name (nil-safe).
+func field(name string, n *syntax.Node) *syntax.Node { return syntax.SetField(name, n) }
 
 // newlineAfter returns the offset of the first newline after off that is not
 // inside a comment, or -1 when a token (or EOF) comes first.

@@ -40,7 +40,7 @@ func Parse(src []byte) (root *syntax.Node, err error) {
 	}()
 	module := p.module()
 	attachExtras(module, p.extras)
-	removeHidden(module, p.hidden)
+	syntax.RemoveHidden(module, p.hidden)
 	if len(module.Children) > 0 {
 		module.StartByte = module.Children[0].StartByte
 	} else {
@@ -111,23 +111,13 @@ func (p *parser) hiddenTok(kind tokKind) *syntax.Node {
 	return n
 }
 
+// node builds an inner node over the non-nil children.
 func node(typ string, children ...*syntax.Node) *syntax.Node {
-	var kept []*syntax.Node
-	for _, c := range children {
-		if c != nil {
-			kept = append(kept, c)
-		}
-	}
-	return syntax.Inner(typ, 0, kept...)
+	return syntax.Build(typ, children...)
 }
 
-func field(name string, n *syntax.Node) *syntax.Node {
-	if n == nil {
-		return nil
-	}
-	n.Field = name
-	return n
-}
+// field sets n's field name (nil-safe).
+func field(name string, n *syntax.Node) *syntax.Node { return syntax.SetField(name, n) }
 
 // attempt runs f; on a parse error it restores the position and reports false.
 func (p *parser) attempt(f func()) (ok bool) {

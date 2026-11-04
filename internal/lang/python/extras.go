@@ -16,30 +16,12 @@ func attachExtras(root *syntax.Node, extras []token) {
 		}
 		ex := syntax.Leaf(typ, true, t.start, t.end)
 		ex.Extra = true
-		n := root
-		for {
-			next := enclosingChild(n, ex)
-			if next == nil {
-				break
-			}
-			n = next
-		}
-		insertSorted(n, ex)
+		insertSorted(syntax.ExtraParent(root, ex, false), ex)
 	}
 }
 
-func enclosingChild(n *syntax.Node, ex *syntax.Node) *syntax.Node {
-	for _, c := range n.Children {
-		if len(c.Children) == 0 || c.Extra {
-			continue
-		}
-		if c.StartByte < ex.StartByte && ex.EndByte <= c.EndByte {
-			return c
-		}
-	}
-	return nil
-}
-
+// insertSorted is syntax.InsertExtra, except that a zero-width child (a
+// layout token) at or before ex stays in front of it.
 func insertSorted(n *syntax.Node, ex *syntax.Node) {
 	i := len(n.Children)
 	for i > 0 && n.Children[i-1].StartByte >= ex.EndByte && !(n.Children[i-1].StartByte == n.Children[i-1].EndByte && n.Children[i-1].StartByte <= ex.StartByte) {
@@ -48,17 +30,4 @@ func insertSorted(n *syntax.Node, ex *syntax.Node) {
 	n.Children = append(n.Children, nil)
 	copy(n.Children[i+1:], n.Children[i:])
 	n.Children[i] = ex
-}
-
-func removeHidden(root *syntax.Node, hidden map[*syntax.Node]bool) {
-	syntax.Walk(root, func(n *syntax.Node) bool {
-		kept := n.Children[:0]
-		for _, c := range n.Children {
-			if !hidden[c] {
-				kept = append(kept, c)
-			}
-		}
-		n.Children = kept
-		return true
-	})
 }

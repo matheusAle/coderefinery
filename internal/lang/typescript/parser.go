@@ -190,24 +190,13 @@ func (p *parser) try(f func() *syntax.Node) (n *syntax.Node) {
 
 // ---- node helpers ----
 
-// mk builds an inner node from the non-nil children.
-func mk(typ string, kids ...*syntax.Node) *syntax.Node {
-	out := kids[:0:0]
-	for _, k := range kids {
-		if k != nil {
-			out = append(out, k)
-		}
-	}
-	return syntax.Inner(typ, 0, out...)
+// mk builds an inner node over the non-nil children.
+func mk(typ string, children ...*syntax.Node) *syntax.Node {
+	return syntax.Build(typ, children...)
 }
 
-// fld sets the field name of n (nil-safe).
-func fld(name string, n *syntax.Node) *syntax.Node {
-	if n != nil {
-		n.Field = name
-	}
-	return n
-}
+// fld sets n's field name (nil-safe).
+func fld(name string, n *syntax.Node) *syntax.Node { return syntax.SetField(name, n) }
 
 // semicolon consumes `;` or accepts an automatic semicolon.
 func (p *parser) semicolon() *syntax.Node {

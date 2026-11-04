@@ -147,24 +147,13 @@ func (p *parser) expect(text string) *syntax.Node {
 	return nil
 }
 
-// inner builds a named node over the non-nil children.
-func inner(typ string, kids ...*syntax.Node) *syntax.Node {
-	out := kids[:0:0]
-	for _, k := range kids {
-		if k != nil {
-			out = append(out, k)
-		}
-	}
-	return syntax.Inner(typ, 0, out...)
+// inner builds an inner node over the non-nil children.
+func inner(typ string, children ...*syntax.Node) *syntax.Node {
+	return syntax.Build(typ, children...)
 }
 
 // field sets n's field name (nil-safe).
-func field(name string, n *syntax.Node) *syntax.Node {
-	if n != nil {
-		n.Field = name
-	}
-	return n
-}
+func field(name string, n *syntax.Node) *syntax.Node { return syntax.SetField(name, n) }
 
 // reserved words: never identifiers (tree-sitter keyword extraction).
 var reserved = map[string]bool{

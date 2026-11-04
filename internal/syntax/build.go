@@ -77,3 +77,23 @@ func Finish(root *Node, src []byte) *Node {
 	}
 	return root
 }
+
+// Build makes an inner node over the non-nil children: parsers pass the
+// optional parts of a rule as nil.
+func Build(typ string, children ...*Node) *Node {
+	kept := children[:0:0]
+	for _, c := range children {
+		if c != nil {
+			kept = append(kept, c)
+		}
+	}
+	return Inner(typ, 0, kept...)
+}
+
+// SetField sets n's field name and returns n; nil stays nil.
+func SetField(name string, n *Node) *Node {
+	if n != nil {
+		n.Field = name
+	}
+	return n
+}

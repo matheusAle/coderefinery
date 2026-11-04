@@ -207,36 +207,6 @@ func attachExtras(root *syntax.Node, comments map[int]*syntax.Node) {
 	sort.Ints(starts)
 	for _, s := range starts {
 		ex := comments[s]
-		n := root
-		for {
-			next := enclosingChild(n, ex)
-			if next == nil {
-				break
-			}
-			n = next
-		}
-		insertSorted(n, ex)
+		syntax.InsertExtra(syntax.ExtraParent(root, ex, false), ex)
 	}
-}
-
-func enclosingChild(n *syntax.Node, ex *syntax.Node) *syntax.Node {
-	for _, c := range n.Children {
-		if len(c.Children) == 0 || c.Extra {
-			continue
-		}
-		if c.StartByte < ex.StartByte && ex.EndByte <= c.EndByte {
-			return c
-		}
-	}
-	return nil
-}
-
-func insertSorted(n *syntax.Node, ex *syntax.Node) {
-	i := len(n.Children)
-	for i > 0 && n.Children[i-1].StartByte >= ex.EndByte {
-		i--
-	}
-	n.Children = append(n.Children, nil)
-	copy(n.Children[i+1:], n.Children[i:])
-	n.Children[i] = ex
 }

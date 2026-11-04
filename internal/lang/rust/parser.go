@@ -126,12 +126,7 @@ func node(typ string, children ...*syntax.Node) *syntax.Node {
 	return syntax.Inner(typ, kept[0].StartByte, kept...)
 }
 
-func field(name string, n *syntax.Node) *syntax.Node {
-	if n == nil {
-		return nil
-	}
-	return n.WithField(name)
-}
+func field(name string, n *syntax.Node) *syntax.Node { return syntax.SetField(name, n) }
 
 // attempt runs f and restores the position when it fails.
 func (p *parser) attempt(f func()) (ok bool) {
