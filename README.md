@@ -332,11 +332,12 @@ coderefinery mutate --react --scan --no-coverage src/components
 - **Deviations**: every known difference from upstream is listed in
   [docs/DEVIATIONS.md](docs/DEVIATIONS.md), mostly input that
   tree-sitter would recover with ERROR nodes. Each opt-in fix sits behind a
-  flag, such as `mutate --fix-go-coverage`.
+  flag, such as `mutate --fix-go-coverage` and `mutate --fix-overlay`.
 - **Additions**: `test`, `tests`, `crap --branches`, `dry --tests`,
-  `dry --jsx`, `mutate --attribute` and `mutate --branches` are additive and opt-in. The
+  `dry --jsx`, `mutate --attribute`, `mutate --branches`, `mutate --react`
+  and `mutate --min-timeout` are additive and opt-in. The
   flags are hidden from the upstream `--help` text (only the top-level
-  `coderefinery --help` lists `test` and `tests`), and the default `crap`,
+  `coderefinery --help` lists `test`, `tests` and `react`), and the default `crap`,
   `dry` and `mutate` output, exit codes and `.metrics` files stay
   byte-identical (the harness still passes 36 of 36). `react` is a separate
   subcommand that changes nothing in the other three.
