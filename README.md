@@ -302,12 +302,12 @@ spreads), `noop onClick` (`onX={() => {}}`) and `drop dep <dep> from
 useEffect` (one entry of a React hook dependency array, also in `.ts` hooks).
 Sites keep crapper's form ids, so snapshots, differential reruns,
 `--attribute` and `tests` work unchanged; plain `mutate` is unaffected.
-Vitest projects with `environment: "jsdom"` need
-`server: { fs: { strict: false } }` in their config, or every mutant is
-reported KILLED. Details: [docs/design-react.md §13](docs/design-react.md#13-mutation-operators-mutate---react).
+On a Vitest project with `environment: "jsdom"` add `--fix-overlay`
+(`--attribute` turns it on), or every mutant is reported KILLED
+([DEVIATIONS.md](docs/DEVIATIONS.md) M9). Details: [docs/design-react.md §13](docs/design-react.md#13-mutation-operators-mutate---react).
 
 ```bash
-coderefinery mutate --react --changed --use-existing-coverage
+coderefinery mutate --react --fix-overlay --changed --use-existing-coverage   # jsdom: --fix-overlay
 coderefinery mutate --react --scan --no-coverage src/components
 ```
 

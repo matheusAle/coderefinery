@@ -49,8 +49,9 @@ type Options struct {
 	// turn a survivor into a timeout kill (DEVIATIONS.md, "mutate --min-timeout").
 	MinTimeout float64
 	// FixOverlay links skip-listed directories that hold the mutated file's
-	// language into worker overlays (DEVIATIONS.md M8). Hidden from --help;
-	// --attribute turns it on too.
+	// language into worker overlays (DEVIATIONS.md M8) and, for TS/JS, copies
+	// the linked sources so test runners load them inside the worker (M9).
+	// Hidden from --help; --attribute turns it on too.
 	FixOverlay bool
 	// React adds the React operators (react_sites.go, docs/design-react.md
 	// §13) to the usual sites. Hidden from --help.

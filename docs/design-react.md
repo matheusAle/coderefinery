@@ -610,9 +610,10 @@ run predates `Clicker` (§11) and `Toolbar` (§10) in the fixture; they add 8 Re
 upstream design). Under `environment: "jsdom"` Vitest loads test files through Vite's dev server,
 which resolves the symlinks to the real project and refuses those paths as outside the worker root:
 every test file fails to load and **every mutant is reported KILLED**. This is upstream behaviour (not
-React-specific; any Vitest project in web mode hits it) and is not changed here. The fixture's
-`vitest.config.ts` sets `server: { fs: { strict: false } }`; a project needs the same line, or a
-`--test-command`, before trusting mutate's kills.
+React-specific; any Vitest project in web mode hits it), reproduced by default. `--fix-overlay` fixes
+it, and `--attribute` turns that on (DEVIATIONS.md M9, §8): the worker holds copies of the JS/TS
+sources, so the project needs no `server: { fs: { strict: false } }` line. The fixture's
+`vitest.config.ts` has none; the e2e above runs with `--attribute`.
 
 ### Calibration: excalidraw `dd2f8fc`
 
