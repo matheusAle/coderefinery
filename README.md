@@ -82,7 +82,7 @@ coderefinery mutate --changed --use-existing-coverage   # exit 3 when a mutant s
 | `mutate` | `.metrics/mutate/<namespace>.edn` | 0 all killed · 1 usage/error · 2 baseline tests failed · 3 survivors |
 | `test` | `.metrics/tests/` (`runs.edn`, results, coverage) | 0 all passed or skipped · 1 usage / missing tool or plugin · 2 a test failed, build failed or no results |
 | `tests` | `.metrics/tests.edn` | 0 no offenders · 1 usage / no attribution data · 2 latest results have failures · 3 a test kills nothing or is shadowed |
-| `react` | `.metrics/react.edn` | 0 no violations · 1 usage/error · 2 the coverage run failed · 3 a threshold is exceeded |
+| `react` | `.metrics/react.edn` | 0 no violations · 1 usage/error · 2 the coverage (or `--profile` test) run failed · 3 a threshold is exceeded |
 
 With `--changed`, a git failure exits with git's own code. Supported
 languages: Python, TypeScript/TSX/JavaScript, Go, Java, Rust, Clojure (dry
@@ -185,6 +185,7 @@ SettingsPanel                  component SettingsPanel                          
 Cart                           component Cart                                   16    4     N/A      N/A
 Badge                          component Badge                                   6    2     N/A      N/A
 Cart.handleCheckout            handler   Cart                                   46    2     N/A      N/A
+Toggle                         component Clicker                                20    2     N/A      N/A
 Sidebar                        component Dashboard                              28    2     N/A      N/A
 TodoList                       component TodoList                                9    2     N/A      N/A
 TodoList.TodoRow               component TodoList                               12    2     N/A      N/A
@@ -193,6 +194,11 @@ useCounter#useEffect#1         callback  useCounter                             
 useCounter#useMemo#1           callback  useCounter                             13    2     N/A      N/A
 Cart#useEffect#2               callback  Cart                                   42    1     N/A      N/A
 Cart.handleClear               handler   Cart                                   50    1     N/A      N/A
+Clicker                        component Clicker                                28    1     N/A      N/A
+Clicker.onClick                handler   Clicker                                32    1     N/A      N/A
+Clicker.onSelect               handler   Clicker                                33    1     N/A      N/A
+Label                          component Clicker                                11    1     N/A      N/A
+Toggle.flip                    handler   Clicker                                22    1     N/A      N/A
 Dashboard                      component Dashboard                              14    1     N/A      N/A
 Layout                         component Dashboard                              20    1     N/A      N/A
 IconButton                     component IconButton                              9    1     N/A      N/A
@@ -216,8 +222,11 @@ Toolbar                        Toolbar                                  2     1 
 Dashboard                      Dashboard                                1     1     5    0   0  1    -    5     0   0    0     0     1     1    0     0    0
 Layout                         Dashboard                                1     1     5    0   0  1    -    4     0   0    0     0     2     2    0     0    0
 Badge                          Badge                                    2     1     2    0   0  0    -    0     0   0    0     0     1     1    0     0    0
+Toggle                         Clicker                                  2     1     0    0   0  0    -    0     1   0    0     0     1     1    0     0    0
 Sidebar                        Dashboard                                2     1     4    0   0  1    -    0     0   0    0     0     2     4    0     0    0
 TodoList.TodoRow               TodoList                                 2     1     1    0   0  0    -    0     0   0    0     0     1     1    1     1    0
+Clicker                        Clicker                                  1     1     0    0   0  0    -    0     1   0    0     0     2     5    2     1    0
+Label                          Clicker                                  1     1     3    0   0  1    -    0     0   0    0     0     1     1    0     0    0
 IconButton                     IconButton                               1     1     3    1   1  0  yes    0     0   0    0     0     1     1    0     0    0
 ToolbarGroup                   Toolbar                                  1     1    2+    0   0  0  yes    0     0   0    0     0     2     2    0     0    0
 useCounter                     useCounter                               1     1     -    -   -  -    -    -     2   1    2     0     0     0    0     0    0
@@ -234,6 +243,37 @@ TodoList                       TodoList                            nested-compon
 Toolbar                        Toolbar                             props 8 > 7
 Dashboard                      Dashboard                           pass-through 5 > 3
 Layout                         Dashboard                           pass-through 4 > 3
+```
+
+`--profile` (opt-in) also runs the Vitest or Jest tests with a render
+profiler and appends `Runtime renders`: per component, the renders in the
+test run, mounts, updates (re-renders), updates per mount, React's
+`actualDuration` (total and max, ms) and its inline function/object props.
+A component with updates >= 3x mounts that passes inline props is flagged:
+the run confirms the static render-cost risk. These are test-run numbers
+from a development build, not production; counts are exact and repeatable,
+durations are noisy. Nothing in the project is edited: the setup and config
+files are generated under `.metrics/react-profile/`. On `fixtures/react`
+(durations vary):
+
+```
+Runtime renders (vitest test run; durations are React actualDuration in ms, noisy)
+
+Component                      Namespace                           Renders Mounts Updates Upd/Mount TotalMs MaxMs Inline Flag
+-----------------------------------------------------------------------------------------------------------------------------
+Clicker                        Clicker                                   4      1       3       3.0    12.3  10.2      3 re-renders with inline props
+Label                          Clicker                                   4      1       3       3.0     6.2   5.8      0
+Cart                           Cart                                      4      2       2       1.0     7.8   3.9      0
+TodoList                       TodoList                                  2      1       1       1.0   252.6 251.2      4
+Toggle                         Clicker                                   2      1       1       1.0     0.5   0.4      0
+TodoList.TodoRow               TodoList                                  3      3       0       0.0    11.1   9.6      2
+Badge                          Badge                                     2      2       0       0.0    11.5  11.1      0
+Dashboard                      Dashboard                                 1      1       0       0.0   258.8 258.8      0
+Layout                         Dashboard                                 1      1       0       0.0   258.5 258.5      0
+SettingsPanel                  SettingsPanel                             1      1       0       0.0     2.5   2.5      0
+Sidebar                        Dashboard                                 1      1       0       0.0   258.0 258.0      0
+
+Not rendered by the tests: IconButton
 ```
 
 ## Parity status

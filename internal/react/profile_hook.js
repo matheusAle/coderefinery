@@ -1,4 +1,4 @@
-// Render profiler for `coderefinery react --profile` (docs/design-react.md §10).
+// Render profiler for `coderefinery react --profile` (docs/design-react.md §11).
 // Installed as the React DevTools global hook before react-dom loads: React
 // calls onCommitFiberRoot after every commit and this walks the committed
 // fibers the way React DevTools' Profiler does. Per component name it counts

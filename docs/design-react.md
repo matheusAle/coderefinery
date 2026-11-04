@@ -253,3 +253,106 @@ Violations 145 → 147: new `props` on `ConfirmDialog` (10, `extends Omit<Dialog
 base) and `IconButton` boolean-props (6); gone `props` on `Island` and `ToolPopover` (8 → 6 and 8 → 7:
 the quoted-name double count). Runtime unchanged within noise (~0.5 s user before and after; every
 imported module is parsed once).
+
+## 11. Runtime renders (`--profile`, v2 item 3)
+
+Status: built (`internal/react/profile*.go`). Opt-in because it runs the test suite once more
+(after the coverage run, if any, so coverage instrumentation does not inflate the timings) and its
+durations change from run to run: without `--profile` the report and `react.edn` are byte-identical
+to v1.
+
+### Mechanism: the React DevTools global hook
+
+`profile_hook.js` (embedded in the binary as text) defines `globalThis.__REACT_DEVTOOLS_GLOBAL_HOOK__`
+before react-dom loads. react-dom (16.5+ dev or profiling build) calls `hook.inject(renderer)` once and
+`hook.onCommitFiberRoot(id, root)` after every commit. The hook walks the committed tree the way the
+React DevTools Profiler does:
+
+- a root whose previous `current` had no element is a mount: every fiber below is new;
+- otherwise from the root down: a fiber whose child list is the previous one (`next.child ===
+  prev.child`) did not re-render anything below it and is skipped; a child with an `alternate` is an
+  update, one without is a mount;
+- a fiber **rendered** in the commit when it is a function, class, `forwardRef` or simple-`memo`
+  fiber (tags 0, 1, 11, 15; a `memo` wrapper fiber, 14, is skipped: its inner fiber is counted) and
+  carries `PerformedWork` (`flags & 1`; `effectTag` before React 17);
+- per component name (`displayName`, else the function name; `forwardRef`'s render function) it
+  counts renders and mounts and sums React's `actualDuration` (time spent rendering the fiber and the
+  descendants that rendered with it in that commit), keeping the max.
+
+**Why not `<Profiler>`.** It is the public API, but it measures a subtree, not a component: one
+number per component needs a `<Profiler>` around every element (rewriting the JSX runtime via module
+aliases, which changes element types that user code and tests compare), and its `onRender` also fires
+for every ancestor of a component that re-rendered by itself, so a parent would be charged renders
+it never did (exactly the case `Toggle` in the fixture checks). The hook relies on fiber fields that
+are not a public API (`tag`, `flags`, `alternate`, `child`, `actualDuration`), but they are the ones
+React DevTools, react-scan and similar tools read, unchanged since React 17; it changes nothing in
+the rendered tree and works with any JSX transform, class components and both runners. React 19's
+Performance Tracks (`console.timeStamp`) were rejected too: 19.2+ only, and a logging format, not an
+API.
+
+### Running the tests without editing the project
+
+Packages are the `package.json` dirs above the analyzed files (as for coverage). Per package, Vitest
+first (the `test` script mentions `vitest`, or a `vitest.config.*` exists), then Jest (the script,
+a `jest.config.*`, or a `jest` key). Generated files go to `.metrics/react-profile[/<pkg slug>]/`:
+
+| runner | generated | command |
+|---|---|---|
+| Vitest | `setup.vitest.mjs` (hook; `afterAll` flush), `vitest.config.mjs`: imports the user's config (`--config` in the test script, else `vitest.config.*`, else `vite.config.*`; object, promise or function) and returns it with the setup file **first** in `test.setupFiles`, so the hook exists before a user setup file imports react-dom | `vitest run --config <generated> --root <pkg> --coverage.enabled=false` |
+| Jest | `setup.jest.cjs` (hook), `setup-after-env.jest.cjs` (`afterAll` flush). Jest CLI lists replace the config's, so `jest --showConfig` supplies the user's resolved `setupFiles` / `setupFilesAfterEnv`, passed back with ours first / last | `jest --ci --coverage=false --setupFiles <ours> <theirs>... --setupFilesAfterEnv <theirs>... <ours>` |
+
+Each test file's flush writes `profile-<pid>-<time>-<random>.json` (old ones are deleted first); Go
+merges them (sums, max of maxima). The test output goes to stderr (stdout is the report).
+
+One-line failures (exit 1, `react: --profile: ...`, nothing written): no Vitest or Jest in a package;
+Jest with several projects; React never connected to the hook (no react-dom render in the tests, or
+react-dom loaded before the setup file); a production build (no `actualDuration`: run with
+`NODE_ENV=test`); the hook threw. A failing profiled run exits 2 (`react: the profiled test run
+failed; fix the failing tests or drop --profile`), like the coverage run. Not supported: Vitest
+`test.projects` / workspaces (root `setupFiles` do not reach projects), mocha, Jest projects.
+
+### Join, flag, output
+
+React reports names, not files: a runtime name joins the component unit whose last name segment
+matches (`TodoList.TodoRow` renders as `TodoRow`). A name no unit has falls back to the name without
+trailing digits, because esbuild renames `const Label = memo(function Label() {})`'s inner function
+to `Label2`. A name shared by several units gets one unjoined row (`(N components)`); names of no
+unit (library components, Testing Library's `TestComponent`) are dropped; anonymous components
+(`memo(() => ...)`, `forwardRef((p, r) => ...)` without `displayName`) cannot be joined. Hooks have
+no runtime rows.
+
+A row is **flagged** (`re-renders with inline props`) when updates >= 3 x mounts (updates when
+nothing mounted) and the unit passes inline function or object/array props (`InFn + InObj > 0`).
+Updates per mount, not raw updates, so a component mounted in many tests or list rows is not called
+hot for being rendered often. Flags are not threshold violations: exit codes stay those of the static
+checks.
+
+Report: a `Runtime renders (<runners> test run; ...)` table after the violations: Component,
+Namespace, Renders, Mounts, Updates, Upd/Mount, TotalMs, MaxMs, Inline, Flag, sorted by updates,
+renders, name; then `Not rendered by the tests: ...` (component units with no runtime row). EDN: a
+last key `:renders {:runners [...], :not-rendered [...], :components [{:name :namespace :path
+:renders :mounts :updates :total-ms :max-ms :inline-props :ambiguous :flagged}]}` (`:namespace` /
+`:path` nil when ambiguous).
+
+### What the numbers mean
+
+They count what the **tests** made React do in a **development** build: each `render()` mounts, each
+event or state change the test fires commits. More tests mean more renders, so compare updates per
+mount and the flags, not raw counts across projects. Counts are exact and repeatable (React's commit
+behaviour is deterministic; `StrictMode` double rendering is one commit, counted once). Durations are
+wall-clock: the first mount in a test file includes module and JIT warm-up, a loaded machine stretches
+everything, dev builds are several times slower than production, and `actualDuration` includes the
+descendants that rendered with the component (a parent's total covers its children's). Use them to
+rank within one run, never as production timings.
+
+### Fixture and tests
+
+`fixtures/react` gains `Clicker` (state; an inline handler and an inline style object passed to
+memo `Label`) and memo `Toggle` (own state, no props), tested by clicking add three times and the
+toggle once: Clicker 4 renders / 1 mount / 3 updates (flagged), Label 4/1/3 (memo defeated by the
+inline props, not flagged: none of its own), Toggle 2/1/1 (Clicker's renders are not charged to
+it). `TestReactProfileOnTheFixture` asserts every runtime row's counts exactly (durations only as
+numbers), the `:renders` EDN, the generated config, and exit 2 on a failing test;
+`internal/react/profile_test.go` covers merging, joining, the flag threshold, the generated files,
+the Jest arguments and the table/EDN text. The Jest path was checked by hand on a scratch Jest 30 +
+jsdom project with the same components (same counts).

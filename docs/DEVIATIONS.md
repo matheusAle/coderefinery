@@ -84,7 +84,7 @@ which stays byte-identical (the `mutate --fix-go-coverage` precedent, M1);
 `test`, `tests` and `react` are listed only in the top-level `coderefinery --help`.
 Without them, crap, dry and mutate keep their stdout, stderr, exit codes and
 `.metrics` bytes (harness 36/36). Contract: `docs/design-tests.md` (X1-X6),
-`docs/design-react.md` (X7).
+`docs/design-react.md` (X7, X8).
 
 | # | addition | kind | what it does | writes |
 |---|---|---|---|---|
@@ -95,6 +95,7 @@ Without them, crap, dry and mutate keep their stdout, stderr, exit codes and
 | X5 | `crap --branches` | hidden flag | adds an `Untested branches` section after the report; the report, `crap.edn` and exit codes are unchanged; `--no-coverage --branches` is a usage error | `.metrics/branches.edn` |
 | X6 | `dry --tests` | hidden flag | also compares test files (test directories and test file names are not skipped); the report format is unchanged | nothing new (`.metrics/dry.edn` as usual) |
 | X7 | `coderefinery react` (`--root`, `--changed`, `--no-coverage`, `--use-existing-coverage`, `--coverage-command`, `--crap <n>`, `--max-<metric> <n\|off>`) | new subcommand | React function components and custom hooks: each hook callback (`Cart#useEffect#1`) and handler (`Cart.onSubmit`) is its own CRAP entry, not charged to the component (the Express-route rule); render vs logic complexity; props, hooks and render-cost metrics; exit 0 clean · 1 usage · 2 coverage run failed · 3 a threshold exceeded. Contract: `docs/design-react.md` | `.metrics/react.edn` |
+| X8 | `react --profile` | flag of an addition | also runs the Vitest (else Jest) tests with a render profiler (the React DevTools global hook, installed by a generated setup file; the project is not edited) and appends `Runtime renders` (renders, mounts, updates, actualDuration total/max per component; components with updates >= 3x mounts and inline props flagged) to the report; without the flag `react`'s output is unchanged; exit 1 when the run cannot be instrumented, 2 when it fails. Contract: `docs/design-react.md` §11 | `:renders` in `.metrics/react.edn`; generated files and `profile-*.json` under `.metrics/react-profile/` |
 
 ### mutate --min-timeout (test stability)
 
