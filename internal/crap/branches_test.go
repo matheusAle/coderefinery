@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/matheusAle/coderefinery/internal/branch"
+	"github.com/matheusAle/coderefinery/internal/testutil"
 )
 
 // copyInto copies the tree src into dst.
@@ -46,15 +47,6 @@ func copyFile(t *testing.T, src, dst string) {
 	if err := os.WriteFile(dst, data, 0o666); err != nil {
 		t.Fatal(err)
 	}
-}
-
-func readFile(t *testing.T, p string) string {
-	t.Helper()
-	data, err := os.ReadFile(p)
-	if err != nil {
-		t.Fatal(err)
-	}
-	return string(data)
 }
 
 func stubGeneratedAt(t *testing.T) {
@@ -118,7 +110,7 @@ func TestCrapBranchesPythonEndToEnd(t *testing.T) {
 		"  {:file \"billing/pricing.py\" :line 30 :decision \"case \\\"CA\\\" | \\\"MX\\\"\" :arm \"case 2\" :granularity \"branch\" :text \"case 2 never matched\"}\n" +
 		"]}\n"
 	metrics := filepath.Join(root, ".metrics")
-	if got := readFile(t, filepath.Join(metrics, "branches.edn")); got != wantEDN {
+	if got := testutil.ReadFile(t, filepath.Join(metrics, "branches.edn")); got != wantEDN {
 		t.Fatalf("branches.edn\n%s", got)
 	}
 	resolved, _ := filepath.EvalSymlinks(metrics)
@@ -128,12 +120,12 @@ func TestCrapBranchesPythonEndToEnd(t *testing.T) {
 
 	// the CRAP report and crap.edn do not change by a byte
 	_, plain, _ := runCrap("--root", root, "--use-existing-coverage")
-	plainEDN := readFile(t, filepath.Join(metrics, "crap.edn"))
+	plainEDN := testutil.ReadFile(t, filepath.Join(metrics, "crap.edn"))
 	_, withBranches, _ := runCrap("--root", root, "--use-existing-coverage", "--branches")
 	if withBranches != plain+"\n"+wantSection {
 		t.Fatalf("--branches changed the report:\n%s\nplain:\n%s", withBranches, plain)
 	}
-	if got := readFile(t, filepath.Join(metrics, "crap.edn")); got != plainEDN {
+	if got := testutil.ReadFile(t, filepath.Join(metrics, "crap.edn")); got != plainEDN {
 		t.Fatalf("crap.edn changed:\n%s\nwant\n%s", got, plainEDN)
 	}
 	// smoke: a real report with the scored functions came first
@@ -162,7 +154,7 @@ func TestCrapBranchesGoBlocks(t *testing.T) {
 	if got := section(t, out); got != want {
 		t.Fatalf("section\n%s\nwant\n%s", got, want)
 	}
-	edn := readFile(t, filepath.Join(root, ".metrics", "branches.edn"))
+	edn := testutil.ReadFile(t, filepath.Join(root, ".metrics", "branches.edn"))
 	if !strings.Contains(edn, `{:file "calc.go" :line 9 :decision "if v > hi" :arm "true" :granularity "block" :text "block 10-11 never executed"}`) ||
 		strings.Contains(edn, `"branch"`) || strings.Count(edn, ":granularity \"block\"") != 3 {
 		t.Fatalf("branches.edn\n%s", edn)
@@ -248,7 +240,7 @@ func TestCrapBranchesFromSampleReports(t *testing.T) {
 			if got := section(t, out); got != c.want {
 				t.Fatalf("section\n%s\nwant\n%s", got, c.want)
 			}
-			edn := readFile(t, filepath.Join(root, ".metrics", "branches.edn"))
+			edn := testutil.ReadFile(t, filepath.Join(root, ".metrics", "branches.edn"))
 			if strings.Count(edn, "\n  {:file ") != strings.Count(c.want, " · ") {
 				t.Fatalf("branches.edn rows do not match the section:\n%s", edn)
 			}

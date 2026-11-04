@@ -11,24 +11,14 @@ import (
 	"testing"
 
 	"github.com/matheusAle/coderefinery/internal/discover"
+	"github.com/matheusAle/coderefinery/internal/testutil"
 )
-
-func writeFile(t *testing.T, path, content string) string {
-	t.Helper()
-	if err := os.MkdirAll(filepath.Dir(path), 0o777); err != nil {
-		t.Fatal(err)
-	}
-	if err := os.WriteFile(path, []byte(content), 0o666); err != nil {
-		t.Fatal(err)
-	}
-	return path
-}
 
 func tempRoot(t *testing.T) string { return discover.Resolve(t.TempDir()) }
 
 func executable(t *testing.T, path string) string {
 	t.Helper()
-	writeFile(t, path, "#!/bin/sh\n")
+	testutil.WriteFile(t, path, "#!/bin/sh\n")
 	if err := os.Chmod(path, 0o755); err != nil {
 		t.Fatal(err)
 	}
@@ -37,8 +27,8 @@ func executable(t *testing.T, path string) string {
 
 func TestNearestWalksUpToTheMarker(t *testing.T) {
 	root := filepath.Join(tempRoot(t), "proj")
-	writeFile(t, filepath.Join(root, "pyproject.toml"), "")
-	src := writeFile(t, filepath.Join(root, "src", "demo", "app.py"), "x = 1\n")
+	testutil.WriteFile(t, filepath.Join(root, "pyproject.toml"), "")
+	src := testutil.WriteFile(t, filepath.Join(root, "src", "demo", "app.py"), "x = 1\n")
 	if Nearest(src, "pyproject.toml", root) != root || Nearest(filepath.Dir(src), "pyproject.toml", root) != root {
 		t.Fatal("nearest")
 	}
@@ -61,7 +51,7 @@ func TestClojureCommands(t *testing.T) {
 		"both":      {map[string]string{"bb.edn": "{:tasks {test (clojure)}}", "deps.edn": "{:deps {}}"}, []string{"clj", "-M:test"}},
 	} {
 		for name, text := range c.files {
-			writeFile(t, filepath.Join(base, dir, name), text)
+			testutil.WriteFile(t, filepath.Join(base, dir, name), text)
 		}
 		if got := ClojureCommand(filepath.Join(base, dir)); !reflect.DeepEqual(got, c.want) {
 			t.Errorf("%s: %v want %v", dir, got, c.want)
@@ -73,7 +63,7 @@ func TestPythonCommandUsesAnAbsoluteProjectInterpreter(t *testing.T) {
 	base := tempRoot(t)
 	project := filepath.Join(base, "proj")
 	dot := executable(t, filepath.Join(project, ".venv", "bin", "python"))
-	writeFile(t, filepath.Join(project, "pytest.ini"), "[pytest]\n")
+	testutil.WriteFile(t, filepath.Join(project, "pytest.ini"), "[pytest]\n")
 	if got := PythonCommand(project); !reflect.DeepEqual(got, []string{dot, "-m", "pytest"}) {
 		t.Fatalf("got %v", got)
 	}
@@ -99,7 +89,7 @@ func TestPythonCommandUsesAnAbsoluteProjectInterpreter(t *testing.T) {
 	}
 
 	broken := filepath.Join(base, "broken")
-	writeFile(t, filepath.Join(broken, ".venv", "bin", "python"), "")
+	testutil.WriteFile(t, filepath.Join(broken, ".venv", "bin", "python"), "")
 	if got := PythonCommand(broken); got[0] != SelfPython() || got[len(got)-1] != "discover" {
 		t.Fatalf("a non-executable venv falls back: %v", got)
 	}
@@ -118,7 +108,7 @@ func TestPythonCommandsPickPytestOrUnittest(t *testing.T) {
 		"proj": {"pyproject.toml", "[project]\ndependencies=['pytest']\n", true},
 		"conf": {"conftest.py", "", true},
 	} {
-		writeFile(t, filepath.Join(base, dir, c.file), c.text)
+		testutil.WriteFile(t, filepath.Join(base, dir, c.file), c.text)
 		got := PythonCommand(filepath.Join(base, dir))
 		if (got[len(got)-1] == "pytest") != c.pytest {
 			t.Errorf("%s: %v", dir, got)
@@ -129,12 +119,12 @@ func TestPythonCommandsPickPytestOrUnittest(t *testing.T) {
 func TestTestPlansFollowTheNearestProject(t *testing.T) {
 	root := filepath.Join(tempRoot(t), "proj")
 	sub := filepath.Join(root, "svc")
-	writeFile(t, filepath.Join(sub, "bb.edn"), "{:tasks {test (clojure)}}\n")
-	writeFile(t, filepath.Join(sub, "pom.xml"), "<project/>\n")
-	writeFile(t, filepath.Join(sub, "package.json"), "{}\n")
-	writeFile(t, filepath.Join(sub, "Cargo.toml"), "[package]\nname='demo'\n")
-	writeFile(t, filepath.Join(sub, "go.mod"), "module example.com/demo\n")
-	writeFile(t, filepath.Join(sub, "pyproject.toml"), "[project]\ndependencies=['pytest']\n")
+	testutil.WriteFile(t, filepath.Join(sub, "bb.edn"), "{:tasks {test (clojure)}}\n")
+	testutil.WriteFile(t, filepath.Join(sub, "pom.xml"), "<project/>\n")
+	testutil.WriteFile(t, filepath.Join(sub, "package.json"), "{}\n")
+	testutil.WriteFile(t, filepath.Join(sub, "Cargo.toml"), "[package]\nname='demo'\n")
+	testutil.WriteFile(t, filepath.Join(sub, "go.mod"), "module example.com/demo\n")
+	testutil.WriteFile(t, filepath.Join(sub, "pyproject.toml"), "[project]\ndependencies=['pytest']\n")
 	cases := []struct {
 		rel, language string
 		want          []string
@@ -148,7 +138,7 @@ func TestTestPlansFollowTheNearestProject(t *testing.T) {
 		{"app.py", "python", nil},
 	}
 	for _, c := range cases {
-		src := writeFile(t, filepath.Join(sub, c.rel), "x\n")
+		src := testutil.WriteFile(t, filepath.Join(sub, c.rel), "x\n")
 		command, dir := Plan(root, src, c.language, "")
 		if dir != sub {
 			t.Errorf("%s: dir %s", c.rel, dir)

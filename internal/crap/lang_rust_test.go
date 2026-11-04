@@ -6,6 +6,8 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/matheusAle/coderefinery/internal/testutil"
 )
 
 // rustRow is one function as (namespace, name, complexity, start, end).
@@ -44,18 +46,8 @@ func rustCrate(t *testing.T, name string) string {
 	if err != nil {
 		t.Fatal(err)
 	}
-	writeFile(t, filepath.Join(root, "Cargo.toml"), "[package]\nname = \""+name+"\"\nversion = \"0.1.0\"\n")
+	testutil.WriteFile(t, filepath.Join(root, "Cargo.toml"), "[package]\nname = \""+name+"\"\nversion = \"0.1.0\"\n")
 	return root
-}
-
-func writeFile(t *testing.T, path, text string) {
-	t.Helper()
-	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
-		t.Fatal(err)
-	}
-	if err := os.WriteFile(path, []byte(text), 0o644); err != nil {
-		t.Fatal(err)
-	}
 }
 
 const rustUpstreamSource = `
@@ -96,7 +88,7 @@ fn outer() {
 // Ported from upstream tests/test_rust.py.
 func TestRustFunctionsMethodsAndSkippedTests(t *testing.T) {
 	root := rustCrate(t, "demo-game")
-	writeFile(t, filepath.Join(root, "src", "lib.rs"), rustUpstreamSource)
+	testutil.WriteFile(t, filepath.Join(root, "src", "lib.rs"), rustUpstreamSource)
 	expectRust(t, rustRows(t, rustUpstreamSource, "src/lib.rs", root),
 		rustRow{"demo_game", "choose", 6, 2, 11},
 		rustRow{"demo_game::Sample", "run", 2, 14, 16},
@@ -135,7 +127,7 @@ func TestRustFileOutsideTheCrateRootUsesTheCrateName(t *testing.T) {
 func TestRustNestedModulePath(t *testing.T) {
 	root := rustCrate(t, "demo")
 	source := "pub fn place() -> i32 { if ready { 1 } else { 0 } }\n"
-	writeFile(t, filepath.Join(root, "src", "game", "board.rs"), source)
+	testutil.WriteFile(t, filepath.Join(root, "src", "game", "board.rs"), source)
 	expectRust(t, rustRows(t, source, "src/game/board.rs", root),
 		rustRow{"demo::game::board", "place", 2, 1, 1})
 }
@@ -202,9 +194,9 @@ func TestRustCrateNameWalksPastWorkspacesAndFallsBackToTheDirectory(t *testing.T
 	if err != nil {
 		t.Fatal(err)
 	}
-	writeFile(t, filepath.Join(ws, "Cargo.toml"), "[workspace]\nmembers = [\"app-cli\", \"core\"]\n")
-	writeFile(t, filepath.Join(ws, "app-cli", "Cargo.toml"), "[package]\nversion = \"1\"\n\n[dependencies]\nname = \"not-this\"\n")
-	writeFile(t, filepath.Join(ws, "core", "Cargo.toml"), "[package]\r\nname\t=  \"ub-core\"\r\n")
+	testutil.WriteFile(t, filepath.Join(ws, "Cargo.toml"), "[workspace]\nmembers = [\"app-cli\", \"core\"]\n")
+	testutil.WriteFile(t, filepath.Join(ws, "app-cli", "Cargo.toml"), "[package]\nversion = \"1\"\n\n[dependencies]\nname = \"not-this\"\n")
+	testutil.WriteFile(t, filepath.Join(ws, "core", "Cargo.toml"), "[package]\r\nname\t=  \"ub-core\"\r\n")
 
 	for _, c := range []struct{ file, crate, root string }{
 		{filepath.Join(ws, "app-cli", "src", "main.rs"), "app_cli", filepath.Join(ws, "app-cli")},

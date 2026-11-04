@@ -12,27 +12,14 @@ import (
 	"github.com/matheusAle/coderefinery/internal/crap"
 	"github.com/matheusAle/coderefinery/internal/discover"
 	"github.com/matheusAle/coderefinery/internal/lang"
+	"github.com/matheusAle/coderefinery/internal/testutil"
 )
 
-func writeFile(t *testing.T, path, content string) string {
-	t.Helper()
-	if err := os.MkdirAll(filepath.Dir(path), 0o777); err != nil {
-		t.Fatal(err)
-	}
-	if err := os.WriteFile(path, []byte(content), 0o666); err != nil {
-		t.Fatal(err)
-	}
-	return path
-}
-
-func readFile(t *testing.T, path string) string {
-	t.Helper()
-	raw, err := os.ReadFile(path)
-	if err != nil {
-		t.Fatal(err)
-	}
-	return string(raw)
-}
+// writeFile and readFile keep their local names: many tests here call them.
+var (
+	writeFile = testutil.WriteFile
+	readFile  = testutil.ReadFile
+)
 
 // tempRoot is a resolved temp dir (macOS /var -> /private/var).
 func tempRoot(t *testing.T) string { return discover.Resolve(t.TempDir()) }

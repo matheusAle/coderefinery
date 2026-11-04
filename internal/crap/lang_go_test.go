@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/matheusAle/coderefinery/internal/model"
+	"github.com/matheusAle/coderefinery/internal/testutil"
 )
 
 // goRows runs the reader from an empty working directory: relative paths
@@ -46,9 +47,9 @@ func TestGoMethodsAreNamespacedByReceiverType(t *testing.T) {
 
 func TestGoImportPathComesFromGoMod(t *testing.T) {
 	root := t.TempDir()
-	goWrite(t, filepath.Join(root, "go.mod"), "module github.com/acme/demo\n")
+	testutil.WriteFile(t, filepath.Join(root, "go.mod"), "module github.com/acme/demo\n")
 	source := "package game\n\ntype Board struct{}\n\nfunc (b *Board) Place() {\n\tif ready && ok {\n\t\treturn\n\t}\n}\n"
-	goWrite(t, filepath.Join(root, "internal", "game", "board.go"), source)
+	testutil.WriteFile(t, filepath.Join(root, "internal", "game", "board.go"), source)
 	expectRows(t, goRows(t, source, "internal/game/board.go", root),
 		fnRow{"github.com/acme/demo/internal/game.Board", "Place", 3})
 }
@@ -60,9 +61,9 @@ func TestGoEdges(t *testing.T) {
 	expectRows(t, goRows(t, source, "board.go", ""), fnRow{"p", "Real", 1})
 
 	root := t.TempDir()
-	goWrite(t, filepath.Join(root, "go.mod"), "module example.com/demo\n")
+	testutil.WriteFile(t, filepath.Join(root, "go.mod"), "module example.com/demo\n")
 	path := filepath.Join(root, "board.go")
-	goWrite(t, path, "package demo\nfunc Place() int { return 1 }\n")
+	testutil.WriteFile(t, path, "package demo\nfunc Place() int { return 1 }\n")
 	expectRows(t, goRows(t, "package demo\nfunc Place() int { return 1 }\n", path, root), fnRow{"example.com/demo", "Place", 1})
 }
 
@@ -113,9 +114,9 @@ func (Pair[K, V]) Generic() {}
 
 func TestGoPackageNamespaceRules(t *testing.T) {
 	root := t.TempDir()
-	goWrite(t, filepath.Join(root, "go.mod"), "// header\r\n  module   \"quoted\" // kept  \r\n")
-	goWrite(t, filepath.Join(root, "sub", "go.mod"), "go 1.22\n")
-	goWrite(t, filepath.Join(root, "a", "b", "x.go"), "")
+	testutil.WriteFile(t, filepath.Join(root, "go.mod"), "// header\r\n  module   \"quoted\" // kept  \r\n")
+	testutil.WriteFile(t, filepath.Join(root, "sub", "go.mod"), "go 1.22\n")
+	testutil.WriteFile(t, filepath.Join(root, "a", "b", "x.go"), "")
 	cases := []struct{ path, pkg, want string }{
 		{filepath.Join(root, "x.go"), "p", `"quoted" // kept`},
 		{filepath.Join(root, "a", "b", "x.go"), "p", `"quoted" // kept/a/b`},
@@ -129,12 +130,12 @@ func TestGoPackageNamespaceRules(t *testing.T) {
 		}
 	}
 	tab := t.TempDir()
-	goWrite(t, filepath.Join(tab, "go.mod"), "module\tx\n")
+	testutil.WriteFile(t, filepath.Join(tab, "go.mod"), "module\tx\n")
 	if got, _ := GoPackageNamespace(filepath.Join(tab, "x.go"), "pkg"); got != "pkg" {
 		t.Errorf("a tab after module must not match, got %q", got)
 	}
 	bad := t.TempDir()
-	goWrite(t, filepath.Join(bad, "go.mod"), "module \xff\n")
+	testutil.WriteFile(t, filepath.Join(bad, "go.mod"), "module \xff\n")
 	if _, err := GoPackageNamespace(filepath.Join(bad, "x.go"), "pkg"); err == nil {
 		t.Error("invalid UTF-8 go.mod must fail")
 	}
@@ -188,15 +189,5 @@ func TestGoFixtureSmoke(t *testing.T) {
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Fatalf("entries:\n got  %q\n want %q", got, want)
-	}
-}
-
-func goWrite(t *testing.T, path, text string) {
-	t.Helper()
-	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
-		t.Fatal(err)
-	}
-	if err := os.WriteFile(path, []byte(text), 0o644); err != nil {
-		t.Fatal(err)
 	}
 }

@@ -7,6 +7,8 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/matheusAle/coderefinery/internal/testutil"
 )
 
 func tempRoot(t *testing.T) string {
@@ -16,15 +18,6 @@ func tempRoot(t *testing.T) string {
 		t.Fatal(err)
 	}
 	return d
-}
-
-func touch(t *testing.T, path, text string) string {
-	t.Helper()
-	_ = os.MkdirAll(filepath.Dir(path), 0o755)
-	if err := os.WriteFile(path, []byte(text), 0o644); err != nil {
-		t.Fatal(err)
-	}
-	return path
 }
 
 type recorder struct {
@@ -44,8 +37,8 @@ func (r *recorder) exec(_ *Runner, c Command, cwd string) int {
 // Ported from upstream tests/test_runners.py (Python parts).
 func TestPythonRunnerArgvWithPytestProject(t *testing.T) {
 	root := tempRoot(t)
-	touch(t, filepath.Join(root, "pyproject.toml"), "[tool.pytest.ini_options]\n")
-	src := touch(t, filepath.Join(root, "src", "pkg", "mod.py"), "x = 1\n")
+	testutil.WriteFile(t, filepath.Join(root, "pyproject.toml"), "[tool.pytest.ini_options]\n")
+	src := testutil.WriteFile(t, filepath.Join(root, "src", "pkg", "mod.py"), "x = 1\n")
 	if got := PythonRoots(root, []string{src}); !reflect.DeepEqual(got, []string{root}) {
 		t.Fatalf("roots %v", got)
 	}
@@ -75,9 +68,9 @@ func TestPythonRunnerArgvWithPytestProject(t *testing.T) {
 
 func TestPythonUnittestFallbackSourcesAndOutsideFiles(t *testing.T) {
 	root := tempRoot(t)
-	touch(t, filepath.Join(root, "setup.py"), "from setuptools import setup\n")
-	top := touch(t, filepath.Join(root, "carddav.py"), "")
-	outside := touch(t, filepath.Join(tempRoot(t), "elsewhere.py"), "")
+	testutil.WriteFile(t, filepath.Join(root, "setup.py"), "from setuptools import setup\n")
+	top := testutil.WriteFile(t, filepath.Join(root, "carddav.py"), "")
+	outside := testutil.WriteFile(t, filepath.Join(tempRoot(t), "elsewhere.py"), "")
 	if UsesPytest(root) {
 		t.Fatal("setup.py without pytest is unittest")
 	}
@@ -93,7 +86,7 @@ func TestPythonUnittestFallbackSourcesAndOutsideFiles(t *testing.T) {
 
 func TestPythonRunnerWarnings(t *testing.T) {
 	root := tempRoot(t)
-	src := touch(t, filepath.Join(root, "a.py"), "")
+	src := testutil.WriteFile(t, filepath.Join(root, "a.py"), "")
 	rec := &recorder{codes: map[string]int{"python3 -c import coverage": 1, "python3 -m pip install --disable-pip-version-check coverage": 1}}
 	var stderr bytes.Buffer
 	r := &Runner{Stdout: &bytes.Buffer{}, Stderr: &stderr, Exec: rec.exec}
@@ -151,8 +144,8 @@ func TestCustomCommandFailureStatus(t *testing.T) {
 // coverage runs; the warning and the status stay upstream's.
 func TestTypescriptCoverageFailureIsCounted(t *testing.T) {
 	root := tempRoot(t)
-	touch(t, filepath.Join(root, "package.json"), `{"scripts": {"coverage": "vitest run --coverage"}}`)
-	src := touch(t, filepath.Join(root, "src", "a.ts"), "export const a = 1;\n")
+	testutil.WriteFile(t, filepath.Join(root, "package.json"), `{"scripts": {"coverage": "vitest run --coverage"}}`)
+	src := testutil.WriteFile(t, filepath.Join(root, "src", "a.ts"), "export const a = 1;\n")
 	rec := &recorder{codes: map[string]int{"npm run coverage": 1}}
 	var stderr bytes.Buffer
 	r := &Runner{Stdout: &bytes.Buffer{}, Stderr: &stderr, Exec: rec.exec}
