@@ -235,7 +235,7 @@ func TestADifferentCalleeNameLowersTheScore(t *testing.T) {
 // forms is the upstream test helper: entries of one source, no warning.
 func forms(t *testing.T, language, src, file string) []Entry {
 	t.Helper()
-	entries, warning := EntriesInSource(language, src, file, file)
+	entries, warning := EntriesInSource(testFingerprints, language, src, file, file, 0, 0)
 	if warning != "" {
 		t.Fatalf("warning %q", warning)
 	}
@@ -253,7 +253,7 @@ func spans(t *testing.T, language, src, file string) string {
 
 func hasFingerprint(entries []Entry, pred func(string) bool) bool {
 	for _, e := range entries {
-		for fp := range e.Fingerprints {
+		for _, fp := range printedFingerprints(e) {
 			if pred(fp) {
 				return true
 			}
@@ -298,7 +298,7 @@ func TestConstructedNamesStayInTheFingerprint(t *testing.T) {
 	needGrammars(t, "rust", "java")
 	rust := forms(t, "rust", "pub fn alpha() {\n    let ys = Vec::new();\n    let zs = HashMap::<String, i32>::new();\n}\n", "a.rs")
 	java := forms(t, "java", "class Left {\n  int alpha() {\n    return new ArrayList<String>();\n  }\n}\n", "a.java")
-	joined := func(e []Entry) string { return strings.Join(sortedFingerprints(e[0].Fingerprints), " ") }
+	joined := func(e []Entry) string { return strings.Join(printedFingerprints(e[0]), " ") }
 	for _, name := range []string{"Vec", "new", "HashMap"} {
 		if !strings.Contains(joined(rust), name) {
 			t.Errorf("rust fingerprints lack %s", name)
@@ -362,7 +362,7 @@ func entry(file string, start, end int, names []string, language string, nodes i
 	for _, n := range names {
 		fps[n] = struct{}{}
 	}
-	return Entry{Language: language, Span: Span{file, start, end}, Nodes: nodes, Fingerprints: fps}
+	return Entry{Language: language, Span: Span{file, start, end}, Nodes: nodes, Fingerprints: testFingerprints.strings(fps)}
 }
 
 func TestTheSameSpanIsNotAPair(t *testing.T) {
@@ -422,11 +422,11 @@ func TestKeepUsesTheLineAndNodeMinimums(t *testing.T) {
 
 func TestADeepExpressionIsRead(t *testing.T) {
 	expr := strings.Repeat("1 + ", 1199) + "1"
-	if entries, w := EntriesInSource("python", "def place():\n    return "+expr+"\n", "app.py", "app.py"); w != "" || len(entries) != 1 || entries[0].Nodes < 2400 {
+	if entries, w := EntriesInSource(testFingerprints, "python", "def place():\n    return "+expr+"\n", "app.py", "app.py", 0, 0); w != "" || len(entries) != 1 || entries[0].Nodes < 2400 {
 		t.Fatalf("python: %d entries, warning %q", len(entries), w)
 	}
 	nested := strings.Repeat("(inc ", 1200) + "x" + strings.Repeat(")", 1200)
-	if entries, w := EntriesInSource("clojure", "(defn place [] "+nested+")\n", "app.clj", "app.clj"); w != "" || len(entries) != 1 || entries[0].Nodes < 1200*4 {
+	if entries, w := EntriesInSource(testFingerprints, "clojure", "(defn place [] "+nested+")\n", "app.clj", "app.clj", 0, 0); w != "" || len(entries) != 1 || entries[0].Nodes < 1200*4 {
 		t.Fatalf("clojure: %d entries, warning %q", len(entries), w)
 	}
 }
@@ -505,6 +505,25 @@ func TestGoldenSubforms(t *testing.T) {
 	}
 }
 
+// testFingerprints interns the fingerprints of the entries tests build by
+// hand or with forms, by printed string so printedFingerprints can read
+// them back.
+var testFingerprints = NewFingerprinter(true)
+
+// printedFingerprints lists an entry's testFingerprints ids as printed
+// fingerprints, in byte order.
+func printedFingerprints(e Entry) []string {
+	printed := map[uint32]string{}
+	for s, id := range testFingerprints.ids {
+		printed[id] = s
+	}
+	set := map[string]struct{}{}
+	for _, id := range e.Fingerprints {
+		set[printed[id]] = struct{}{}
+	}
+	return sortedFingerprints(set)
+}
+
 // sortedFingerprints lists a fingerprint set in byte order.
 func sortedFingerprints(set map[string]struct{}) []string {
 	out := make([]string, 0, len(set))
@@ -531,7 +550,7 @@ func TestShapePrimitives(t *testing.T) {
 	if strings.Join(fps, "|") != strings.Join(want, "|") {
 		t.Fatalf("fingerprints %q", fps)
 	}
-	if Jaccard(map[string]struct{}{}, map[string]struct{}{}) != 0.0 {
+	if jaccard(0, 0, 0) != 0.0 {
 		t.Fatal("empty jaccard")
 	}
 }

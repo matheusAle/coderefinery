@@ -85,15 +85,10 @@ func Fingerprints(v *Value) map[string]struct{} {
 	return set
 }
 
-// Jaccard is shape.jaccard: |A∩B| / |A∪B|, 0.0 for two empty sets.
-func Jaccard(left, right map[string]struct{}) float64 {
-	shared := 0
-	for k := range left {
-		if _, ok := right[k]; ok {
-			shared++
-		}
-	}
-	union := len(left) + len(right) - shared
+// jaccard is shape.jaccard on set sizes: |A∩B| / |A∪B| for shared ids
+// out of sets of left and right ids, 0.0 for two empty sets.
+func jaccard(shared, left, right int) float64 {
+	union := left + right - shared
 	if union == 0 {
 		return 0.0
 	}
