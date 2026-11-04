@@ -35,6 +35,9 @@ IconButton                     component IconButton                             
 TodoList.TodoRow.onClick       handler   TodoList                               14    1     N/A      N/A
 TodoList.onChange              handler   TodoList                               23    1     N/A      N/A
 TodoList.onClick               handler   TodoList                               32    1     N/A      N/A
+Toolbar                        component Toolbar                                12    1     N/A      N/A
+Toolbar.onClick                handler   Toolbar                                16    1     N/A      N/A
+ToolbarGroup                   component Toolbar                                25    1     N/A      N/A
 useCounter                     hook      useCounter                              3    1     N/A      N/A
 useCounter.reset               handler   useCounter                             11    1     N/A      N/A
 
@@ -45,12 +48,14 @@ Component                      Namespace                           Render Logic 
 SettingsPanel                  SettingsPanel                            6     1     9    5   5  2    -    0     0   0    0     0     2     5    0     0    0
 Cart                           Cart                                     5     1     4    0   1  1    -    0     4   2    2     1     3     9    0     0    0
 TodoList                       TodoList                                 2     2     2    0   0  1    -    0     1   0    0     0     3     7    2     2    1
+Toolbar                        Toolbar                                  2     1     8    2   3  2  yes    0     0   0    0     0     2     2    1     0    0
 Dashboard                      Dashboard                                1     1     5    0   0  1    -    5     0   0    0     0     1     1    0     0    0
 Layout                         Dashboard                                1     1     5    0   0  1    -    4     0   0    0     0     2     2    0     0    0
 Badge                          Badge                                    2     1     2    0   0  0    -    0     0   0    0     0     1     1    0     0    0
 Sidebar                        Dashboard                                2     1     4    0   0  1    -    0     0   0    0     0     2     4    0     0    0
 TodoList.TodoRow               TodoList                                 2     1     1    0   0  0    -    0     0   0    0     0     1     1    1     1    0
 IconButton                     IconButton                               1     1     3    1   1  0  yes    0     0   0    0     0     1     1    0     0    0
+ToolbarGroup                   Toolbar                                  1     1    2+    0   0  0  yes    0     0   0    0     0     2     2    0     0    0
 useCounter                     useCounter                               1     1     -    -   -  -    -    -     2   1    2     0     0     0    0     0    0
 
 Threshold violations
@@ -62,6 +67,7 @@ SettingsPanel                  SettingsPanel                       props 9 > 7
 SettingsPanel                  SettingsPanel                       boolean-props 5 > 2
 Cart                           Cart                                setter-effects 1 > 0
 TodoList                       TodoList                            nested-components 1 > 0
+Toolbar                        Toolbar                             props 8 > 7
 Dashboard                      Dashboard                           pass-through 5 > 3
 Layout                         Dashboard                           pass-through 4 > 3
 `
@@ -75,7 +81,7 @@ func TestReactOnTheFixtureWithoutCoverage(t *testing.T) {
 	if stdout != reactNoCoverageReport {
 		t.Fatalf("stdout:\n%s\nwant:\n%s", stdout, reactNoCoverageReport)
 	}
-	if !strings.HasSuffix(stderr, "React thresholds exceeded: 7 violation(s)\n") {
+	if !strings.HasSuffix(stderr, "React thresholds exceeded: 8 violation(s)\n") {
 		t.Fatalf("stderr = %q", stderr)
 	}
 	edn, err := os.ReadFile(filepath.Join(root, ".metrics", "react.edn"))
@@ -86,6 +92,10 @@ func TestReactOnTheFixtureWithoutCoverage(t *testing.T) {
 		`  {:name "Cart#useEffect#1", :namespace "Cart", :kind :callback, :unit "Cart", :path "src/Cart.tsx", :line 22, :complexity 10, :coverage nil, :crap nil}`,
 		`   :props {:count 5, :boolean 0, :optional 0, :callback 1, :rest false, :pass-through ["locale" "notifications" "onLogout" "user"], :open false},`,
 		`  {:name "TodoList", :namespace "TodoList", :path "src/TodoList.tsx", :line 9, :metric :nested-components, :value 1.0, :limit 0.0}`,
+		// Toolbar: Omit<ButtonBase, "variant"> & {...}, ButtonBase imported through src/types/index.ts
+		`   :props {:count 8, :boolean 2, :optional 3, :callback 2, :rest true, :pass-through [], :open false},`,
+		// ToolbarGroup: & HTMLAttributes<HTMLDivElement> from react stays open
+		`   :props {:count 2, :boolean 0, :optional 0, :callback 0, :rest true, :pass-through [], :open true},`,
 	} {
 		if !strings.Contains(string(edn), "\n"+want+"\n") {
 			t.Errorf("react.edn lacks %s", want)
@@ -136,7 +146,7 @@ func TestReactOnTheFixtureWithCoverage(t *testing.T) {
 			t.Errorf("report lacks %q:\n%s", want, stdout)
 		}
 	}
-	if !strings.HasSuffix(stderr, "React thresholds exceeded: 8 violation(s)\n") {
+	if !strings.HasSuffix(stderr, "React thresholds exceeded: 9 violation(s)\n") {
 		t.Fatalf("stderr tail = %q", stderr[max(0, len(stderr)-200):])
 	}
 }
