@@ -4,12 +4,10 @@
 package testrun
 
 import (
-	"errors"
-	"fmt"
 	"io"
 	"strings"
 
-	"github.com/matheusAle/coderefinery/internal/discover"
+	"github.com/matheusAle/coderefinery/internal/cliutil"
 	"github.com/matheusAle/coderefinery/internal/pyfmt"
 )
 
@@ -109,23 +107,7 @@ func ParseArgs(args []string) Options {
 // Main runs `coderefinery test` and returns the exit code.
 func Main(args []string, stdout, stderr io.Writer) int {
 	opts := ParseArgs(args)
-	if opts.Help {
-		w := stdout
-		if opts.ExitCode != 0 {
-			w = stderr
-		}
-		fmt.Fprint(w, opts.Message)
-		return opts.ExitCode
-	}
-	code, err := Run(opts, stdout, stderr)
-	if err != nil {
-		var gerr *discover.GitError
-		if errors.As(err, &gerr) {
-			fmt.Fprintln(stderr, gerr.Message)
-			return gerr.Code
-		}
-		fmt.Fprintf(stderr, "coderefinery test: %v\n", err)
-		return 1
-	}
-	return code
+	return cliutil.Main(opts.Help, opts.Message, opts.ExitCode, "coderefinery test", stdout, stderr, func() (int, error) {
+		return Run(opts, stdout, stderr)
+	})
 }

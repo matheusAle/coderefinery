@@ -6,11 +6,11 @@ package mutate
 
 import (
 	"errors"
-	"fmt"
 	"io"
 	"math"
 	"strings"
 
+	"github.com/matheusAle/coderefinery/internal/cliutil"
 	"github.com/matheusAle/coderefinery/internal/pyfmt"
 )
 
@@ -54,13 +54,6 @@ type Options struct {
 	FixOverlay bool
 }
 
-func take(args []string, i int, opt string) (string, error) {
-	if i+1 >= len(args) || args[i+1] == "" || strings.HasPrefix(args[i+1], "-") {
-		return "", fmt.Errorf("%s requires a value", opt)
-	}
-	return args[i+1], nil
-}
-
 func parseLines(value string) (map[int]bool, error) {
 	found := map[int]bool{}
 	for _, piece := range strings.Split(value, ",") {
@@ -99,7 +92,7 @@ func ParseArgs(args []string) Options {
 		switch arg {
 		case "-s", "--source-root", "--root", "--coverage-command", "--test-command", "--timeout-factor",
 			"--mutation-warning", "--max-workers", "--lines", "--min-timeout":
-			v, err := take(args, i, arg)
+			v, err := cliutil.Value(args, i, arg)
 			if err != nil {
 				return usage(err.Error())
 			}
@@ -194,18 +187,7 @@ func ParseArgs(args []string) Options {
 // Main runs `coderefinery mutate` and returns the exit code.
 func Main(args []string, stdout, stderr io.Writer) int {
 	opts := ParseArgs(args)
-	if opts.Help {
-		w := stdout
-		if opts.ExitCode != 0 {
-			w = stderr
-		}
-		fmt.Fprint(w, opts.Message)
-		return opts.ExitCode
-	}
-	code, err := Run(opts, stdout, stderr)
-	if err != nil {
-		fmt.Fprintf(stderr, "mutator: %v\n", err)
-		return 1
-	}
-	return code
+	return cliutil.Main(opts.Help, opts.Message, opts.ExitCode, "mutator", stdout, stderr, func() (int, error) {
+		return Run(opts, stdout, stderr)
+	})
 }

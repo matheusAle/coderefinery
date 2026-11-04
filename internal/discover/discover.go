@@ -273,6 +273,15 @@ func ChangedFiles(root string) ([]string, error) {
 	return found, nil
 }
 
+// RelativeOrSelf is path relative to base, or path itself when it is not
+// below base.
+func RelativeOrSelf(path, base string) string {
+	if rel, ok := RelativeTo(path, base); ok {
+		return rel
+	}
+	return path
+}
+
 // IsRelativeTo is PurePath.is_relative_to.
 func IsRelativeTo(path, base string) bool {
 	return path == base || strings.HasPrefix(path, strings.TrimSuffix(base, "/")+"/")

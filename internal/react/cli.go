@@ -1,13 +1,13 @@
 package react
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"os"
 	"path/filepath"
 	"strings"
 
+	"github.com/matheusAle/coderefinery/internal/cliutil"
 	"github.com/matheusAle/coderefinery/internal/coverage"
 	"github.com/matheusAle/coderefinery/internal/crap"
 	"github.com/matheusAle/coderefinery/internal/discover"
@@ -162,25 +162,9 @@ func (o *Options) set(arg, value string) string {
 // Main runs `coderefinery react` and returns the exit code.
 func Main(args []string, stdout, stderr io.Writer) int {
 	opts := ParseArgs(args)
-	if opts.Help {
-		w := stdout
-		if opts.ExitCode != 0 {
-			w = stderr
-		}
-		fmt.Fprint(w, opts.Message)
-		return opts.ExitCode
-	}
-	code, err := run(opts, stdout, stderr)
-	if err != nil {
-		var gerr *discover.GitError
-		if errors.As(err, &gerr) {
-			fmt.Fprintln(stderr, gerr.Message)
-			return gerr.Code
-		}
-		fmt.Fprintf(stderr, "react: %v\n", err)
-		return 1
-	}
-	return code
+	return cliutil.Main(opts.Help, opts.Message, opts.ExitCode, "react", stdout, stderr, func() (int, error) {
+		return run(opts, stdout, stderr)
+	})
 }
 
 // selectFiles reuses crap's selection (paths, filters, --changed, skipped

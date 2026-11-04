@@ -205,9 +205,9 @@ func execute(root string, p *plan, opts Options, stdout, stderr io.Writer) (RunR
 	if p.tool == "" {
 		rec.Tool = last.Tool
 	}
-	rec.Results = relTo(root, p.results)
+	rec.Results = discover.RelativeOrSelf(p.results, root)
 	if p.coverageRep != "" && discover.Exists(p.coverageRep) {
-		rec.Coverage = relTo(root, p.coverageRep)
+		rec.Coverage = discover.RelativeOrSelf(p.coverageRep, root)
 	} else if p.coverageRep != "" {
 		rec.Granularity, rec.Contexts = "none", false
 	}
@@ -262,13 +262,6 @@ func flaky(runs []*testresult.Run) []string {
 	}
 	sort.Strings(out)
 	return out
-}
-
-func relTo(root, p string) string {
-	if rel, ok := discover.RelativeTo(p, root); ok {
-		return rel
-	}
-	return p
 }
 
 // loadResults parses the module's report with IDs relative to the repo.

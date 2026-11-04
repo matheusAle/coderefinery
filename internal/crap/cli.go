@@ -1,7 +1,6 @@
 package crap
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"math"
@@ -10,6 +9,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/matheusAle/coderefinery/internal/cliutil"
 	"github.com/matheusAle/coderefinery/internal/coverage"
 	"github.com/matheusAle/coderefinery/internal/discover"
 	"github.com/matheusAle/coderefinery/internal/model"
@@ -95,13 +95,6 @@ type Options struct {
 	Branches            bool // --branches (hidden, design-tests §6)
 }
 
-func take(args []string, i int, opt string) (string, error) {
-	if i+1 >= len(args) || args[i+1] == "" || strings.HasPrefix(args[i+1], "-") {
-		return "", fmt.Errorf("%s requires a value", opt)
-	}
-	return args[i+1], nil
-}
-
 // ParseArgs is cli.parse_args.
 func ParseArgs(args []string) Options {
 	for _, a := range args {
@@ -117,7 +110,7 @@ func ParseArgs(args []string) Options {
 		arg := args[i]
 		switch {
 		case arg == "-s" || arg == "--source-root" || arg == "--root" || arg == "--coverage-command" || arg == "--threshold":
-			v, err := take(args, i, arg)
+			v, err := cliutil.Value(args, i, arg)
 			if err != nil {
 				return usage(err.Error())
 			}
@@ -174,12 +167,7 @@ func SelectFiles(opts Options) ([]string, error) {
 	})
 }
 
-func sourcePath(file, root string) string {
-	if rel, ok := discover.RelativeTo(file, root); ok {
-		return rel
-	}
-	return file
-}
+func sourcePath(file, root string) string { return discover.RelativeOrSelf(file, root) }
 
 // AnalyzeFiles is analyze.analyze_files. A nil bundle means --no-coverage.
 func AnalyzeFiles(files []string, projectRoot string, bundle *coverage.Bundle) ([]model.Entry, error) {
@@ -226,29 +214,9 @@ func AnalyzeFiles(files []string, projectRoot string, bundle *coverage.Bundle) (
 // Main runs `coderefinery crap` and returns the exit code.
 func Main(args []string, stdout, stderr io.Writer) int {
 	opts := ParseArgs(args)
-	if opts.Help {
-		w := stdout
-		if opts.ExitCode != 0 {
-			w = stderr
-		}
-		msg := opts.Message
-		if !strings.HasSuffix(msg, "\n") {
-			msg += "\n"
-		}
-		fmt.Fprint(w, msg)
-		return opts.ExitCode
-	}
-	code, err := run(opts, stdout, stderr)
-	if err != nil {
-		var gerr *discover.GitError
-		if errors.As(err, &gerr) {
-			fmt.Fprintln(stderr, gerr.Message)
-			return gerr.Code
-		}
-		fmt.Fprintf(stderr, "crapper: %v\n", err)
-		return 1
-	}
-	return code
+	return cliutil.Main(opts.Help, opts.Message, opts.ExitCode, "crapper", stdout, stderr, func() (int, error) {
+		return run(opts, stdout, stderr)
+	})
 }
 
 func run(opts Options, stdout, stderr io.Writer) (int, error) {

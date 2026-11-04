@@ -5,11 +5,11 @@
 package dry
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"strings"
 
+	"github.com/matheusAle/coderefinery/internal/cliutil"
 	"github.com/matheusAle/coderefinery/internal/discover"
 	"github.com/matheusAle/coderefinery/internal/pyfmt"
 )
@@ -30,13 +30,6 @@ type Options struct {
 	Tests       bool // --tests (hidden, design-tests §7)
 }
 
-func take(args []string, i int, opt string) (string, error) {
-	if i+1 >= len(args) || args[i+1] == "" || strings.HasPrefix(args[i+1], "-") {
-		return "", fmt.Errorf("%s requires a value", opt)
-	}
-	return args[i+1], nil
-}
-
 // ParseArgs is dryer cli.parse_args (spec-dryer §1.1).
 func ParseArgs(args []string) Options {
 	for _, a := range args {
@@ -52,7 +45,7 @@ func ParseArgs(args []string) Options {
 		arg := args[i]
 		switch arg {
 		case "-s", "--source-root", "--root", "--threshold", "--min-lines", "--min-nodes", "--format":
-			v, err := take(args, i, arg)
+			v, err := cliutil.Value(args, i, arg)
 			if err != nil {
 				return usage(err.Error())
 			}
@@ -139,27 +132,11 @@ func Run(opts Options, stdout, stderr io.Writer) (int, error) {
 // Main runs `coderefinery dry` and returns the exit code.
 func Main(args []string, stdout, stderr io.Writer) int {
 	opts := ParseArgs(args)
-	if opts.Help {
-		w := stdout
-		if opts.ExitCode != 0 {
-			w = stderr
+	return cliutil.Main(opts.Help, opts.Message, opts.ExitCode, "dryer", stdout, stderr, func() (int, error) {
+		if opts.Format != "text" && opts.Format != "edn" {
+			fmt.Fprintf(stderr, "Unknown format: %s\n", opts.Format)
+			return 2, nil
 		}
-		fmt.Fprint(w, opts.Message)
-		return opts.ExitCode
-	}
-	if opts.Format != "text" && opts.Format != "edn" {
-		fmt.Fprintf(stderr, "Unknown format: %s\n", opts.Format)
-		return 2
-	}
-	code, err := Run(opts, stdout, stderr)
-	if err != nil {
-		var gerr *discover.GitError
-		if errors.As(err, &gerr) {
-			fmt.Fprintln(stderr, gerr.Message)
-			return gerr.Code
-		}
-		fmt.Fprintf(stderr, "dryer: %v\n", err)
-		return 1
-	}
-	return code
+		return Run(opts, stdout, stderr)
+	})
 }

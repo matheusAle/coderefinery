@@ -1,7 +1,6 @@
 package testreport
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"math"
@@ -12,6 +11,7 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"github.com/matheusAle/coderefinery/internal/cliutil"
 	"github.com/matheusAle/coderefinery/internal/discover"
 	"github.com/matheusAle/coderefinery/internal/edn"
 )
@@ -86,25 +86,9 @@ func ParseArgs(args []string) Options {
 // Main runs `coderefinery tests` and returns the exit code.
 func Main(args []string, stdout, stderr io.Writer) int {
 	opts := ParseArgs(args)
-	if opts.Help {
-		w := stdout
-		if opts.ExitCode != 0 {
-			w = stderr
-		}
-		fmt.Fprint(w, opts.Message)
-		return opts.ExitCode
-	}
-	code, err := Run(opts, stdout, stderr)
-	if err != nil {
-		var gerr *discover.GitError
-		if errors.As(err, &gerr) {
-			fmt.Fprintln(stderr, gerr.Message)
-			return gerr.Code
-		}
-		fmt.Fprintf(stderr, "coderefinery tests: %v\n", err)
-		return 1
-	}
-	return code
+	return cliutil.Main(opts.Help, opts.Message, opts.ExitCode, "coderefinery tests", stdout, stderr, func() (int, error) {
+		return Run(opts, stdout, stderr)
+	})
 }
 
 // GeneratedAt stamps tests.edn (swappable in tests).

@@ -51,3 +51,12 @@ func TestSuffixAndParts(t *testing.T) {
 		t.Error("parts")
 	}
 }
+
+func TestRelativeOrSelfFallsBackToThePath(t *testing.T) {
+	cases := map[[2]string]string{{"/r/a/b.go", "/r"}: "a/b.go", {"/r", "/r"}: ".", {"/rx/b.go", "/r"}: "/rx/b.go"}
+	for in, want := range cases {
+		if got := RelativeOrSelf(in[0], in[1]); got != want {
+			t.Errorf("RelativeOrSelf(%q, %q) = %q, want %q", in[0], in[1], got, want)
+		}
+	}
+}
