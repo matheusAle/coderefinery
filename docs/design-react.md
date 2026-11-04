@@ -182,6 +182,12 @@ checks the exact `--no-coverage` report and exit 3 (8 violations), the coverage 
 rows, 9 violations; skipped without `node_modules` or under `-short`) and exit 2 on a failing
 coverage command. `internal/react/react_test.go` covers each metric with exact values.
 
+**mutate on Vitest + jsdom.** mutate's worker overlay links the project's files. Vite resolves a
+linked test or setup file to its real path, outside the worker, and under `environment: "jsdom"`
+refuses to load it: every mutant is reported KILLED (upstream behaviour). Run `mutate --fix-overlay`
+(or `--attribute`, which turns it on): the worker then holds copies of the JS/TS sources, and no
+`server: { fs: { strict: false } }` line is needed in the project's config (DEVIATIONS.md M9).
+
 ## 9. Follow-ups (v2, out of scope here)
 
 - **React mutation operators** in `mutate` (opt-in, hidden flag, like `--attribute`): remove a
