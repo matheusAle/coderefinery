@@ -292,6 +292,25 @@ coderefinery dry --jsx                                  # >= 4 elements, >= 40 n
 coderefinery dry --jsx-min-elements 3 --jsx-min-nodes 30 --jsx-threshold 0.75 src   # looser
 ```
 
+### React mutation operators
+
+`coderefinery mutate --react` (hidden flag, a coderefinery addition) adds
+React operators to the usual mutation sites: `drop render <X/>` /
+`always render <X/>` for `cond && <X/>`, `swap ternary` for JSX ternaries,
+`drop prop <name> from <X/>` (not `key`, `className`, `style`, handlers or
+spreads), `noop onClick` (`onX={() => {}}`) and `drop dep <dep> from
+useEffect` (one entry of a React hook dependency array, also in `.ts` hooks).
+Sites keep crapper's form ids, so snapshots, differential reruns,
+`--attribute` and `tests` work unchanged; plain `mutate` is unaffected.
+Vitest projects with `environment: "jsdom"` need
+`server: { fs: { strict: false } }` in their config, or every mutant is
+reported KILLED. Details: [docs/design-react.md §13](docs/design-react.md#13-mutation-operators-mutate---react).
+
+```bash
+coderefinery mutate --react --changed --use-existing-coverage
+coderefinery mutate --react --scan --no-coverage src/components
+```
+
 ## Parity status
 
 - **Harness**: 36 of 36 cases byte-identical to upstream (crap, dry and

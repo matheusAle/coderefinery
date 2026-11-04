@@ -1,6 +1,6 @@
 package mutate
 
-// React mutation operators (mutate --react, docs/design-react.md §10). A
+// React mutation operators (mutate --react, docs/design-react.md §13). A
 // coderefinery addition: upstream mutator has no React operators. They read
 // the same TSX/JSX tree as the upstream rules and add sites next to them, so
 // every site still belongs to a crapper function (its form id), keeps the

@@ -503,3 +503,126 @@ with no dependencies).
 - A `Duplicate JSX` count per component in `coderefinery react` (needs the engine exported).
 - `.tsx` files are parsed twice (once for functions, once for JSX). Sharing the tree would save
   about the parse share of the 1.1 s above.
+
+## 13. Mutation operators (`mutate --react`)
+
+Status: built (§9 item 1; `internal/mutate/react_sites.go`). An **addition**: upstream mutator has no
+React operators. Without `--react`, mutate's sites, stdout, stderr, exit codes and `.metrics/mutate`
+bytes are unchanged (harness 36/36, 55/55 raw-equal); `--react` is hidden from `mutate --help`, which
+stays byte-identical, like `--attribute` and `--fix-go-coverage`.
+
+**Why a flag on `mutate`, not a new command.** The operators are more sites for the same pipeline:
+coverage gate, differential selection, overlays, snapshots, `--attribute`, `tests`. A flag adds them
+to the upstream sites (it never replaces them), so `mutate --react` = upstream sites + React sites.
+The name matches the `react` subcommand.
+
+### Operators
+
+| operator | matches | replacement | label in the site log and scan |
+|---|---|---|---|
+| drop render | `cond && <X/>` (the right operand, parentheses allowed, is a JSX element) | `false` | `drop render <X/>` |
+| always render | the same expression | the right operand (`<X/>`) | `always render <X/>` |
+| swap ternary | `c ? A : B` where `A` or `B` is a JSX element | `c ? B : A`; the replaced span runs from `A` to the end of `B`, so the condition is not part of the mutation id | `swap ternary <A/> : null` |
+| drop prop | one `jsx_attribute` of any element (DOM or component), including a valueless `disabled` | the attribute deleted | `drop prop alt from <img/>` |
+| noop handler | an attribute named `on[A-Z]...` whose value is `{expr}` | `expr` → `() => {}` | `noop onClick` |
+| drop dep | one element of the last-argument array literal of `useEffect`, `useLayoutEffect`, `useInsertionEffect`, `useMemo`, `useCallback`, `useImperativeHandle` (also `React.useX`) | the element and one separating comma deleted (`[a, b, c]` → `[b, c]` / `[a, c]` / `[a, b]`, `[a]` → `[]`) | `drop dep count from useEffect` |
+
+Element labels are `<Name/>` for a self-closing element, `<Name>` for one with children, `<>` for a
+fragment. Branch and dependency texts are whitespace-collapsed and cut to 40 characters (`…`).
+
+Left alone, by decision:
+- `key` (reconciliation only), `className` and `style` (presentation): a behaviour test cannot see them,
+  so their survivors would be noise (on excalidraw they would add over a thousand sites).
+- handler attributes are never *dropped*: the noop operator covers them, and dropping a component's
+  required callback mostly tests that the child crashes.
+- spread props (`{...rest}`): dropping a spread removes an unknown set of props, so a survivor names
+  no prop to test; they are pass-through plumbing the props metric (`Rest`) already reports.
+- `cond || <X/>`, `cond ?? <X/>`: fallbacks, not conditional renders; the upstream `|| -> &&` /
+  `?? -> ||` sites still apply.
+- a handler that already is `() => {}`, a string handler value.
+
+### Files
+
+Every TypeScript-family file in the run (`.ts .tsx .mts .cts .js .jsx .mjs .cjs`, the files mutate
+already takes). The JSX operators only fire where the grammar has JSX: `.tsx`, and the JavaScript
+grammar (`.js .jsx .mjs .cjs`, JSX enabled as in upstream mutator). The dep-array operator also fires in
+`.ts`, because custom hooks live in `useX.ts` files; it only matches React's own hook names, so a
+non-React file has no such site. Other languages: `--react` changes nothing.
+
+### Form ids, mutation ids, snapshots
+
+- **Form id: crapper's.** A React site belongs to the tightest crapper function holding its first byte,
+  exactly like an upstream site (spec-mutator §2.4); sites outside any crapper function are dropped.
+  So a site in `Cart`'s JSX is `defn/Cart`, in `TodoList.TodoRow` it is `defn/TodoList` (crapper does
+  not list nested components). React unit names (`Cart#useEffect#1`) are **not** used: they would
+  give the same code two form ids depending on the flag, so the snapshot's `:forms` (digests,
+  totals) and the differential selection would flip between runs with and without `--react`.
+- **Mutation id: the upstream shape** `[file, namespace, form, start, end, original, mutant]`, with the
+  replaced text as `original` (`"ok && <p>ok</p>"`) and the replacement as `mutant` (`"false"`).
+  `coderefinery tests` and `--attribute` decode it unchanged; two operators on the same span
+  (drop/always render) differ by `mutant`.
+- **Differential reruns** work as for any site: an unchanged form carries its React kills; a changed
+  form reruns them.
+- **Mixing runs.** A run writes the outcomes of the sites it found. A plain `mutate` after
+  `mutate --react` therefore drops the React outcomes from the snapshot (they are not sites of that
+  run) and its form totals count upstream sites only; the next `--react` run executes the React
+  mutants again. Run one mode consistently on a project (the skill: always `--react` on React code).
+
+### Fixture result (`fixtures/react`, `cmd/coderefinery/react_mutate_e2e_test.go`)
+
+`mutate --react --attribute --no-coverage --lines 23,31,32,33 src/Dashboard.tsx`, with the fixture's
+Testing Library test (renders the dashboard, reads the notification count, clicks "Log out"); `by` is
+`tests/Dashboard.test.tsx::logs out from the sidebar` on every KILLED line:
+
+```
+KILLED    src/Dashboard.tsx:23 drop prop user from <Sidebar/> · by ...
+SURVIVED  src/Dashboard.tsx:23 drop prop locale from <Sidebar/>
+KILLED    src/Dashboard.tsx:23 drop prop notifications from <Sidebar/> · by ...
+KILLED    src/Dashboard.tsx:23 noop onLogout · by ...
+SURVIVED  src/Dashboard.tsx:31 drop prop src from <img/>
+SURVIVED  src/Dashboard.tsx:31 drop prop alt from <img/>
+KILLED    src/Dashboard.tsx:32 drop render <span> · by ...
+SURVIVED  src/Dashboard.tsx:32 always render <span>
+SURVIVED  src/Dashboard.tsx:32 > -> >=
+SURVIVED  src/Dashboard.tsx:32 0 -> 1
+KILLED    src/Dashboard.tsx:32 && -> || · by ...
+KILLED    src/Dashboard.tsx:33 noop onClick · by ...
+```
+
+Line 23 is `<Sidebar .../>` inside `Layout`, so its sites count for `defn/Layout`; lines 31-33 for
+`defn/Sidebar`. The kills come from behaviour assertions (`getByText("3")`, `toHaveBeenCalledTimes(1)`,
+and the crash when `user` is missing); the survivors are weak spots of the test: it never checks the
+avatar (`getByAltText("Ada")` would kill `drop prop alt`), the `lang` attribute, or that the count
+disappears at zero notifications (`always render <span>`, `> -> >=`). Over the whole fixture
+(`mutate --react --no-coverage src`, 11 min at load 40) the React operators give 47 mutants:
+17 killed, 30 survived (e.g. `noop onClick` on Cart's untested Clear button, every `drop dep` but
+`count` in `useCounter`'s effect, since the tests render once and never change a dependency).
+
+**Vitest + jsdom gotcha.** mutate runs every mutant in a symlink overlay (`target/mutation-workers`,
+upstream design). Under `environment: "jsdom"` Vitest loads test files through Vite's dev server,
+which resolves the symlinks to the real project and refuses those paths as outside the worker root:
+every test file fails to load and **every mutant is reported KILLED**. This is upstream behaviour (not
+React-specific; any Vitest project in web mode hits it) and is not changed here. The fixture's
+`vitest.config.ts` sets `server: { fs: { strict: false } }`; a project needs the same line, or a
+`--test-command`, before trusting mutate's kills.
+
+### Calibration: excalidraw `dd2f8fc`
+
+`mutate --scan --no-coverage --react --root <excalidraw>` (read-only):
+
+| | sites |
+|---|---|
+| upstream operators (plain `--scan`) | 25,604 |
+| with `--react` | 28,907 (+3,303 in 176 files: 3,224 `.tsx`, 78 `.ts`, 1 `.js`) |
+| drop prop | 1,977 (top: `label` 135, `type` 105, `icon` 92, `title` 86, `data-testid` 69, `aria-label` 66) |
+| noop handler | 493 |
+| drop dep | 354 (78 of them in `.ts` hooks) |
+| drop render / always render | 219 / 219 |
+| swap ternary | 41 |
+
+Runtime: the scan takes 1.5 s CPU with or without `--react` (20-23 s wall on a machine at load 40).
+Every React mutant found in the repo (6,233, test files and unowned code included) was applied and
+re-parsed: none is a syntax error.
+
+Follow-ups: React unit names in the label (`drop dep x from Cart#useEffect#1`) without changing the form
+id; an operator for `value || <Fallback/>`; `--react` in the skill's Mutator step.
