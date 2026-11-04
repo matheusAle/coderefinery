@@ -1,0 +1,19 @@
+# Benchmark corpus. One repo per line, whitespace-separated:
+#   name  url  sha  language  size  sparse
+# sha    : pinned commit (fetched shallow with `git fetch --depth 1 origin <sha>`); "-" = default branch HEAD.
+#          typescript is pinned to tag v6.0.3, the last release written in TypeScript (main is now the Go port).
+# sparse : comma list of directories for a sparse checkout (root files are always kept), "." = whole repo
+# File/LOC counts of the analysed set (what the tools actually walk: their SKIP_DIRS/TEST_DIRS pruning and
+# test-file rules applied) are in RESULTS.md, produced by `bench count`.
+django     https://github.com/django/django.git              2382f40aed50332d2325563ea9097853561d45e8  python      large   .
+flask      https://github.com/pallets/flask.git              49943b5a94413a530761350f04e896f76e8d620e  python      medium  .
+typescript https://github.com/microsoft/TypeScript.git       050880ce59e30b356b686bd3144efe24f875ebc8  typescript  large   src
+excalidraw https://github.com/excalidraw/excalidraw.git      dd2f8fc32b92cbf56f4abee6a0cf3b14681b4b55  typescript  medium  .
+webpack    https://github.com/webpack/webpack.git            0b35ae904f20174d3be375a44822c9e4aedb1221  javascript  large   lib
+axios      https://github.com/axios/axios.git                fb88a1b133c1a2d774713070b8ca25f7bcd382ac  javascript  medium  lib
+hugo       https://github.com/gohugoio/hugo.git              fa5a3d48b8dcf6c0bfcd7d06726a6530b2efc174  go          large   .
+fzf        https://github.com/junegunn/fzf.git               99bfd5aa0f66133d7dcfbf18f8044eb765f04649  go          medium  .
+guava      https://github.com/google/guava.git               2bcd693991a6386cc22f946c9b18359ccd07e80e  java        large   guava/src
+gson       https://github.com/google/gson.git                57731049da3e415be3d5d34db1ca3b80f3c73810  java        medium  gson/src/main
+tokio      https://github.com/tokio-rs/tokio.git             f67444986f673811950c1c3cdb0761eedc8a88ff  rust        large   .
+ripgrep    https://github.com/BurntSushi/ripgrep.git         91f5d22ef48bde459d90a8c7dbeab416e97d0f2b  rust        medium  .

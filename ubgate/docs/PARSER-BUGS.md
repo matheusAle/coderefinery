@@ -81,3 +81,16 @@ line 546, a `map_or(` call whose arguments are preceded by comments and end in
 `|r| (r[0] as usize)..((r[1] + 1) as usize)`: tree-sitter makes it
 `call_expression(closure_expression(…), arguments)`, ours a plain closure
 (a comment-free one-liner agrees).
+
+## Found by benchmarks
+
+Output diffs between upstream and ubgate from `bench/run.sh` (crap
+`--no-coverage`, dry, mutate `--scan` on 12 pinned repos, see
+`bench/RESULTS.md`). Every other repo/workload was byte-identical. Check each
+with `go run ./tools/treediff FILE`.
+
+| lang | repro | ours | tree-sitter | where / impact |
+|---|---|---|---|---|
+| typescript | `const d = x as a.b.C[];\n` | parse error `unexpected "]"` | `as_expression(identifier, array_type(nested_type_identifier(module: nested_identifier, name: type_identifier)))`, no ERROR | TypeScript v6.0.3 `src/testRunner/unittests/tsserver/completionsIncomplete.ts` (`… }).response as ts.server.protocol.CompletionEntryDetails[]`): the whole file is dropped, 4 functions (crap) and 44 sites (mutate). `x as A.B[]` and `let d: a.b.C[]` agree; it takes 3+ segments plus `[]` after `as`. |
+| typescript (A2) | `interface L<in out T> {\n    data: T;\n}\n` (TS 4.7 variance annotations) | parse error `expected ">", got "T"` | `type_parameter(name: T)` followed by `ERROR(identifier identifier)`; the rest of the file is a normal tree | TypeScript v6.0.3 `src/compiler/transformers/utilities.ts`: whole file dropped, 48 functions (crap) and 166 sites (mutate). The grammar has no variance syntax, so this is A2, but one annotation costs the whole file. `<in T>` alone parses on our side as `type_parameter [in T]` while tree-sitter gives `type_parameter(T)` + `ERROR(identifier)`. |
+| java (J1) | `class C {\n  void f(Object @A ... a) {}\n}\n` | clean `spread_parameter` | `formal_parameters(ERROR(type_identifier, marker_annotation(scoped_identifier(… ERROR …))))` | DEVIATIONS J1 still says ours is a parse error here, but it now parses cleanly. guava `base/Preconditions.java` (`@Nullable Object @Nullable ... errorMessageArgs`): with no ERROR nodes, the fingerprints of `checkNotNull` at 995-1005 and 1062-1071 reach 0.84, so dry reports one extra pair. Upstream's ERROR subtrees keep it below 0.82. crap and mutate output is identical. |
