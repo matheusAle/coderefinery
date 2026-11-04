@@ -193,3 +193,44 @@ Mutation survivors in the valid sample are a second test to-do list: 280 survivo
 - Compactions marked upstream-sensitive (C1, C3, C7, C9) must keep every message, filter and ordering byte for byte. Run the per-gate CLI tests and the harness goldens before and after.
 - Grammar changes (C4): all five `TestParityWithTreeSitter` must pass with the upstream venv present (they skip silently without it), plus `make treediff`.
 - Test deletions: follow the skill's proof (`test`, then `mutate --attribute --mutate-all` on the files those tests covered, then `tests`). Only do this in packages that do not import `internal/coverage`, until C1 is resolved.
+
+## Actions taken
+
+- Date: 2026-11-04. Branch `wt/compaction`, range `1ec8be5..51c723c`. Owner-approved items: compactions C1-C3 (CLI plumbing), T1/T2 (parity tests and test helpers), C4 (parser tree helpers), eliminate E1 (`SuffixMatch`), and the Split/test lists A and B. C9 (table-driven flag parsers) was skipped on purpose.
+- Measured the same way on scratch exports of both ends (`git archive <rev>`, binary built from that rev, Go per-package coverage): `coderefinery dry --threshold 0.8 cmd internal tools`, `coderefinery crap cmd internal tools` (rows with CRAP >= 10, no testdata rows in either run), `crap --branches`, and `wc -l` over `cmd internal tools` without `testdata/`.
+
+| Metric | `1ec8be5` | `51c723c` |
+|---|---|---|
+| dry 0.8 pairs (source) | 70 | 44 |
+| dry `--tests` 0.8 pairs | 99 | 64 |
+| crap rows at CRAP >= 10 | 313 (307 Go) | 290 (284 Go) |
+| of which at 0% coverage | 54 | 30 |
+| untested-arm lines (`crap --branches`) | 1,128 | 1,077 |
+| non-test Go lines | 33,072 | 32,926 (-146) |
+| test Go lines | 10,342 | 11,032 (+690) |
+
+The counts differ from the Summary above because the `react` commit (`bf9b2aa`) landed between that audit and this work.
+
+| Commit | Action | Non-test / test lines | Proof |
+|---|---|---|---|
+| `af00996` | C1: `discover.Select` is the one `cli.select_files` skeleton; crap, dry and mutate pass hooks (walk, `--changed` filter, explicit-file check, mutate's outside-root report). `discover.JoinRoot` replaces 3 `joinRoot`. | -133 / +163 for both C1 commits (new unit tests included) | make ci, harness 36/36 (55/55 raw-equal) |
+| `91da957` | C2/C3: `cliutil.Value` (the `take` rule) and `cliutil.Main` (help, run, git error, `<prefix>: <error>`) for all six subcommands. `discover.RelativeOrSelf` replaces `sourcePath`'s body and `testrun.relTo`. | (see above) | make ci, harness 36/36, 32 help, usage, format and git-error invocations byte-identical to a `1ec8be5` binary |
+| `a06e18c` | T1/T2: `treediff.Parity(t, corpora...)` is the body of the 5 parity tests. `internal/testutil` holds `WriteFile` and `ReadFile`. | +103 / -179 (the helpers live in non-test files so other packages can import them) | 5 parity tests run against the venv and pass, make ci, binary unchanged |
+| `e8224fc` | C4: `syntax.ExtraParent`, `InsertExtra`, `RemoveHidden`, `Build`, `SetField`. TypeScript keeps its start-inclusive rule (a flag), Python its zero-width insertion rule, Rust its own `node`. | -134 / +75 | parity tests, `make treediff` 67/67, make ci, harness 36/36 on that binary |
+| `62e7682` | E1: `coverage.SuffixMatch` deleted. | -6 / -3 | make ci, harness 36/36 |
+| `5799d65` | A: own-package tests for `readContexts`, `changedRows`, `ChangedFiles`, `treediff.*`, `ParseInt`/`PyRepr`, `GrammarFor`/`Parse`, `atLeast`, `testresult.Load` sniffing, and the untested `syntax` accessors. `testutil` gains `Git` and `InitRepo`. | +24 / +424 | make ci, binary unchanged |
+| `51c723c` | B: arm tests checked against oracle `--sexp` for TS `export default`, TS/Java escapes and JSX character references, and the mutate Clojure `#` dispatch. Python-semantics tests for `pyInt`, `truthy` and `pyjson.Dumps`. | 0 / +210 | make ci, binary unchanged |
+
+The table rows sum to -146 non-test and +690 test lines.
+
+Every commit passes `make ci` and `deadcode -test ./...` with 0 findings when checked out on its own. Harness 36/36 with 55/55 raw-equal was checked for each commit that changes the binary. Test-only commits leave the binary byte-identical (same SHA-256). `sh tests/launcher_test.sh` passes. Notable CRAP moves: `readContexts` 272.0 to 16.0, `defaultDeclaration` 167.5 to 28.2, `cljReader.dispatch` 167.4 to 75.4, TS `escapeEnd` 138.8 to 21.6, Java `escape` 96.3 to 20.0, `pyInt` 110.4 to 14.0, `ParseInt`/`PyRepr` 110.0 to 10.0, `Collect` 132.0 to 11.1.
+
+Deliberately left:
+- C9: the flag parsers were out of scope.
+- `react`'s own `sourcePath` and its inline option-value check, and the inline checks in `testrun` and `testreport` parsers: three other branches are editing `internal/react`, and the parser loops belong to C9.
+- C5 to C8: padding, stdlib replacements, node predicates, dryoracle.
+- T3: intra-file table-driven tests.
+- The `react` 0% rows (`run`, `Analyze`, `SortEntries`, ...): owned by the in-flight react branches.
+- `dry`'s and `mutate`'s local git test helpers, which could now use `testutil.Git`.
+- E2 `dryoracle.Parsable`: it is test-only, not unreachable from tests.
+- Finding from B: the TypeScript lexer accepts a short `\u004` escape that tree-sitter reports as ERROR. It is not recorded in DEVIATIONS yet.

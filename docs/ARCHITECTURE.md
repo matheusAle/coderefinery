@@ -42,12 +42,12 @@ tree. Parser parity is proven differentially (`tools/treediff`, see
 | package | upstream counterpart | role |
 |---|---|---|
 | `cmd/coderefinery` | the three entry points | subcommand dispatch |
-| `internal/syntax` | py-tree-sitter `Node` | the shared `Node`/`Tree` types, walkers, `Dump` (parity format), `SExp` (`str(node)`), builders (`Leaf`, `Inner`, `Finish`) |
+| `internal/syntax` | py-tree-sitter `Node` | the shared `Node`/`Tree` types, walkers, `Dump` (parity format), `SExp` (`str(node)`), builders (`Leaf`, `Inner`, `Build`, `SetField`, `Finish`), extra placement shared by the parsers (`ExtraParent`, `InsertExtra`, `RemoveHidden`) |
 | `internal/lang` | `tree_sitter_language_pack.get_parser` | registry: grammar name -> parser; `GrammarFor(path)` |
 | `internal/lang/python` | tree-sitter-python | hand-written Python parser |
 | `internal/lang/rust` | tree-sitter-rust | hand-written Rust parser (lazy lexer, token trees, macro_rules!) |
 | `internal/source` | `Path.read_text(errors="replace")` | CPython-exact UTF-8 replace decoding + universal newlines |
-| `internal/discover` | `crapper/discover.py` | languages, test-file rules, walk, `Resolve` (pathlib), `git status` changed files |
+| `internal/discover` | `crapper/discover.py` | languages, test-file rules, walk, `Resolve` (pathlib), `git status` changed files, `Select` (the `cli.select_files` skeleton crap, dry and mutate share, with per-tool hooks) |
 | `internal/model` | `crapper/model.py` | `Function`, `Entry` |
 | `internal/coverage` | `crapper/coverage.py`, `runners.py` | LCOV / Go profile / JaCoCo / Cloverage loaders, report-key matching, per-function percent, coverage runners |
 | `internal/crap` | crapper | complexity readers per language, CRAP, sort, report, EDN, CLI |
@@ -56,7 +56,9 @@ tree. Parser parity is proven differentially (`tools/treediff`, see
 | `internal/edn` | the tools' EDN writers | `String`, `Number4` |
 | `internal/pyjson` | `json.dumps(ensure_ascii=True)` | mutator ids |
 | `internal/pyfmt` | Python float semantics | `Round`, `Fixed`, `Repr`, `ParseFloat`, `ParseInt` |
-| `internal/treediff` | — | oracle runner + dump comparison (used by the tool and by tests) |
+| `internal/cliutil` | the tools' argparse/`main` tails | `Value` (an option's value), `Main` (help, run, git error and `<prefix>: <error>` to exit codes) for every subcommand |
+| `internal/treediff` | — | oracle runner + dump comparison (used by the tool and by tests); `Parity`, the body of every parser's `TestParityWithTreeSitter` |
+| `internal/testutil` | — | stdlib-only test helpers (`WriteFile`, `ReadFile`, `Git`, `InitRepo`) any package's own tests can import |
 | `tools/oracle/oracle.py` | — | upstream tree-sitter dumper (run with an upstream venv python) |
 | `tools/treediff` | — | CLI over `internal/treediff` |
 | `tools/dryoracle` | — | dryer parity per candidate: `dryer_oracle.py` (upstream dryer venv) vs `internal/dry` on spans, node counts and printed normalized forms; `go run ./tools/dryoracle PATH...` |
@@ -172,7 +174,7 @@ src)` once, which sets every `Parent` and derives every `Point`.
    (`go run ./tools/treediff testdata/<grammar> fixtures/<lang>`). Use the
    node inventory in `PARSERS.md` to prioritise: what the tools read must be
    exact first; dryer needs the full named structure.
-4. Add a parity test like `internal/lang/python/parity_test.go`.
+4. Add a parity test like `internal/lang/python/parity_test.go` (one `treediff.Parity` call listing the corpora).
 5. Write the tool readers over the tree: e.g. `internal/crap/lang_<lang>.go`
    registered in `crap.Readers` (signature `func(source, path, projectRoot string) ([]model.Function, error)`).
 
