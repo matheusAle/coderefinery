@@ -149,7 +149,13 @@ expect "the failure message says how to fix it" 127 'set CODEREFINERY_BIN to its
 modpath=github.com/matheusAle/coderefinery
 proxy=$T/proxy/github.com/matheus!ale/coderefinery/@v
 mkdir -p "$proxy" "$T/modsrc/$modpath@$VERSION"
-(cd "$ROOT" && find go.mod cmd internal tools testdata -type f -print | while read -r f; do
+# Like a real module zip, leave out nested modules (dirs with their own go.mod,
+# e.g. Go testdata projects).
+(cd "$ROOT" && nested=$(find cmd internal tools testdata -name go.mod -exec dirname {} \;) &&
+find go.mod cmd internal tools testdata -type f -print | while read -r f; do
+	skip=
+	for d in $nested; do case "$f" in "$d"/*) skip=1 ;; esac; done
+	[ -n "$skip" ] && continue
 	mkdir -p "$T/modsrc/$modpath@$VERSION/$(dirname "$f")"
 	cp "$f" "$T/modsrc/$modpath@$VERSION/$f"
 done)

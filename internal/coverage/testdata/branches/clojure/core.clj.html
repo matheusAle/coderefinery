@@ -1,0 +1,53 @@
+<html>
+ <head>
+  <link rel="stylesheet" href="../coverage.css"/>
+  <title>demo/core.clj</title>
+ </head>
+ <body>
+<span class="covered" title="1 out of 1 forms covered">
+                001&nbsp;&nbsp;(ns&nbsp;demo.core)
+</span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                002&nbsp;&nbsp;
+</span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                003&nbsp;&nbsp;(defn&nbsp;sign&nbsp;[x]
+</span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                004&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(pos?&nbsp;x)
+</span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                005&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:positive
+</span><br/>
+<span class="partial" title="2 out of 4 forms covered">
+                006&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(when&nbsp;(neg?&nbsp;x)&nbsp;:negative)))
+</span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                007&nbsp;&nbsp;
+</span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                008&nbsp;&nbsp;(defn&nbsp;label&nbsp;[x]
+</span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                009&nbsp;&nbsp;&nbsp;&nbsp;(cond
+</span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;x&nbsp;1)&nbsp;&quot;one&quot;
+</span><br/>
+<span class="partial" title="3 out of 4 forms covered">
+                011&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;x&nbsp;2)&nbsp;&quot;two&quot;
+</span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                012&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else&nbsp;&quot;many&quot;))
+</span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                013&nbsp;&nbsp;
+</span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                014&nbsp;&nbsp;(defn&nbsp;unused&nbsp;[x]
+</span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                015&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;x&nbsp;1&nbsp;0))
+</span><br/>
+ </body>
+</html>

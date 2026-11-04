@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="6" failures="1" errors="0" time="0.436">
+  <testsuite name="add" errors="0" failures="1" skipped="1" timestamp="2026-11-04T01:19:44" time="0.148" tests="6">
+    <testcase classname="add adds" name="add adds" time="0.002" file="__tests__/math.test.js">
+    </testcase>
+    <testcase classname="add fails" name="add fails" time="0.001" file="__tests__/math.test.js">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: 4
+Received: 3
+    at Object.toBe (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/__tests__/math.test.js:4:41)
+    at Promise.finally.completed (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:1834:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:1774:10)
+    at _callCircusTest (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:1167:40)
+    at processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at _runTestInContext (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:1103:3)
+    at runTestWithContext (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:996:5)
+    at _runTestsForDescribeBlockOnce (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:1008:11)
+    at _runTestsForDescribeBlock (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:824:5)
+    at _runTestsForDescribeBlockOnce (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:1003:11)
+    at _runTestsForDescribeBlock (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:824:5)
+    at run (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:789:3)
+    at runAndTransformResultsToJestFormat (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:2300:21)
+    at jestAdapter (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/runner.js:111:19)
+    at runTestInternal (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-runner/build/testWorker.js:247:16)
+    at runTest (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-runner/build/testWorker.js:315:7)
+    at Object.worker (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-runner/build/testWorker.js:479:12)</failure>
+    </testcase>
+    <testcase classname="add skipped" name="add skipped" time="0" file="__tests__/math.test.js">
+      <skipped/>
+    </testcase>
+    <testcase classname="add nested each 1" name="add nested each 1" time="0" file="__tests__/math.test.js">
+    </testcase>
+    <testcase classname="add nested each 2" name="add nested each 2" time="0" file="__tests__/math.test.js">
+    </testcase>
+    <testcase classname=" top level" name=" top level" time="0" file="__tests__/math.test.js">
+    </testcase>
+  </testsuite>
+</testsuites>

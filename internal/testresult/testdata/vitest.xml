@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="8" failures="3" errors="0" time="0.009209292">
+    <testsuite name="test/math.test.ts" timestamp="2026-11-04T01:19:08.545Z" hostname="matheuss-Mac-mini.local" tests="6" failures="1" errors="0" skipped="1" time="0.004984792">
+        <testcase classname="test/math.test.ts" name="add &gt; adds" time="0.0006225">
+        </testcase>
+        <testcase classname="test/math.test.ts" name="add &gt; fails" time="0.003441125">
+            <failure message="expected 3 to be 4 // Object.is equality" type="AssertionError">
+AssertionError: expected 3 to be 4 // Object.is equality
+
+- Expected
++ Received
+
+- 4
++ 3
+
+ ❯ test/math.test.ts:5:41
+            </failure>
+        </testcase>
+        <testcase classname="test/math.test.ts" name="add &gt; skipped" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="test/math.test.ts" name="add &gt; nested &gt; deeper &gt; each 1" time="0.0001155">
+        </testcase>
+        <testcase classname="test/math.test.ts" name="add &gt; nested &gt; deeper &gt; each 2" time="0.000049834">
+        </testcase>
+        <testcase classname="test/math.test.ts" name="top level" time="0.000092333">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/deep/broken.test.ts" timestamp="2026-11-04T01:19:08.547Z" hostname="matheuss-Mac-mini.local" tests="1" failures="1" errors="0" skipped="0" time="0">
+        <testcase classname="test/deep/broken.test.ts" name="test/deep/broken.test.ts" time="0">
+            <failure message="Cannot find module &apos;./does-not-exist&apos; imported from &apos;/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/vitestzoo/test/deep/broken.test.ts&apos;" type="Error">
+Error: Cannot find module &apos;./does-not-exist&apos; imported from &apos;/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/vitestzoo/test/deep/broken.test.ts&apos;
+ ❯ test/deep/broken.test.ts:1:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;ERR_MODULE_NOT_FOUND&apos; }
+Caused by: Caused by: Error: Failed to load url ./does-not-exist (resolved id: ./does-not-exist) in /Users/matheusale/workspaces/ub-mode/.local/scratch/samples/vitestzoo/test/deep/broken.test.ts. Does the file exist?
+ ❯ loadAndTransform ../../../../fixtures/typescript/node_modules/vite/dist/node/chunks/config.js:22907:33
+            </failure>
+        </testcase>
+    </testsuite>
+    <testsuite name="test/deep/err.test.ts" timestamp="2026-11-04T01:19:08.549Z" hostname="matheuss-Mac-mini.local" tests="1" failures="1" errors="0" skipped="0" time="0.0042245">
+        <testcase classname="test/deep/err.test.ts" name="throws" time="0.003435417">
+            <failure message="boom" type="TypeError">
+TypeError: boom
+ ❯ test/deep/err.test.ts:2:28
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

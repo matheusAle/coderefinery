@@ -396,21 +396,27 @@ type mutantJob struct {
 	stderr                  io.Writer
 	lock                    sync.Mutex
 	outcomes                map[string]string
+	attr                    *attribution        // --attribute; nil = upstream behaviour
+	killedBy                map[string][]string // :killed-by, updated for every mutant run
 }
 
-func (j *mutantJob) execute(dir string, s Site) string {
+// execute runs one mutant; by is the --attribute credit of a kill.
+func (j *mutantJob) execute(dir string, s Site) (status string, by []string) {
 	if !bytes.Equal(j.original[s.Start:s.End], []byte(s.Original)) {
 		fmt.Fprintf(j.stderr, "Skipped %s:%d %s; source bytes moved\n", j.fileKey, s.Line, s.Description())
-		return "survived"
+		return "survived", nil
 	}
 	dest := filepath.Join(dir, j.relative)
 	_ = os.WriteFile(dest, applySite(j.original, s.Start, s.End, s.Mutant), 0o666)
-	result := j.runner.Run(j.command, mappedCwd(dir, j.root, j.cwd), j.timeout)
-	_ = os.WriteFile(dest, j.original, 0o666)
-	if result.TimedOut || result.Code != 0 {
-		return "killed"
+	defer func() { _ = os.WriteFile(dest, j.original, 0o666) }()
+	if j.attr != nil {
+		return j.attr.run(j, dir, s)
 	}
-	return "survived"
+	result := j.runner.Run(j.command, mappedCwd(dir, j.root, j.cwd), j.timeout)
+	if result.TimedOut || result.Code != 0 {
+		return "killed", nil
+	}
+	return "survived", nil
 }
 
 // runMutants is workers.run_mutants: sites in parallel overlays, outcomes
@@ -444,9 +450,16 @@ func runMutants(job *mutantJob, sites []Site, maxWorkers int) error {
 					fmt.Fprintf(job.stderr, "%s:%d %s\n", job.fileKey, s.Line, s.Description())
 					job.lock.Unlock()
 				}
-				status := job.execute(dir, s)
+				status, by := job.execute(dir, s)
 				job.lock.Lock()
 				job.outcomes[s.ID] = status
+				if job.killedBy != nil {
+					if status == "killed" && by != nil {
+						job.killedBy[s.ID] = by
+					} else {
+						delete(job.killedBy, s.ID) // a re-run mutant drops its old credit
+					}
+				}
 				job.lock.Unlock()
 			}
 		}(dir)

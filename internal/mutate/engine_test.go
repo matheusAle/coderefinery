@@ -98,7 +98,7 @@ func TestUncoveredSitesAreNotExecuted(t *testing.T) {
 	if runner.calls != 0 || r.Forms[0].Uncovered != 4 || r.Forms[0].Killed != 0 || r.Forms[0].Sites != 4 {
 		t.Fatalf("calls %d form %+v", runner.calls, r.Forms[0])
 	}
-	if !strings.Contains(formatSiteLog(r.Sites, r.Statuses), "UNCOVERED src/demo.py:2 > -> >=") {
+	if !strings.Contains(formatSiteLog(r.Sites, r.Statuses, nil), "UNCOVERED src/demo.py:2 > -> >=") {
 		t.Fatal("site log must show UNCOVERED")
 	}
 }
@@ -212,7 +212,7 @@ func TestLinesRestrictSelectionAndCounts(t *testing.T) {
 	if f := r.Forms[0]; f.Killed != 1 || f.Survived != 0 || f.Sites != 4 || runner.calls != 2 {
 		t.Fatalf("form %+v calls %d", f, runner.calls)
 	}
-	if log := formatSiteLog(r.Sites, r.Statuses); log != "KILLED    src/demo.py:3 + -> -\n" {
+	if log := formatSiteLog(r.Sites, r.Statuses, nil); log != "KILLED    src/demo.py:3 + -> -\n" {
 		t.Fatalf("site log %q", log)
 	}
 }

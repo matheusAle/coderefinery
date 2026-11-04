@@ -187,6 +187,33 @@ func coverageFor(opts Options, root, path string) (lineSet, error) {
 	return coveredLines(root, path, language, opts.FixGoCoverage)
 }
 
+// siteAnnotator chains the opt-in site-log suffixes: --attribute
+// (attribute.go), then --branches (branches.go). nil when neither is on, so
+// the default log keeps upstream's bytes.
+func siteAnnotator(opts Options, root string, result RunResult, lines lineSet) func(Site, string) string {
+	var chain []func(Site, string) string
+	if opts.Attribute {
+		if f := attributeAnnotator(result); f != nil {
+			chain = append(chain, f)
+		}
+	}
+	if opts.Branches {
+		if f := branchAnnotator(root, result, lines); f != nil {
+			chain = append(chain, f)
+		}
+	}
+	if len(chain) == 0 {
+		return nil
+	}
+	return func(s Site, status string) string {
+		var out string
+		for _, f := range chain {
+			out += f(s, status)
+		}
+		return out
+	}
+}
+
 func mutateFiles(opts Options, root string, files []string, runner Runner, stdout, stderr io.Writer) (int, error) {
 	baselines := map[string]baseline{}
 	var forms []FormResult
@@ -201,19 +228,22 @@ func mutateFiles(opts Options, root string, files []string, runner Runner, stdou
 			runner: runner, stderr: stderr, coveredLines: lines, ignoreCoverage: opts.NoCoverage,
 			mutateAll: opts.MutateAll, lines: opts.Lines, testCommand: opts.TestCommand,
 			timeoutFactor: opts.TimeoutFactor, mutationWarning: opts.MutationWarning,
-			baselines: baselines, maxWorkers: opts.MaxWorkers,
+			baselines: baselines, maxWorkers: opts.MaxWorkers, attribute: opts.Attribute, branches: opts.Branches,
 		})
 		if err != nil {
 			return 1, err
 		}
 		switch {
+		case result.Hint != "":
+			fmt.Fprintln(stderr, result.Hint)
+			return 1, nil
 		case result.Skipped != "":
 			fmt.Fprintf(stderr, "Skipping %s: %s\n", result.Path, result.Skipped)
 		case result.BaselineFailed:
 			fmt.Fprintln(stderr, result.BaselineMessage)
 			baselineFailed = true
 		default:
-			fmt.Fprint(stdout, formatSiteLog(result.Sites, result.Statuses))
+			fmt.Fprint(stdout, formatSiteLog(result.Sites, result.Statuses, siteAnnotator(opts, root, result, lines)))
 			forms = append(forms, result.Forms...)
 			written = append(written, result.Written...)
 			for _, f := range result.Forms {

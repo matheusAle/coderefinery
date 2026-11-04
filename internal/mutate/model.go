@@ -67,6 +67,8 @@ type RunResult struct {
 	Written         []string
 	Sites           []Site
 	Statuses        map[string]string
+	KilledBy        map[string][]string // :killed-by of this file's killed mutants (carried + --attribute)
+	Hint            string              // --attribute cannot run: one line naming what to install (exit 1)
 	BaselineFailed  bool
 	BaselineMessage string
 	Skipped         string

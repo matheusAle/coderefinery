@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="1" skipped="1" tests="10" time="0.022" timestamp="2026-11-04T01:18:49.222529+00:00" hostname="matheuss-Mac-mini.local"><testcase classname="tests.sub.test_deep" name="test_deep" time="0.000" /><testcase classname="tests.test_zoo" name="test_pass" time="0.000" /><testcase classname="tests.test_zoo" name="test_fail" time="0.000"><failure message="AssertionError: one is not two&#10;assert 1 == 2">def test_fail():
+&gt;       assert 1 == 2, "one is not two"
+E       AssertionError: one is not two
+E       assert 1 == 2
+
+tests/test_zoo.py:9: AssertionError</failure></testcase><testcase classname="tests.test_zoo" name="test_skip" time="0.000"><skipped type="pytest.skip" message="not today">/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/pyzoo/tests/test_zoo.py:12: not today</skipped></testcase><testcase classname="tests.test_zoo" name="test_error" time="0.000"><error message="failed on setup with &quot;RuntimeError: fixture exploded&quot;">@pytest.fixture
+    def broken():
+&gt;       raise RuntimeError("fixture exploded")
+E       RuntimeError: fixture exploded
+
+tests/test_zoo.py:19: RuntimeError</error></testcase><testcase classname="tests.test_zoo" name="test_param[1]" time="0.000" /><testcase classname="tests.test_zoo" name="test_param[2]" time="0.000" /><testcase classname="tests.test_zoo" name="test_param[a b]" time="0.000" /><testcase classname="tests.test_zoo.TestGroup" name="test_method" time="0.000" /><testcase classname="tests.test_zoo.TestGroup.TestNested" name="test_inner" time="0.000" /></testsuite></testsuites>

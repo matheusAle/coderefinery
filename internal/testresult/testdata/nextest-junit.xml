@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="nextest-run" tests="6" failures="2" errors="0" uuid="0b8a3e8c-6c2a-4f55-9a0e-6d3f0c1b2a11" timestamp="2026-11-03T12:00:00.000+00:00" time="0.412">
+    <testsuite name="calc" tests="4" disabled="0" errors="0" failures="1">
+        <testcase name="tests::adds" classname="calc" timestamp="2026-11-03T12:00:00.010+00:00" time="0.004">
+        </testcase>
+        <testcase name="tests::fails" classname="calc" timestamp="2026-11-03T12:00:00.011+00:00" time="0.005">
+            <failure type="test failure with exit code 101">thread &apos;tests::fails&apos; panicked at src/lib.rs:12:9:
+assertion `left == right` failed
+  left: 3
+ right: 4</failure>
+            <system-out>
+running 1 test
+test tests::fails ... FAILED
+</system-out>
+            <system-err>thread &apos;tests::fails&apos; panicked at src/lib.rs:12:9:
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+</system-err>
+        </testcase>
+        <testcase name="tests::rate::case_1_gold" classname="calc" timestamp="2026-11-03T12:00:00.012+00:00" time="0.003">
+        </testcase>
+        <testcase name="tests::rate::case_2_silver" classname="calc" timestamp="2026-11-03T12:00:00.013+00:00" time="0.003">
+        </testcase>
+    </testsuite>
+    <testsuite name="calc::integration" tests="1" disabled="0" errors="0" failures="0">
+        <testcase name="checkout_works" classname="calc::integration" timestamp="2026-11-03T12:00:00.020+00:00" time="0.010">
+        </testcase>
+    </testsuite>
+    <testsuite name="calc::bin/calc-cli" tests="1" disabled="0" errors="0" failures="1">
+        <testcase name="tests::slow" classname="calc::bin/calc-cli" timestamp="2026-11-03T12:00:00.030+00:00" time="60.001">
+            <failure type="test timeout">test timed out</failure>
+        </testcase>
+    </testsuite>
+</testsuites>

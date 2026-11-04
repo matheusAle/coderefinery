@@ -85,3 +85,18 @@ func TestReleaseLdflagsStampTheBinary(t *testing.T) {
 		t.Fatalf("got %q, %v", out, err)
 	}
 }
+
+func TestTestAndTestsAreDispatched(t *testing.T) {
+	for _, c := range []struct{ cmd, prefix string }{
+		{"test", "Usage: coderefinery test [options] [path-or-filter ...]\n"},
+		{"tests", "Usage: coderefinery tests [options]\n"},
+	} {
+		code, stdout, _ := runCapture([]string{c.cmd, "--help"}, "v1")
+		if code != 0 || !strings.HasPrefix(stdout, c.prefix) {
+			t.Errorf("%s --help: code=%d stdout=%q", c.cmd, code, stdout[:min(60, len(stdout))])
+		}
+		if !strings.Contains(usage, "\n  "+c.cmd+" ") {
+			t.Errorf("usage lists %s", c.cmd)
+		}
+	}
+}

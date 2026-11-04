@@ -1,0 +1,40 @@
+{"Time":"2026-11-04T01:20:37.236911Z","Action":"start","Package":"example.com/gotests/pricing"}
+{"Time":"2026-11-04T01:20:37.561545Z","Action":"run","Package":"example.com/gotests/pricing","Test":"TestCheckoutGoldMember"}
+{"Time":"2026-11-04T01:20:37.561594Z","Action":"output","Package":"example.com/gotests/pricing","Test":"TestCheckoutGoldMember","Output":"=== RUN   TestCheckoutGoldMember\n"}
+{"Time":"2026-11-04T01:20:37.561892Z","Action":"output","Package":"example.com/gotests/pricing","Test":"TestCheckoutGoldMember","Output":"--- PASS: TestCheckoutGoldMember (0.00s)\n"}
+{"Time":"2026-11-04T01:20:37.5619Z","Action":"pass","Package":"example.com/gotests/pricing","Test":"TestCheckoutGoldMember","Elapsed":0}
+{"Time":"2026-11-04T01:20:37.561905Z","Action":"run","Package":"example.com/gotests/pricing","Test":"TestTierRate"}
+{"Time":"2026-11-04T01:20:37.561909Z","Action":"output","Package":"example.com/gotests/pricing","Test":"TestTierRate","Output":"=== RUN   TestTierRate\n"}
+{"Time":"2026-11-04T01:20:37.561913Z","Action":"run","Package":"example.com/gotests/pricing","Test":"TestTierRate/gold"}
+{"Time":"2026-11-04T01:20:37.561916Z","Action":"output","Package":"example.com/gotests/pricing","Test":"TestTierRate/gold","Output":"=== RUN   TestTierRate/gold\n"}
+{"Time":"2026-11-04T01:20:37.561919Z","Action":"output","Package":"example.com/gotests/pricing","Test":"TestTierRate/gold","Output":"--- PASS: TestTierRate/gold (0.00s)\n"}
+{"Time":"2026-11-04T01:20:37.561922Z","Action":"pass","Package":"example.com/gotests/pricing","Test":"TestTierRate/gold","Elapsed":0}
+{"Time":"2026-11-04T01:20:37.561925Z","Action":"run","Package":"example.com/gotests/pricing","Test":"TestTierRate/silver"}
+{"Time":"2026-11-04T01:20:37.561928Z","Action":"output","Package":"example.com/gotests/pricing","Test":"TestTierRate/silver","Output":"=== RUN   TestTierRate/silver\n"}
+{"Time":"2026-11-04T01:20:37.561931Z","Action":"output","Package":"example.com/gotests/pricing","Test":"TestTierRate/silver","Output":"--- PASS: TestTierRate/silver (0.00s)\n"}
+{"Time":"2026-11-04T01:20:37.561939Z","Action":"pass","Package":"example.com/gotests/pricing","Test":"TestTierRate/silver","Elapsed":0}
+{"Time":"2026-11-04T01:20:37.561942Z","Action":"output","Package":"example.com/gotests/pricing","Test":"TestTierRate","Output":"--- PASS: TestTierRate (0.00s)\n"}
+{"Time":"2026-11-04T01:20:37.561944Z","Action":"pass","Package":"example.com/gotests/pricing","Test":"TestTierRate","Elapsed":0}
+{"Time":"2026-11-04T01:20:37.561948Z","Action":"run","Package":"example.com/gotests/pricing","Test":"TestPriceOfNothingIsZero"}
+{"Time":"2026-11-04T01:20:37.56195Z","Action":"output","Package":"example.com/gotests/pricing","Test":"TestPriceOfNothingIsZero","Output":"=== RUN   TestPriceOfNothingIsZero\n"}
+{"Time":"2026-11-04T01:20:37.561953Z","Action":"output","Package":"example.com/gotests/pricing","Test":"TestPriceOfNothingIsZero","Output":"--- PASS: TestPriceOfNothingIsZero (0.00s)\n"}
+{"Time":"2026-11-04T01:20:37.561956Z","Action":"pass","Package":"example.com/gotests/pricing","Test":"TestPriceOfNothingIsZero","Elapsed":0}
+{"Time":"2026-11-04T01:20:37.561958Z","Action":"run","Package":"example.com/gotests/pricing","Test":"TestPriceAppliesTheRate"}
+{"Time":"2026-11-04T01:20:37.561961Z","Action":"output","Package":"example.com/gotests/pricing","Test":"TestPriceAppliesTheRate","Output":"=== RUN   TestPriceAppliesTheRate\n"}
+{"Time":"2026-11-04T01:20:37.561963Z","Action":"output","Package":"example.com/gotests/pricing","Test":"TestPriceAppliesTheRate","Output":"--- PASS: TestPriceAppliesTheRate (0.00s)\n"}
+{"Time":"2026-11-04T01:20:37.561966Z","Action":"pass","Package":"example.com/gotests/pricing","Test":"TestPriceAppliesTheRate","Elapsed":0}
+{"Time":"2026-11-04T01:20:37.561968Z","Action":"run","Package":"example.com/gotests/pricing","Test":"TestCouponSubtracts"}
+{"Time":"2026-11-04T01:20:37.561971Z","Action":"output","Package":"example.com/gotests/pricing","Test":"TestCouponSubtracts","Output":"=== RUN   TestCouponSubtracts\n"}
+{"Time":"2026-11-04T01:20:37.561973Z","Action":"output","Package":"example.com/gotests/pricing","Test":"TestCouponSubtracts","Output":"--- PASS: TestCouponSubtracts (0.00s)\n"}
+{"Time":"2026-11-04T01:20:37.562012Z","Action":"pass","Package":"example.com/gotests/pricing","Test":"TestCouponSubtracts","Elapsed":0}
+{"Time":"2026-11-04T01:20:37.562015Z","Action":"run","Package":"example.com/gotests/pricing","Test":"TestCouponNeverGoesNegative"}
+{"Time":"2026-11-04T01:20:37.562017Z","Action":"output","Package":"example.com/gotests/pricing","Test":"TestCouponNeverGoesNegative","Output":"=== RUN   TestCouponNeverGoesNegative\n"}
+{"Time":"2026-11-04T01:20:37.56202Z","Action":"output","Package":"example.com/gotests/pricing","Test":"TestCouponNeverGoesNegative","Output":"--- PASS: TestCouponNeverGoesNegative (0.00s)\n"}
+{"Time":"2026-11-04T01:20:37.562023Z","Action":"pass","Package":"example.com/gotests/pricing","Test":"TestCouponNeverGoesNegative","Elapsed":0}
+{"Time":"2026-11-04T01:20:37.562028Z","Action":"run","Package":"example.com/gotests/pricing","Test":"TestPriceReturnsANumber"}
+{"Time":"2026-11-04T01:20:37.562031Z","Action":"output","Package":"example.com/gotests/pricing","Test":"TestPriceReturnsANumber","Output":"=== RUN   TestPriceReturnsANumber\n"}
+{"Time":"2026-11-04T01:20:37.562034Z","Action":"output","Package":"example.com/gotests/pricing","Test":"TestPriceReturnsANumber","Output":"--- PASS: TestPriceReturnsANumber (0.00s)\n"}
+{"Time":"2026-11-04T01:20:37.562036Z","Action":"pass","Package":"example.com/gotests/pricing","Test":"TestPriceReturnsANumber","Elapsed":0}
+{"Time":"2026-11-04T01:20:37.562039Z","Action":"output","Package":"example.com/gotests/pricing","Output":"PASS\n"}
+{"Time":"2026-11-04T01:20:37.56211Z","Action":"output","Package":"example.com/gotests/pricing","Output":"ok  \texample.com/gotests/pricing\t0.325s\n"}
+{"Time":"2026-11-04T01:20:37.562133Z","Action":"pass","Package":"example.com/gotests/pricing","Elapsed":0.325}

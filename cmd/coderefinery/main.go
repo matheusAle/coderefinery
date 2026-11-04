@@ -12,6 +12,8 @@ import (
 	"github.com/matheusAle/coderefinery/internal/crap"
 	"github.com/matheusAle/coderefinery/internal/dry"
 	"github.com/matheusAle/coderefinery/internal/mutate"
+	"github.com/matheusAle/coderefinery/internal/testreport"
+	"github.com/matheusAle/coderefinery/internal/testrun"
 )
 
 const usage = `Usage: coderefinery <command> [options] [path-or-filter ...]
@@ -20,6 +22,8 @@ Commands:
   crap     CRAP metric (crapper): complexity x coverage, .metrics/crap.edn
   dry      structural duplicates (dryer), .metrics/dry.edn
   mutate   mutation testing (mutator), .metrics/mutate/
+  test     run the tests with JUnit results and coverage, .metrics/tests/
+  tests    test relevance: kills, unique kills, shadowed tests, .metrics/tests.edn
 
 Run "coderefinery <command> --help" for the command's options.
 Run "coderefinery --version" to print the version.
@@ -33,6 +37,8 @@ var commands = map[string]func(args []string, stdout, stderr io.Writer) int{
 	"crap":   crap.Main,
 	"dry":    dry.Main,
 	"mutate": mutate.Main,
+	"test":   testrun.Main,
+	"tests":  testreport.Main,
 }
 
 func main() {

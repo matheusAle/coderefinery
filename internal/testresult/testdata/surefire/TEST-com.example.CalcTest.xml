@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.2.xsd" version="3.0.2" name="com.example.CalcTest" time="0.051" tests="6" errors="1" skipped="1" failures="1">
+  <properties>
+    <property name="java.version" value="21.0.2"/>
+    <property name="surefire.test.class.path" value="/work/target/test-classes"/>
+  </properties>
+  <testcase name="adds" classname="com.example.CalcTest" time="0.004"/>
+  <testcase name="fails" classname="com.example.CalcTest" time="0.006">
+    <failure message="expected: &lt;3&gt; but was: &lt;4&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <3> but was: <4>
+	at com.example.CalcTest.fails(CalcTest.java:18)
+]]></failure>
+  </testcase>
+  <testcase name="skipped" classname="com.example.CalcTest" time="0">
+    <skipped message="not today"/>
+  </testcase>
+  <testcase name="explodes" classname="com.example.CalcTest" time="0.001">
+    <error message="boom" type="java.lang.IllegalStateException"><![CDATA[java.lang.IllegalStateException: boom
+	at com.example.CalcTest.explodes(CalcTest.java:27)
+]]></error>
+  </testcase>
+  <testcase name="rate(int, double)[1]" classname="com.example.CalcTest" time="0.002"/>
+  <testcase name="rate(int, double)[2]" classname="com.example.CalcTest" time="0.001"/>
+</testsuite>

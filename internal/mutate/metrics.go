@@ -232,7 +232,7 @@ func renderForm(f FormResult) *ordMap {
 // testedAt is datetime.now().astimezone().isoformat(timespec="seconds").
 var testedAt = func() string { return time.Now().Format("2006-01-02T15:04:05-07:00") }
 
-func renderSnapshot(namespace, source string, forms []*ordMap, outcomes map[string]string) (string, error) {
+func renderSnapshot(namespace, source string, forms []*ordMap, outcomes map[string]string, killedBy map[string][]string) (string, error) {
 	out := newOrdMap()
 	for _, k := range sortedKeys(outcomes) {
 		out.Set(k, kw(outcomes[k]))
@@ -248,6 +248,9 @@ func renderSnapshot(namespace, source string, forms []*ordMap, outcomes map[stri
 	payload.Set("namespace", namespace)
 	payload.Set("outcomes", out)
 	payload.Set("forms", list)
+	if kb := renderKilledBy(outcomes, killedBy); kb != nil {
+		payload.Set("killed-by", kb)
+	}
 	text, err := ednDumps(payload)
 	if err != nil {
 		return "", err
@@ -258,6 +261,79 @@ func renderSnapshot(namespace, source string, forms []*ordMap, outcomes map[stri
 type retainedNS struct {
 	forms    []*ordMap
 	outcomes map[string]string
+	killedBy map[string][]string
+}
+
+// renderKilledBy is the :killed-by map (docs/design-tests.md §3.1): entries
+// of killed outcomes only, keys sorted like :outcomes, values sorted and
+// deduped. nil when empty, so the snapshot keeps upstream's bytes.
+func renderKilledBy(outcomes map[string]string, killedBy map[string][]string) *ordMap {
+	var keys []string
+	for k, v := range killedBy {
+		if outcomes[k] == "killed" && len(v) > 0 {
+			keys = append(keys, k)
+		}
+	}
+	if len(keys) == 0 {
+		return nil
+	}
+	sort.Strings(keys)
+	m := newOrdMap()
+	for _, k := range keys {
+		ids := append([]string(nil), killedBy[k]...)
+		sort.Strings(ids)
+		var list []any
+		for i, id := range ids {
+			if i == 0 || id != ids[i-1] {
+				list = append(list, id)
+			}
+		}
+		m.Set(k, list)
+	}
+	return m
+}
+
+// killedByOf reads a snapshot's :killed-by (string keys, string items).
+func killedByOf(data *ordMap) map[string][]string {
+	raw, ok := data.Get("killed-by").(*ordMap)
+	if !ok {
+		return nil
+	}
+	out := map[string][]string{}
+	for _, p := range raw.Pairs() {
+		key, ok := p.Key.(string)
+		list, ok2 := p.Val.([]any)
+		if !ok || !ok2 {
+			continue
+		}
+		var ids []string
+		for _, v := range list {
+			if s, ok := v.(string); ok {
+				ids = append(ids, s)
+			}
+		}
+		if len(ids) > 0 {
+			out[key] = ids
+		}
+	}
+	return out
+}
+
+// loadKilledBy is every :killed-by entry recorded for fileKey's mutants.
+func loadKilledBy(root, fileKey string) map[string][]string {
+	out := map[string][]string{}
+	for _, p := range ednFiles(root) {
+		data := readSnapshot(p)
+		if data == nil {
+			continue
+		}
+		for k, v := range killedByOf(data) {
+			if f, ok := mutationFile(k); ok && f == fileKey {
+				out[k] = v
+			}
+		}
+	}
+	return out
 }
 
 // pyInt is int(value or 0) for a form's :line.
@@ -334,7 +410,7 @@ func sortForms(forms []*ordMap) error {
 }
 
 // writeNamespace is metrics._write_namespace; "" = nothing written.
-func writeNamespace(root, namespace string, kept retainedNS, fresh []FormResult, outcomes map[string]string, fileKey string) (string, error) {
+func writeNamespace(root, namespace string, kept retainedNS, fresh []FormResult, outcomes map[string]string, killedBy map[string][]string, fileKey string) (string, error) {
 	rendered := append([]*ordMap(nil), kept.forms...)
 	for _, f := range fresh {
 		rendered = append(rendered, renderForm(f))
@@ -347,10 +423,17 @@ func writeNamespace(root, namespace string, kept retainedNS, fresh []FormResult,
 	for k, v := range kept.outcomes {
 		merged[k] = v
 	}
+	mergedBy := map[string][]string{}
+	for k, v := range kept.killedBy {
+		mergedBy[k] = v
+	}
 	if len(fresh) > 0 {
 		for k, v := range outcomes {
 			if ns, ok := mutationNamespace(k); ok && ns == namespace {
 				merged[k] = v
+				if by, ok := killedBy[k]; ok {
+					mergedBy[k] = by
+				}
 			}
 		}
 	}
@@ -376,7 +459,7 @@ func writeNamespace(root, namespace string, kept retainedNS, fresh []FormResult,
 	default:
 		return "", errors.New("list index out of range")
 	}
-	text, err := renderSnapshot(namespace, src, rendered, merged)
+	text, err := renderSnapshot(namespace, src, rendered, merged, mergedBy)
 	if err != nil {
 		return "", err
 	}
@@ -402,8 +485,10 @@ func formFileOnly(data *ordMap, fileKey string) bool {
 }
 
 // writeResults is metrics.write_results: replace this file's forms and
-// outcomes, keep everything else, return the paths written.
-func writeResults(root, fileKey string, forms []FormResult, outcomes map[string]string) ([]string, error) {
+// outcomes, keep everything else, return the paths written. killedBy holds
+// this file's :killed-by entries (docs/design-tests.md §3.1): the ones of
+// carried outcomes plus, under --attribute, the fresh ones; nil = none.
+func writeResults(root, fileKey string, forms []FormResult, outcomes map[string]string, killedBy map[string][]string) ([]string, error) {
 	root = discover.Resolve(root)
 	incoming := map[string][]FormResult{}
 	for _, f := range forms {
@@ -444,17 +529,26 @@ func writeResults(root, fileKey string, forms []FormResult, outcomes map[string]
 				keptOutcomes[o.id] = o.status
 			}
 		}
+		keptBy := map[string][]string{}
+		for k, v := range killedByOf(s.data) {
+			if _, ok := keptOutcomes[k]; ok {
+				keptBy[k] = v
+			}
+		}
 		if len(keptForms) == 0 && len(keptOutcomes) == 0 {
 			continue
 		}
 		r := retained[ns]
 		if r == nil {
-			r = &retainedNS{outcomes: map[string]string{}}
+			r = &retainedNS{outcomes: map[string]string{}, killedBy: map[string][]string{}}
 			retained[ns] = r
 		}
 		r.forms = append(r.forms, keptForms...)
 		for k, v := range keptOutcomes {
 			r.outcomes[k] = v
+		}
+		for k, v := range keptBy {
+			r.killedBy[k] = v
 		}
 		touched[ns] = true
 	}
@@ -470,7 +564,7 @@ func writeResults(root, fileKey string, forms []FormResult, outcomes map[string]
 		if r := retained[ns]; r != nil {
 			kept = *r
 		}
-		path, err := writeNamespace(root, ns, kept, incoming[ns], incomingOutcomes, fileKey)
+		path, err := writeNamespace(root, ns, kept, incoming[ns], incomingOutcomes, killedBy, fileKey)
 		if err != nil {
 			return nil, err
 		}

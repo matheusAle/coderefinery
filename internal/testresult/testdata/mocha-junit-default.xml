@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="0.003" tests="7" failures="2" skipped="1">
+  <testsuite name="Root Suite" timestamp="2026-11-04T01:20:05" tests="1" time="0.000" failures="0">
+    <testcase name="top level" time="0.000" classname="top level">
+    </testcase>
+  </testsuite>
+  <testsuite name="hooks" timestamp="2026-11-04T01:20:05" tests="1" file="/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/mochazoo/test/deep/hook.test.js" time="0.001" failures="1">
+    <testcase name="hooks &quot;before all&quot; hook for &quot;never runs&quot;" time="0.000" classname="&quot;before all&quot; hook for &quot;never runs&quot;">
+      <failure message="before all exploded" type="Error"><![CDATA[Error: before all exploded
+    at Context.<anonymous> (test/deep/hook.test.js:2:24)
+    at process.processImmediate (node:internal/timers:504:21)]]></failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="add" timestamp="2026-11-04T01:20:05" tests="3" file="/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/mochazoo/test/math.test.js" time="0.000" failures="1">
+    <testcase name="add adds" time="0.001" classname="adds">
+    </testcase>
+    <testcase name="add fails" time="0.000" classname="fails">
+      <failure message="Expected values to be strictly equal:
+
+3 !== 4
+" type="AssertionError"><![CDATA[AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+3 !== 4
+
+    at Context.<anonymous> (test/math.test.js:5:30)
+    at process.processImmediate (node:internal/timers:504:21)
+
+      + expected - actual
+
+      -3
+      +4
+      ]]></failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="nested" timestamp="2026-11-04T01:20:05" tests="2" file="/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/mochazoo/test/math.test.js" time="0.000" failures="0">
+    <testcase name="add nested each 1" time="0.000" classname="each 1">
+    </testcase>
+    <testcase name="add nested each 2" time="0.000" classname="each 2">
+    </testcase>
+  </testsuite>
+</testsuites>

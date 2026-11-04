@@ -146,11 +146,11 @@ func IsDir(path string) bool {
 	return err == nil && info.IsDir()
 }
 
-// Walk is the os.walk-based source walk every tool shares: nothing for a
+// walk is the os.walk-based source walk every tool shares: nothing for a
 // missing root, the root itself when it is not a directory, otherwise every
-// file under it for which keep is true, pruning SkipDirs and TestDirs below
-// the root and never descending into symlinked directories.
-func Walk(root string, keep func(path string) bool) []string {
+// file under it for which keep is true, pruning SkipDirs (and TestDirs when
+// pruneTests) below the root and never descending into symlinked directories.
+func walk(root string, keep func(path string) bool, pruneTests bool) []string {
 	if !Exists(root) {
 		return nil
 	}
@@ -166,7 +166,7 @@ func Walk(root string, keep func(path string) bool) []string {
 			return nil
 		}
 		if d.IsDir() {
-			if path != root && (contains(SkipDirs, d.Name()) || contains(TestDirs, d.Name())) {
+			if path != root && (contains(SkipDirs, d.Name()) || pruneTests && contains(TestDirs, d.Name())) {
 				return filepath.SkipDir
 			}
 			return nil
@@ -193,13 +193,17 @@ func IsSource(path string) bool { return LanguageOf(path) != "" && !IsTestFile(p
 // dedup, sort by posix string.
 func IterSourceFiles(roots []string) []string { return IterFiles(roots, IsSource) }
 
-// IterFiles walks each root with Walk(root, keep), then resolves, dedups and
+// IterFiles walks each root with walk(root, keep, true), then resolves, dedups and
 // sorts by posix string (iter_source_files with another file filter).
 func IterFiles(roots []string, keep func(path string) bool) []string {
+	return iterFiles(roots, keep, true)
+}
+
+func iterFiles(roots []string, keep func(path string) bool, pruneTests bool) []string {
 	seen := map[string]bool{}
 	var out []string
 	for _, root := range roots {
-		for _, p := range Walk(root, keep) {
+		for _, p := range walk(root, keep, pruneTests) {
 			r := Resolve(p)
 			if !seen[r] {
 				seen[r] = true

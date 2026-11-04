@@ -81,15 +81,21 @@ func formatResults(forms []FormResult) string {
 	return strings.Join(lines, "\n")
 }
 
-// formatSiteLog is report.format_site_log.
-func formatSiteLog(sites []Site, status map[string]string) string {
+// formatSiteLog is report.format_site_log. annotate (nil = none) returns a
+// suffix for a site's line given its status ("killed", "uncovered", ...);
+// it is how the opt-in --attribute and --branches flags extend a line.
+func formatSiteLog(sites []Site, status map[string]string, annotate func(Site, string) string) string {
 	var lines []string
 	for _, s := range sites {
 		label, ok := status[s.ID]
 		if !ok {
 			continue
 		}
-		lines = append(lines, fmt.Sprintf("%s %s:%d %s", padRight(strings.ToUpper(label), 9), s.File, s.Line, s.Description()))
+		line := fmt.Sprintf("%s %s:%d %s", padRight(strings.ToUpper(label), 9), s.File, s.Line, s.Description())
+		if annotate != nil {
+			line += annotate(s, label)
+		}
+		lines = append(lines, line)
 	}
 	if len(lines) == 0 {
 		return ""

@@ -77,13 +77,14 @@ func joinRoot(root, p string) string {
 
 // trackedSource is cli._tracked_source(path, root) for a resolved path:
 // its components below root must not meet SKIP_DIRS (test directories are
-// caught by the test-file check on the absolute path).
-func trackedSource(path, root string) bool {
+// caught by the test-file check on the absolute path). keep is isSource
+// (hasLanguage under --tests).
+func trackedSource(path, root string, keep func(string) bool) bool {
 	rel, ok := discover.RelativeTo(path, discover.Resolve(root))
 	if !ok || anyIn(discover.Parts(rel), discover.SkipDirs) {
 		return false
 	}
-	return isSource(path)
+	return keep(path)
 }
 
 // SelectFiles is cli.select_files: sorted, deduplicated, resolved paths.
@@ -98,6 +99,10 @@ func SelectFiles(opts Options) ([]string, error) {
 			filters = append(filters, arg)
 		}
 	}
+	iter, keep := IterSourceFiles, isSource
+	if opts.Tests {
+		iter, keep = iterWithTests, hasLanguage
+	}
 	var files []string
 	switch {
 	case opts.Changed:
@@ -106,7 +111,7 @@ func SelectFiles(opts Options) ([]string, error) {
 			return nil, err
 		}
 		for _, p := range changed {
-			if trackedSource(p, root) {
+			if trackedSource(p, root, keep) {
 				files = append(files, p)
 			}
 		}
@@ -115,17 +120,17 @@ func SelectFiles(opts Options) ([]string, error) {
 		for _, p := range opts.SourceRoots {
 			roots = append(roots, discover.Resolve(joinRoot(root, p)))
 		}
-		files = IterSourceFiles(roots)
+		files = iter(roots)
 	case len(existing) > 0:
 		for _, p := range existing {
 			if discover.IsDir(p) {
-				files = append(files, IterSourceFiles([]string{p})...)
+				files = append(files, iter([]string{p})...)
 			} else if LanguageOf(p) != "" {
 				files = append(files, p)
 			}
 		}
 	default:
-		files = IterSourceFiles([]string{root})
+		files = iter([]string{root})
 	}
 	if len(filters) > 0 {
 		var kept []string

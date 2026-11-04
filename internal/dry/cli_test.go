@@ -306,7 +306,7 @@ func TestTrackedSourceSkipsUnknownTestAndSkippedFiles(t *testing.T) {
 	for path, want := range map[string]bool{
 		"README.md": false, "tests/test_a.py": false, "src/a.py": true, "target/app.py": false,
 	} {
-		if got := trackedSource(filepath.Join(root, path), root); got != want {
+		if got := trackedSource(filepath.Join(root, path), root, isSource); got != want {
 			t.Errorf("%s: %v", path, got)
 		}
 	}

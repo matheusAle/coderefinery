@@ -27,6 +27,7 @@ type Options struct {
 	MinLines    int
 	MinNodes    int
 	Format      string
+	Tests       bool // --tests (hidden, design-tests §7)
 }
 
 func take(args []string, i int, opt string) (string, error) {
@@ -86,6 +87,8 @@ func ParseArgs(args []string) Options {
 			continue
 		case "--changed":
 			opts.Changed = true
+		case "--tests":
+			opts.Tests = true
 		case "--edn":
 			opts.Format = "edn"
 		case "--text":

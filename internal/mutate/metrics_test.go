@@ -43,7 +43,7 @@ func formsByID(m *ordMap) map[string]*ordMap {
 
 func mustWrite(t *testing.T, root, key string, forms []FormResult, outcomes map[string]string) []string {
 	t.Helper()
-	written, err := writeResults(root, key, forms, outcomes)
+	written, err := writeResults(root, key, forms, outcomes, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="6" failures="1" errors="1" time="0.175">
+  <testsuite name="add" errors="0" failures="1" skipped="1" timestamp="2026-11-04T01:19:54" time="0.065" tests="6">
+    <testcase classname="add" name="adds" time="0.001" file="__tests__/math.test.js">
+    </testcase>
+    <testcase classname="add" name="fails" time="0.001" file="__tests__/math.test.js">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: 4
+Received: 3
+    at Object.toBe (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/__tests__/math.test.js:4:41)
+    at Promise.finally.completed (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:1834:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:1774:10)
+    at _callCircusTest (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:1167:40)
+    at _runTestInContext (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:1103:3)
+    at runTestWithContext (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:996:5)
+    at _runTestsForDescribeBlockOnce (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:1008:11)
+    at _runTestsForDescribeBlock (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:824:5)
+    at _runTestsForDescribeBlockOnce (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:1003:11)
+    at _runTestsForDescribeBlock (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:824:5)
+    at run (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:789:3)
+    at runAndTransformResultsToJestFormat (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/jestAdapterInit.js:2300:21)
+    at jestAdapter (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-circus/build/runner.js:111:19)
+    at runTestInternal (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-runner/build/index.js:247:16)
+    at runTest (/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/node_modules/jest-runner/build/index.js:315:7)</failure>
+    </testcase>
+    <testcase classname="add" name="skipped" time="0" file="__tests__/math.test.js">
+      <skipped/>
+    </testcase>
+    <testcase classname="add › nested" name="each 1" time="0" file="__tests__/math.test.js">
+    </testcase>
+    <testcase classname="add › nested" name="each 2" time="0.001" file="__tests__/math.test.js">
+    </testcase>
+    <testcase classname="" name="top level" time="0" file="__tests__/math.test.js">
+    </testcase>
+  </testsuite>
+  <testsuite name="__tests__/deep/broken.test.js" errors="1" failures="0" skipped="0" timestamp="1970-01-01T00:00:00" time="0" tests="0">
+    <testcase classname="Test suite failed to run" name="__tests__/deep/broken.test.js" time="0" file="__tests__/deep/broken.test.js">
+      <error>  ● Test suite failed to run
+
+    Cannot find module &apos;./does-not-exist&apos; from &apos;__tests__/deep/broken.test.js&apos;
+
+    &gt; 1 | const x = require(&quot;./does-not-exist&quot;);
+        |           ^
+      2 | test(&quot;never&quot;, () =&gt; { x(); });
+      3 |
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/index.js:1031:11)
+      at Object.require (__tests__/deep/broken.test.js:1:11)
+</error>
+    </testcase>
+    <testcase classname="Test suite failed to run" name="__tests__/deep/broken.test.js" time="0" file="__tests__/deep/broken.test.js">
+      <failure>{&quot;code&quot;:&quot;MODULE_NOT_FOUND&quot;,&quot;hint&quot;:&quot;&quot;,&quot;requireStack&quot;:[&quot;/Users/matheusale/workspaces/ub-mode/.local/scratch/samples/jestzoo/__tests__/deep/broken.test.js&quot;],&quot;siblingWithSimilarExtensionFound&quot;:false,&quot;moduleName&quot;:&quot;./does-not-exist&quot;,&quot;_originalMessage&quot;:&quot;Cannot find module &apos;./does-not-exist&apos; from &apos;__tests__/deep/broken.test.js&apos;&quot;}</failure>
+    </testcase>
+  </testsuite>
+</testsuites>

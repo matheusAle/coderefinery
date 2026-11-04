@@ -14,6 +14,7 @@ import (
 	"github.com/matheusAle/coderefinery/internal/coverage"
 	"github.com/matheusAle/coderefinery/internal/discover"
 	"github.com/matheusAle/coderefinery/internal/source"
+	"github.com/matheusAle/coderefinery/internal/testplan"
 )
 
 // lineSet is a set of covered lines. nil means "no coverage data" (None).
@@ -343,7 +344,7 @@ var moduleLine = regexp.MustCompile(`(?m)^\s*module\s+("?)([^\s"]+)("?)\s*$`)
 // goImportPath is the coverprofile key `go test` writes for path: the
 // nearest go.mod's module path joined with the file's path below it.
 func goImportPath(path, root string) string {
-	dir := nearest(path, "go.mod", root)
+	dir := testplan.Nearest(path, "go.mod", root)
 	if dir == "" {
 		return ""
 	}

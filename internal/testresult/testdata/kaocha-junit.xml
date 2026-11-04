@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+<testsuite errors="1" failures="1" tests="4" name="unit" hostname="build-host" timestamp="2026-11-03T12:00:00" time="0.021" package="" id="0">
+<properties></properties>
+<testcase name="billing.pricing-test/tier-rate-test" classname="billing.pricing-test" time="0.004"></testcase>
+<testcase name="billing.pricing-test/price-test" classname="billing.pricing-test" time="0.003"><failure message="expected: (= 160 (price 200 0.8))" type="assertion">FAIL in billing.pricing-test/price-test (pricing_test.clj:12)
+expected: (= 160 (price 200 0.8))
+  actual: (not (= 160 250.0))</failure></testcase>
+<testcase name="billing.pricing-test/boom-test" classname="billing.pricing-test" time="0.001"><error message="java.lang.ArithmeticException: Divide by zero" type="java.lang.ArithmeticException">ERROR in billing.pricing-test/boom-test
+java.lang.ArithmeticException: Divide by zero</error></testcase>
+<testcase name="billing.missing-test/works-test" classname="billing.missing-test" time="0.001"></testcase>
+<system-out></system-out>
+<system-err></system-err>
+</testsuite>
+</testsuites>

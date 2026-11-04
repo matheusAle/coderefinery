@@ -92,6 +92,7 @@ type Options struct {
 	CoverageCommand     string
 	Threshold           *float64
 	Changed             bool
+	Branches            bool // --branches (hidden, design-tests §6)
 }
 
 func take(args []string, i int, opt string) (string, error) {
@@ -142,6 +143,8 @@ func ParseArgs(args []string) Options {
 			opts.UseExistingCoverage = true
 		case arg == "--changed":
 			opts.Changed = true
+		case arg == "--branches":
+			opts.Branches = true
 		case strings.HasPrefix(arg, "-"):
 			return usage("Unknown option: " + arg)
 		default:
@@ -151,6 +154,9 @@ func ParseArgs(args []string) Options {
 	}
 	if opts.NoCoverage && opts.CoverageCommand != "" {
 		return usage("--no-coverage cannot be combined with --coverage-command")
+	}
+	if opts.NoCoverage && opts.Branches {
+		return usage("--no-coverage cannot be combined with --branches")
 	}
 	return opts
 }
@@ -332,6 +338,11 @@ func run(opts Options, stdout, stderr io.Writer) (int, error) {
 	}
 	fmt.Fprint(stdout, FormatReport(entries))
 	fmt.Fprintf(stderr, "Wrote %s\n", metrics)
+	if opts.Branches {
+		if err := branchesReport(root, files, stdout, stderr); err != nil {
+			return 0, err
+		}
+	}
 	return thresholdStatus(opts, entries, stderr), nil
 }
 

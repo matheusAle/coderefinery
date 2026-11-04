@@ -37,6 +37,12 @@ type Options struct {
 	// FixGoCoverage maps Go coverprofile import paths to files through
 	// go.mod (coderefinery-only, DEVIATIONS.md M1). Off = upstream behaviour.
 	FixGoCoverage bool
+	// Attribute records which tests kill each mutant (:killed-by,
+	// docs/design-tests.md §3). Hidden from --help.
+	Attribute bool
+	// Branches adds an untested-branch reason to UNCOVERED site lines
+	// (docs/design-tests.md §6). Hidden from --help.
+	Branches bool
 }
 
 func take(args []string, i int, opt string) (string, error) {
@@ -143,6 +149,10 @@ func ParseArgs(args []string) Options {
 			opts.Verbose = true
 		case "--fix-go-coverage":
 			opts.FixGoCoverage = true
+		case "--attribute":
+			opts.Attribute = true
+		case "--branches":
+			opts.Branches = true
 		default:
 			if strings.HasPrefix(arg, "-") {
 				return usage("Unknown option: " + arg)

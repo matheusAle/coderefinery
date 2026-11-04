@@ -1,0 +1,48 @@
+{"ImportPath":"example.com/zoo/broken [example.com/zoo/broken.test]","Action":"build-output","Output":"# example.com/zoo/broken [example.com/zoo/broken.test]\n"}
+{"ImportPath":"example.com/zoo/broken [example.com/zoo/broken.test]","Action":"build-output","Output":"broken/broken.go:3:23: undefined: undefinedThing\n"}
+{"ImportPath":"example.com/zoo/broken [example.com/zoo/broken.test]","Action":"build-fail"}
+{"Time":"2026-11-04T01:20:46.273626Z","Action":"start","Package":"example.com/zoo/broken"}
+{"Time":"2026-11-04T01:20:46.273651Z","Action":"output","Package":"example.com/zoo/broken","Output":"FAIL\texample.com/zoo/broken [build failed]\n"}
+{"Time":"2026-11-04T01:20:46.273657Z","Action":"fail","Package":"example.com/zoo/broken","Elapsed":0,"FailedBuild":"example.com/zoo/broken [example.com/zoo/broken.test]"}
+{"Time":"2026-11-04T01:20:46.273661Z","Action":"start","Package":"example.com/zoo/notests"}
+{"Time":"2026-11-04T01:20:46.273675Z","Action":"output","Package":"example.com/zoo/notests","Output":"?   \texample.com/zoo/notests\t[no test files]\n"}
+{"Time":"2026-11-04T01:20:46.273682Z","Action":"skip","Package":"example.com/zoo/notests","Elapsed":0}
+{"Time":"2026-11-04T01:20:46.633217Z","Action":"start","Package":"example.com/zoo/ok"}
+{"Time":"2026-11-04T01:20:46.938511Z","Action":"run","Package":"example.com/zoo/ok","Test":"TestPass"}
+{"Time":"2026-11-04T01:20:46.938556Z","Action":"output","Package":"example.com/zoo/ok","Test":"TestPass","Output":"=== RUN   TestPass\n"}
+{"Time":"2026-11-04T01:20:46.938623Z","Action":"output","Package":"example.com/zoo/ok","Test":"TestPass","Output":"--- PASS: TestPass (0.00s)\n"}
+{"Time":"2026-11-04T01:20:46.938635Z","Action":"pass","Package":"example.com/zoo/ok","Test":"TestPass","Elapsed":0}
+{"Time":"2026-11-04T01:20:46.938648Z","Action":"run","Package":"example.com/zoo/ok","Test":"TestFail"}
+{"Time":"2026-11-04T01:20:46.938651Z","Action":"output","Package":"example.com/zoo/ok","Test":"TestFail","Output":"=== RUN   TestFail\n"}
+{"Time":"2026-11-04T01:20:46.938654Z","Action":"output","Package":"example.com/zoo/ok","Test":"TestFail","Output":"    ok_test.go:7: Add(1, 2) = 3\n"}
+{"Time":"2026-11-04T01:20:46.938657Z","Action":"output","Package":"example.com/zoo/ok","Test":"TestFail","Output":"--- FAIL: TestFail (0.00s)\n"}
+{"Time":"2026-11-04T01:20:46.93866Z","Action":"fail","Package":"example.com/zoo/ok","Test":"TestFail","Elapsed":0}
+{"Time":"2026-11-04T01:20:46.938662Z","Action":"run","Package":"example.com/zoo/ok","Test":"TestSkip"}
+{"Time":"2026-11-04T01:20:46.938665Z","Action":"output","Package":"example.com/zoo/ok","Test":"TestSkip","Output":"=== RUN   TestSkip\n"}
+{"Time":"2026-11-04T01:20:46.938667Z","Action":"output","Package":"example.com/zoo/ok","Test":"TestSkip","Output":"    ok_test.go:9: not today\n"}
+{"Time":"2026-11-04T01:20:46.938669Z","Action":"output","Package":"example.com/zoo/ok","Test":"TestSkip","Output":"--- SKIP: TestSkip (0.00s)\n"}
+{"Time":"2026-11-04T01:20:46.938672Z","Action":"skip","Package":"example.com/zoo/ok","Test":"TestSkip","Elapsed":0}
+{"Time":"2026-11-04T01:20:46.93868Z","Action":"run","Package":"example.com/zoo/ok","Test":"TestTable"}
+{"Time":"2026-11-04T01:20:46.938683Z","Action":"output","Package":"example.com/zoo/ok","Test":"TestTable","Output":"=== RUN   TestTable\n"}
+{"Time":"2026-11-04T01:20:46.938685Z","Action":"run","Package":"example.com/zoo/ok","Test":"TestTable/one"}
+{"Time":"2026-11-04T01:20:46.938687Z","Action":"output","Package":"example.com/zoo/ok","Test":"TestTable/one","Output":"=== RUN   TestTable/one\n"}
+{"Time":"2026-11-04T01:20:46.938696Z","Action":"output","Package":"example.com/zoo/ok","Test":"TestTable/one","Output":"--- PASS: TestTable/one (0.00s)\n"}
+{"Time":"2026-11-04T01:20:46.938699Z","Action":"pass","Package":"example.com/zoo/ok","Test":"TestTable/one","Elapsed":0}
+{"Time":"2026-11-04T01:20:46.938702Z","Action":"run","Package":"example.com/zoo/ok","Test":"TestTable/two_words"}
+{"Time":"2026-11-04T01:20:46.938704Z","Action":"output","Package":"example.com/zoo/ok","Test":"TestTable/two_words","Output":"=== RUN   TestTable/two_words\n"}
+{"Time":"2026-11-04T01:20:46.938744Z","Action":"output","Package":"example.com/zoo/ok","Test":"TestTable/two_words","Output":"    ok_test.go:13: bad\n"}
+{"Time":"2026-11-04T01:20:46.938747Z","Action":"output","Package":"example.com/zoo/ok","Test":"TestTable/two_words","Output":"--- FAIL: TestTable/two_words (0.00s)\n"}
+{"Time":"2026-11-04T01:20:46.938752Z","Action":"fail","Package":"example.com/zoo/ok","Test":"TestTable/two_words","Elapsed":0}
+{"Time":"2026-11-04T01:20:46.938755Z","Action":"run","Package":"example.com/zoo/ok","Test":"TestTable/nested"}
+{"Time":"2026-11-04T01:20:46.938757Z","Action":"output","Package":"example.com/zoo/ok","Test":"TestTable/nested","Output":"=== RUN   TestTable/nested\n"}
+{"Time":"2026-11-04T01:20:46.938759Z","Action":"run","Package":"example.com/zoo/ok","Test":"TestTable/nested/deep"}
+{"Time":"2026-11-04T01:20:46.938762Z","Action":"output","Package":"example.com/zoo/ok","Test":"TestTable/nested/deep","Output":"=== RUN   TestTable/nested/deep\n"}
+{"Time":"2026-11-04T01:20:46.938764Z","Action":"output","Package":"example.com/zoo/ok","Test":"TestTable/nested/deep","Output":"--- PASS: TestTable/nested/deep (0.00s)\n"}
+{"Time":"2026-11-04T01:20:46.938766Z","Action":"pass","Package":"example.com/zoo/ok","Test":"TestTable/nested/deep","Elapsed":0}
+{"Time":"2026-11-04T01:20:46.938769Z","Action":"output","Package":"example.com/zoo/ok","Test":"TestTable/nested","Output":"--- PASS: TestTable/nested (0.00s)\n"}
+{"Time":"2026-11-04T01:20:46.938771Z","Action":"pass","Package":"example.com/zoo/ok","Test":"TestTable/nested","Elapsed":0}
+{"Time":"2026-11-04T01:20:46.938774Z","Action":"output","Package":"example.com/zoo/ok","Test":"TestTable","Output":"--- FAIL: TestTable (0.00s)\n"}
+{"Time":"2026-11-04T01:20:46.938776Z","Action":"fail","Package":"example.com/zoo/ok","Test":"TestTable","Elapsed":0}
+{"Time":"2026-11-04T01:20:46.938779Z","Action":"output","Package":"example.com/zoo/ok","Output":"FAIL\n"}
+{"Time":"2026-11-04T01:20:46.939323Z","Action":"output","Package":"example.com/zoo/ok","Output":"FAIL\texample.com/zoo/ok\t0.305s\n"}
+{"Time":"2026-11-04T01:20:46.939344Z","Action":"fail","Package":"example.com/zoo/ok","Elapsed":0.306}

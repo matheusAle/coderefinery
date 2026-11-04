@@ -17,6 +17,7 @@ import (
 	"github.com/matheusAle/coderefinery/internal/coverage"
 	"github.com/matheusAle/coderefinery/internal/discover"
 	"github.com/matheusAle/coderefinery/internal/source"
+	"github.com/matheusAle/coderefinery/internal/testplan"
 )
 
 // restoreBackups puts back sources a killed legacy run left mutated.
@@ -174,6 +175,9 @@ type baseline struct {
 	ok      bool
 	seconds float64
 	tail    string
+	display string   // --attribute: the command run (with its reporter)
+	failing []string // --attribute: the failing test ids
+	hint    string   // --attribute: no report; one line naming what to install
 }
 
 func lastLines(output string, n int) string {
@@ -197,6 +201,8 @@ type fileOptions struct {
 	mutationWarning int
 	baselines       map[string]baseline
 	maxWorkers      int
+	attribute       bool // --attribute (attribute.go)
+	branches        bool // --branches (branches.go)
 }
 
 // mutateFile is engine.mutate_file.
@@ -225,45 +231,71 @@ func mutateFile(path, root string, o fileOptions) (RunResult, error) {
 	digests := u.digests()
 	selected := selectSites(found, covered, history, digests, o.mutateAll, o.lines)
 	outcomes := carryForward(found, covered, history, digests)
+	killedBy := carriedKilledBy(root, key, outcomes)
+	if o.attribute {
+		selected = reselectUnattributed(found, selected, outcomes, killedBy, o.lines)
+	}
 	if len(selected) > o.mutationWarning {
 		fmt.Fprintf(o.stderr, "WARNING: %d covered mutations selected in %s.\n", len(selected), key)
 	}
 	if len(selected) > 0 {
-		command, cwd := testPlan(root, path, language, o.testCommand)
-		cacheKey := command.key(cwd)
+		command, cwd := testplan.Plan(root, path, language, o.testCommand)
+		var attr *attribution
+		if o.attribute {
+			var hint string
+			if attr, hint = newAttribution(root, path, language, command, cwd, o.testCommand); hint != "" {
+				return RunResult{Path: key, Hint: hint}, nil
+			}
+		}
+		cacheKey := command.Key(cwd) + attr.cacheKey()
 		if _, ok := o.baselines[cacheKey]; !ok {
-			res := o.runner.Run(command, cwd, 0)
-			if res.Code != 0 {
-				o.baselines[cacheKey] = baseline{false, res.Seconds, lastLines(res.Output, 20)}
-			} else {
-				o.baselines[cacheKey] = baseline{true, res.Seconds, ""}
+			switch {
+			case attr != nil:
+				o.baselines[cacheKey] = attr.baseline(o.runner)
+			default:
+				res := o.runner.Run(command, cwd, 0)
+				if res.Code != 0 {
+					o.baselines[cacheKey] = baseline{ok: false, seconds: res.Seconds, tail: lastLines(res.Output, 20)}
+				} else {
+					o.baselines[cacheKey] = baseline{ok: true, seconds: res.Seconds}
+				}
 			}
 		}
 		b := o.baselines[cacheKey]
+		if b.hint != "" {
+			return RunResult{Path: key, Hint: b.hint}, nil
+		}
 		if !b.ok {
-			msg := fmt.Sprintf("Baseline failed for %s: %s", key, command.display())
+			shown := command.Display()
+			if b.display != "" {
+				shown = b.display
+			}
+			msg := fmt.Sprintf("Baseline failed for %s: %s", key, shown)
 			if b.tail != "" {
 				msg += "\n" + b.tail
+			}
+			if len(b.failing) > 0 {
+				msg += "\nfailing tests: " + strings.Join(b.failing, " ")
 			}
 			return RunResult{Path: key, BaselineFailed: true, BaselineMessage: msg}, nil
 		}
 		timeout := max(2.0, b.seconds*o.timeoutFactor)
 		job := &mutantJob{root: root, relative: key, fileKey: key, original: original, runner: o.runner,
 			command: command, cwd: cwd, timeout: time.Duration(timeout * float64(time.Second)), stderr: o.stderr,
-			outcomes: outcomes}
+			outcomes: outcomes, attr: attr, killedBy: killedBy}
 		if err := runMutants(job, selected, o.maxWorkers); err != nil {
 			return RunResult{}, err
 		}
 	}
 	forms := formResults(u, found, covered, outcomes, o.lines)
-	written, err := writeResults(root, key, forms, outcomes)
+	written, err := writeResults(root, key, forms, outcomes, killedBy)
 	if err != nil {
 		return RunResult{}, err
 	}
 	if now, err := os.ReadFile(path); err == nil && !bytes.Equal(now, original) {
 		_ = os.WriteFile(path, original, 0o666)
 	}
-	return RunResult{Path: key, Forms: forms, Written: written, Sites: found, Statuses: statuses(found, covered, outcomes)}, nil
+	return RunResult{Path: key, Forms: forms, Written: written, Sites: found, Statuses: statuses(found, covered, outcomes), KilledBy: killedBy}, nil
 }
 
 // scanFile is engine.scan_file. The text is read like Path.read_text:
