@@ -17,7 +17,9 @@ This repo has two parts:
   for byte. It needs no Python and no tree-sitter.
   On top of that it adds two opt-in commands, `test` and `tests`, and a few
   hidden flags that report which tests earn their keep and which branches no
-  test takes ([Test relevance](#test-relevance-and-untested-branches)).
+  test takes ([Test relevance](#test-relevance-and-untested-branches)), and
+  `react`, quality metrics for React function components and hooks
+  ([React metrics](#react-metrics)).
 
 ## Install the skill
 
@@ -80,6 +82,7 @@ coderefinery mutate --changed --use-existing-coverage   # exit 3 when a mutant s
 | `mutate` | `.metrics/mutate/<namespace>.edn` | 0 all killed · 1 usage/error · 2 baseline tests failed · 3 survivors |
 | `test` | `.metrics/tests/` (`runs.edn`, results, coverage) | 0 all passed or skipped · 1 usage / missing tool or plugin · 2 a test failed, build failed or no results |
 | `tests` | `.metrics/tests.edn` | 0 no offenders · 1 usage / no attribution data · 2 latest results have failures · 3 a test kills nothing or is shadowed |
+| `react` | `.metrics/react.edn` | 0 no violations · 1 usage/error · 2 the coverage run failed · 3 a threshold is exceeded |
 
 With `--changed`, a git failure exits with git's own code. Supported
 languages: Python, TypeScript/TSX/JavaScript, Go, Java, Rust, Clojure (dry
@@ -132,6 +135,96 @@ JUnit results parser is tested. `coderefinery` never installs a runner or
 plugin; when one is missing it prints one line naming what to install and
 exits 1.
 
+## React metrics
+
+`coderefinery react` is a coderefinery addition (no upstream counterpart). It
+reads the same TSX/JSX tree as `crap` and reports, for each function
+component and custom hook, the numbers a CC score for the whole component
+hides. Design and exact definitions: [docs/design-react.md](docs/design-react.md).
+
+- **CRAP per callback.** Each hook callback (`Cart#useEffect#1`) and handler
+  (`Cart.onSubmit`, inline `Cart.onClick`) is its own entry, and its decisions
+  are not charged to the component. The rule is the same one `crap` applies
+  to Express route callbacks. Coverage comes from the TypeScript coverage
+  runner, as in `crap`.
+- **Render vs logic.** Render counts the decisions in the returned JSX and in
+  early returns, plus `.map` lists. Logic counts the rest of the body.
+- **Props**: count, boolean flags, optional, callbacks (`on*`), rest spread,
+  and pass-through props (props only forwarded unchanged to a child
+  component, which signals prop drilling).
+- **Hooks**: `useState` count, effects, largest dependency array, and effects
+  that only call state setters (the derived-state smell).
+- **Render cost**: JSX depth, element count, inline function and
+  object/array props, and components defined inside components.
+
+```bash
+coderefinery react                      # coverage via the TS runner; exit 3 on a violation
+coderefinery react --no-coverage src    # complexity only: an entry offends at CC >= 10 (CRAP's floor)
+coderefinery react --changed --max-props 9 --max-inline-objects 4
+```
+
+Default limits: CRAP >= 10 per entry. A unit offends above props 7,
+boolean props 2, pass-through 3, state 5, effects 3, deps 6, setter-effects 0,
+JSX depth 6 or nested components 0. Elements, inline functions and inline
+objects are reported but not gated by default. Every limit is a
+`--max-<name> <n|off>` flag. On `fixtures/react` with `--no-coverage`:
+
+```
+React Report
+============
+
+Entry                          Kind      Namespace                            Line   CC    Cov%     CRAP
+--------------------------------------------------------------------------------------------------------
+Cart#useEffect#1               callback  Cart                                   22   10     N/A      N/A
+SettingsPanel                  component SettingsPanel                          13    6     N/A      N/A
+Cart                           component Cart                                   16    4     N/A      N/A
+Badge                          component Badge                                   6    2     N/A      N/A
+Cart.handleCheckout            handler   Cart                                   46    2     N/A      N/A
+Sidebar                        component Dashboard                              28    2     N/A      N/A
+TodoList                       component TodoList                                9    2     N/A      N/A
+TodoList.TodoRow               component TodoList                               12    2     N/A      N/A
+useCounter#useCallback#1       callback  useCounter                              7    2     N/A      N/A
+useCounter#useEffect#1         callback  useCounter                             15    2     N/A      N/A
+useCounter#useMemo#1           callback  useCounter                             13    2     N/A      N/A
+Cart#useEffect#2               callback  Cart                                   42    1     N/A      N/A
+Cart.handleClear               handler   Cart                                   50    1     N/A      N/A
+Dashboard                      component Dashboard                              14    1     N/A      N/A
+Layout                         component Dashboard                              20    1     N/A      N/A
+IconButton                     component IconButton                              9    1     N/A      N/A
+TodoList.TodoRow.onClick       handler   TodoList                               14    1     N/A      N/A
+TodoList.onChange              handler   TodoList                               23    1     N/A      N/A
+TodoList.onClick               handler   TodoList                               32    1     N/A      N/A
+useCounter                     hook      useCounter                              3    1     N/A      N/A
+useCounter.reset               handler   useCounter                             11    1     N/A      N/A
+
+Components and hooks
+
+Component                      Namespace                           Render Logic Props Bool Opt On Rest Pass State Eff Deps SetFx Depth Elems InFn InObj Nest
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+SettingsPanel                  SettingsPanel                            6     1     9    5   5  2    -    0     0   0    0     0     2     5    0     0    0
+Cart                           Cart                                     5     1     4    0   1  1    -    0     4   2    2     1     3     9    0     0    0
+TodoList                       TodoList                                 2     2     2    0   0  1    -    0     1   0    0     0     3     7    2     2    1
+Dashboard                      Dashboard                                1     1     5    0   0  1    -    5     0   0    0     0     1     1    0     0    0
+Layout                         Dashboard                                1     1     5    0   0  1    -    4     0   0    0     0     2     2    0     0    0
+Badge                          Badge                                    2     1     2    0   0  0    -    0     0   0    0     0     1     1    0     0    0
+Sidebar                        Dashboard                                2     1     4    0   0  1    -    0     0   0    0     0     2     4    0     0    0
+TodoList.TodoRow               TodoList                                 2     1     1    0   0  0    -    0     0   0    0     0     1     1    1     1    0
+IconButton                     IconButton                               1     1     3    1   1  0  yes    0     0   0    0     0     1     1    0     0    0
+useCounter                     useCounter                               1     1     -    -   -  -    -    -     2   1    2     0     0     0    0     0    0
+
+Threshold violations
+
+Name                           Namespace                           Exceeded
+---------------------------------------------------------------------------
+Cart#useEffect#1               Cart                                complexity 10 >= 10.0 (no coverage)
+SettingsPanel                  SettingsPanel                       props 9 > 7
+SettingsPanel                  SettingsPanel                       boolean-props 5 > 2
+Cart                           Cart                                setter-effects 1 > 0
+TodoList                       TodoList                            nested-components 1 > 0
+Dashboard                      Dashboard                           pass-through 5 > 3
+Layout                         Dashboard                           pass-through 4 > 3
+```
+
 ## Parity status
 
 - **Harness**: 36 of 36 cases byte-identical to upstream (crap, dry and
@@ -159,7 +252,8 @@ exits 1.
   flags are hidden from the upstream `--help` text (only the top-level
   `coderefinery --help` lists `test` and `tests`), and the default `crap`,
   `dry` and `mutate` output, exit codes and `.metrics` files stay
-  byte-identical (the harness still passes 36 of 36).
+  byte-identical (the harness still passes 36 of 36). `react` is a separate
+  subcommand that changes nothing in the other three.
 
 ## Layout
 
@@ -170,10 +264,11 @@ cmd/, internal/     the binary (cmd/coderefinery) and its packages
 tools/, testdata/   parser-parity tools (treediff, oracles) and their corpus
 harness/            parity harness: run.sh, matrix.txt, golden/, cmd/compare, fetch-upstream.sh
 fixtures/           the four fixture projects the harness runs on, plus setup.sh
-                    and the test-ingestion fixtures (*-tests/, setup-tests.sh)
+                    and the test-ingestion fixtures (*-tests/, react/, setup-tests.sh)
 bench/              coderefinery vs upstream timings (bench/RESULTS.md)
 docs/               specs of the three upstream tools; ARCHITECTURE, DEVIATIONS, PARSERS,
-                    PARSER-BUGS; benchmarks.md; skills-manager.md; design-tests.md
+                    PARSER-BUGS; benchmarks.md; skills-manager.md; design-tests.md;
+                    design-react.md
 tests/              launcher_test.sh (tests for the skill's launcher)
 .github/workflows/  ci.yml (tests + parity), release.yml (tag vX.Y.Z → release assets)
 upstream/           gitignored: upstream checkouts made by harness/fetch-upstream.sh

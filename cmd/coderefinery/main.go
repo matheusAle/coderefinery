@@ -12,6 +12,7 @@ import (
 	"github.com/matheusAle/coderefinery/internal/crap"
 	"github.com/matheusAle/coderefinery/internal/dry"
 	"github.com/matheusAle/coderefinery/internal/mutate"
+	"github.com/matheusAle/coderefinery/internal/react"
 	"github.com/matheusAle/coderefinery/internal/testreport"
 	"github.com/matheusAle/coderefinery/internal/testrun"
 )
@@ -24,6 +25,7 @@ Commands:
   mutate   mutation testing (mutator), .metrics/mutate/
   test     run the tests with JUnit results and coverage, .metrics/tests/
   tests    test relevance: kills, unique kills, shadowed tests, .metrics/tests.edn
+  react    React components and hooks: per-callback CRAP, props, hooks, render cost, .metrics/react.edn
 
 Run "coderefinery <command> --help" for the command's options.
 Run "coderefinery --version" to print the version.
@@ -39,6 +41,7 @@ var commands = map[string]func(args []string, stdout, stderr io.Writer) int{
 	"mutate": mutate.Main,
 	"test":   testrun.Main,
 	"tests":  testreport.Main,
+	"react":  react.Main,
 }
 
 func main() {

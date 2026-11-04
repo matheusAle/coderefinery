@@ -30,6 +30,10 @@ type Runner struct {
 	LookPath func(name string) (string, error)
 	// Home is Path.home(); "" means os.UserHomeDir().
 	Home string
+	// Failed counts per-language TypeScript coverage runs that exited
+	// non-zero. Upstream only warns; `coderefinery react` (an addition)
+	// reads it to report a failing baseline.
+	Failed int
 }
 
 // Command is either a shell string (Shell != "") or an argv.
@@ -523,6 +527,7 @@ func (r *Runner) coverTypescript(root string, files []string) error {
 		_ = os.RemoveAll(filepath.Dir(report))
 		_ = os.MkdirAll(filepath.Dir(report), 0o777)
 		if code := r.RunShell(Argv(cmd...), pkg); code != 0 {
+			r.Failed++
 			r.warn(fmt.Sprintf("TypeScript coverage exited %d in %s. TypeScript coverage will score 0%%.", code, pkg))
 		}
 	}

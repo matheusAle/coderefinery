@@ -86,10 +86,11 @@ func TestReleaseLdflagsStampTheBinary(t *testing.T) {
 	}
 }
 
-func TestTestAndTestsAreDispatched(t *testing.T) {
+func TestAdditionsAreDispatched(t *testing.T) {
 	for _, c := range []struct{ cmd, prefix string }{
 		{"test", "Usage: coderefinery test [options] [path-or-filter ...]\n"},
 		{"tests", "Usage: coderefinery tests [options]\n"},
+		{"react", "Usage: coderefinery react [options] [path-or-filter ...]\n"},
 	} {
 		code, stdout, _ := runCapture([]string{c.cmd, "--help"}, "v1")
 		if code != 0 || !strings.HasPrefix(stdout, c.prefix) {

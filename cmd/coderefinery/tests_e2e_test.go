@@ -19,7 +19,8 @@ import (
 )
 
 // copyFixture copies fixtures/<name> (symlinks kept as links) to a temp dir.
-func copyFixture(t *testing.T, name string) string {
+// Top-level entries named in linked (e.g. node_modules) are symlinked instead.
+func copyFixture(t *testing.T, name string, linked ...string) string {
 	t.Helper()
 	src, err := filepath.Abs(filepath.Join("..", "..", "fixtures", name))
 	if err != nil {
@@ -32,6 +33,17 @@ func copyFixture(t *testing.T, name string) string {
 		}
 		rel, _ := filepath.Rel(src, p)
 		target := filepath.Join(dst, rel)
+		for _, l := range linked {
+			if rel == l {
+				if err := os.Symlink(p, target); err != nil {
+					return err
+				}
+				if d.IsDir() {
+					return filepath.SkipDir
+				}
+				return nil
+			}
+		}
 		switch {
 		case d.Type()&fs.ModeSymlink != 0:
 			link, err := os.Readlink(p)

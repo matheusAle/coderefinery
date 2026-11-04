@@ -80,9 +80,10 @@ an entry whenever you introduce one.
 Not upstream behaviour: none of these exist in crapper, dryer or mutator.
 Each is opt-in. The hidden flags are left out of the upstream `--help` text,
 which stays byte-identical (the `mutate --fix-go-coverage` precedent, M1);
-`test` and `tests` are listed only in the top-level `coderefinery --help`.
+`test`, `tests` and `react` are listed only in the top-level `coderefinery --help`.
 Without them, crap, dry and mutate keep their stdout, stderr, exit codes and
-`.metrics` bytes (harness 36/36). Contract: `docs/design-tests.md`.
+`.metrics` bytes (harness 36/36). Contract: `docs/design-tests.md` (X1-X6),
+`docs/design-react.md` (X7).
 
 | # | addition | kind | what it does | writes |
 |---|---|---|---|---|
@@ -92,3 +93,4 @@ Without them, crap, dry and mutate keep their stdout, stderr, exit codes and
 | X4 | `mutate --branches` | hidden flag | UNCOVERED lines get a reason (` · in the <arm> arm of :<line> (<decision>), never taken`, ` · line never executed`, ` · no coverage data for file`) | nothing new |
 | X5 | `crap --branches` | hidden flag | adds an `Untested branches` section after the report; the report, `crap.edn` and exit codes are unchanged; `--no-coverage --branches` is a usage error | `.metrics/branches.edn` |
 | X6 | `dry --tests` | hidden flag | also compares test files (test directories and test file names are not skipped); the report format is unchanged | nothing new (`.metrics/dry.edn` as usual) |
+| X7 | `coderefinery react` (`--root`, `--changed`, `--no-coverage`, `--use-existing-coverage`, `--coverage-command`, `--crap <n>`, `--max-<metric> <n\|off>`) | new subcommand | React function components and custom hooks: each hook callback (`Cart#useEffect#1`) and handler (`Cart.onSubmit`) is its own CRAP entry, not charged to the component (the Express-route rule); render vs logic complexity; props, hooks and render-cost metrics; exit 0 clean · 1 usage · 2 coverage run failed · 3 a threshold exceeded. Contract: `docs/design-react.md` | `.metrics/react.edn` |

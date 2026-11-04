@@ -54,6 +54,10 @@ func tsIsDecision(n *syntax.Node) bool {
 	return n.Type == "?." && (n.Parent == nil || n.Parent.Type != "optional_chain")
 }
 
+// TypeScriptDecision is the decision predicate the TypeScript reader
+// counts; `coderefinery react` (an addition) scores its entries with it.
+func TypeScriptDecision(n *syntax.Node) bool { return tsIsDecision(n) }
+
 // tsGrammar is typescript._grammar.
 func tsGrammar(path string) string {
 	switch {

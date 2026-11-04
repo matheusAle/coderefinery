@@ -146,3 +146,24 @@ func TestCustomCommandFailureStatus(t *testing.T) {
 		t.Fatalf("code %d err %v stderr %q", code, err, stderr.String())
 	}
 }
+
+// Runner.Failed (read by `coderefinery react`) counts failing TypeScript
+// coverage runs; the warning and the status stay upstream's.
+func TestTypescriptCoverageFailureIsCounted(t *testing.T) {
+	root := tempRoot(t)
+	touch(t, filepath.Join(root, "package.json"), `{"scripts": {"coverage": "vitest run --coverage"}}`)
+	src := touch(t, filepath.Join(root, "src", "a.ts"), "export const a = 1;\n")
+	rec := &recorder{codes: map[string]int{"npm run coverage": 1}}
+	var stderr bytes.Buffer
+	r := &Runner{Stdout: &bytes.Buffer{}, Stderr: &stderr, Exec: rec.exec}
+	code, err := r.RunCoverage(root, []string{src}, "")
+	if err != nil || code != 0 || r.Failed != 1 ||
+		!strings.Contains(stderr.String(), "TypeScript coverage exited 1 in "+root+". TypeScript coverage will score 0%.\n") {
+		t.Fatalf("code %d err %v failed %d stderr %q", code, err, r.Failed, stderr.String())
+	}
+	rec.codes["npm run coverage"] = 0
+	r.Failed = 0
+	if _, err := r.RunCoverage(root, []string{src}, ""); err != nil || r.Failed != 0 {
+		t.Fatalf("a passing run is not counted: failed %d err %v", r.Failed, err)
+	}
+}

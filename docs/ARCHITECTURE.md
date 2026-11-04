@@ -9,6 +9,7 @@ coderefinery dry    [flags] [paths]   # dryer
 coderefinery mutate [flags] [paths]   # mutator
 coderefinery test   [flags] [paths]   # addition: run the tests, JUnit results + branch coverage
 coderefinery tests  [flags]           # addition: test relevance from mutate --attribute kills
+coderefinery react  [flags] [paths]   # addition: React component/hook metrics (docs/design-react.md)
 ```
 
 Same flags, stdout, exit codes and `.metrics/` files as the Python originals.
@@ -70,6 +71,7 @@ Additions (opt-in, no upstream counterpart; contract in `docs/design-tests.md`):
 | `internal/testreport` | `coderefinery tests`: kill matrix from `:killed-by`, unique kills, greedy covering set, shadowed and zero-kill tests, levels, `.metrics/tests.edn` |
 | `internal/branch` | maps tool branch data onto the decisions crap counts and renders the `crap --branches` section and `.metrics/branches.edn` |
 | `internal/coverage/branch*.go` | branch loaders: coverage.py arcs (branch), Istanbul JSON (branch) / V8 / LCOV `BRDA` (branch-count), JaCoCo `mb`/`cb` (branch-count), Go profile (block), llvm-cov (region, or branch with `--branch`), Cloverage (form) |
+| `internal/react` | `coderefinery react` (contract in `docs/design-react.md`): function components and custom hooks from the TSX/JSX tree, hook callbacks and handlers split into their own CRAP entries, render/logic complexity, props, hooks and render-cost metrics, thresholds, report and `.metrics/react.edn` |
 
 Inside existing packages: `internal/crap/decisions.go` (decision nodes with
 their arms) and `branches.go` (`--branches`); `internal/mutate/attribute.go`
@@ -84,7 +86,8 @@ imports these crapper internals).
 
 Additions: `testplan -> coverage, discover`; `testrun -> testplan, testresult,
 crap, coverage`; `mutate -> testplan, testresult, testrun, branch`;
-`testreport -> mutate, testresult, testrun`; `crap -> branch -> coverage`.
+`testreport -> mutate, testresult, testrun`; `crap -> branch -> coverage`;
+`react -> crap, coverage, lang`.
 `testresult` imports nothing internal.
 
 ## Test-relevance data flow (additions)
