@@ -437,6 +437,7 @@ type mutantJob struct {
 	attr                    *attribution                // --attribute; nil = upstream behaviour
 	killedBy                map[string][]string         // :killed-by, updated for every mutant run
 	keepDir                 func(dir, name string) bool // --fix-overlay; nil = upstream overlay
+	nodeCopies              bool                        // --fix-overlay on TS/JS (overlay_node.go)
 }
 
 // execute runs one mutant; by is the --attribute credit of a kill.
@@ -472,6 +473,11 @@ func runMutants(job *mutantJob, sites []Site, maxWorkers int) error {
 	dirs, err := createWorkers(base, job.root, job.relative, job.original, workerCount(len(sites), maxWorkers), job.keepDir)
 	if err != nil {
 		return err
+	}
+	for i := 0; job.nodeCopies && i < len(dirs); i++ {
+		if err := copySources(dirs[i], job.root); err != nil {
+			return err
+		}
 	}
 	pending := make(chan Site, len(sites))
 	for _, s := range sites {

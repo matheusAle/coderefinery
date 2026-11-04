@@ -204,7 +204,7 @@ type fileOptions struct {
 	maxWorkers      int
 	attribute       bool // --attribute (attribute.go)
 	branches        bool // --branches (branches.go)
-	fixOverlay      bool // --fix-overlay (workers.go packageDirs)
+	fixOverlay      bool // --fix-overlay (workers.go packageDirs, overlay_node.go)
 	react           bool // --react (react_sites.go)
 }
 
@@ -289,6 +289,7 @@ func mutateFile(path, root string, o fileOptions) (RunResult, error) {
 			outcomes: outcomes, attr: attr, killedBy: killedBy}
 		if o.fixOverlay {
 			job.keepDir = packageDirs(root, language)
+			job.nodeCopies = language == "typescript"
 		}
 		if err := runMutants(job, selected, o.maxWorkers); err != nil {
 			return RunResult{}, err
