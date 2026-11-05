@@ -14,10 +14,11 @@ argument unchanged:
    it execs it, so a launcher that is itself on `PATH` as `coderefinery` does not
    call itself forever.
 3. The cache: `${XDG_CACHE_HOME:-$HOME/.cache}/coderefinery/<version>/coderefinery`.
-4. The GitHub release asset `coderefinery_<version>_<os>_<arch>.tar.gz`, checked
-   against the release's `SHA256SUMS`, unpacked into the cache. Needs `curl` or
-   `wget`, `sha256sum` or `shasum`, and `tar`. Release builds: macOS and Linux,
-   amd64 and arm64. There is no Windows build.
+4. The release archive `coderefinery_<version>_<os>_<arch>.tar.gz` from
+   `https://coderefinery.dev/dl/<version>/` (Cloudflare R2), else from the
+   GitHub release, checked against that release's `SHA256SUMS`, unpacked into
+   the cache. Needs `curl` or `wget`, `sha256sum` or `shasum`, and `tar`.
+   Release builds: macOS and Linux, amd64 and arm64. There is no Windows build.
 5. `go install github.com/matheusAle/coderefinery/cmd/coderefinery@<version>`
    into the cache directory (Go 1.26+).
 
@@ -29,7 +30,9 @@ Otherwise it exits 127 with a message.
 |---|---|
 | `CODEREFINERY_BIN` | Path of the binary to run. The way to use a local build (`make build` writes `bin/coderefinery`) or another version. |
 | `CODEREFINERY_VERSION` | Not an environment override. It is pinned once, at the top of the launcher; a release tag must match it. |
-| `CODEREFINERY_RELEASE_URL` | Base URL of the release downloads (a mirror). Default `https://github.com/matheusAle/coderefinery/releases/download`. |
+| `CODEREFINERY_DOWNLOAD_URL` | First release source (a mirror). Default `https://coderefinery.dev/dl`. Also used by `install.sh` and `coderefinery update`. |
+| `CODEREFINERY_RELEASE_URL` | Fallback release source. Default `https://github.com/matheusAle/coderefinery/releases/download`. |
+| `CODEREFINERY_NO_UPDATE_CHECK` | Set to `1` to silence the "newer version available" line coderefinery prints on an interactive terminal (never under `CI`, never on stdout). |
 | `XDG_CACHE_HOME`, `HOME` | Cache location. One of them must be set. |
 | `CODEREFINERY_LAUNCHER` | Set by the launcher (step 2). Do not set it yourself. |
 
@@ -40,12 +43,39 @@ Otherwise it exits 127 with a message.
 | `CODEREFINERY_BIN=... is not an executable file` | Fix the path or `chmod +x` it. |
 | `set HOME or XDG_CACHE_HOME (cache location)` | Export one of them. |
 | `no release build for <os>/<arch>` | Install Go 1.26+ (step 5) or build from source and set `CODEREFINERY_BIN`. |
-| `download failed: <url>` / `neither curl nor wget is installed` | Network or tool problem; install curl, or set `CODEREFINERY_RELEASE_URL` to a mirror. |
+| `download failed: <url>` / `neither curl nor wget is installed` | Network or tool problem (both sources are tried); install curl, or set `CODEREFINERY_DOWNLOAD_URL` to a mirror. |
 | `checksum mismatch for <asset> ...; not installed` | Do not bypass it. Retry; if it persists, install by hand and check the archive against `SHA256SUMS`. |
 | `go is not installed` | Install Go, or a release binary on `PATH`. |
 | `could not install coderefinery <version>. ...` | Every step failed. Install it yourself and put it on `PATH`, or set `CODEREFINERY_BIN`. |
 
+## Installing for the user, and updating
+
+Suggest the installer when the user wants coderefinery on `PATH` (then the
+launcher uses it, step 2):
+
+```bash
+curl -fsSL https://coderefinery.dev/install.sh | sh                          # latest, into ~/.local/bin
+curl -fsSL https://coderefinery.dev/install.sh | CODEREFINERY_VERSION=v0.1.0 sh   # a pinned version
+curl -fsSL https://coderefinery.dev/install.sh | CODEREFINERY_INSTALL_DIR=/usr/local/bin sh
+```
+
+It checks the archive against `SHA256SUMS` and prints a `PATH` line when the
+directory is not on `PATH`. An installed release updates itself:
+
+| command | does |
+|---|---|
+| `coderefinery update --check` | says whether a newer release exists; changes nothing |
+| `coderefinery update` | downloads it, checks `SHA256SUMS`' signature and the archive's sha256, test-runs it, replaces the binary atomically |
+
+`update` errors leave the binary untouched: `cannot write to <dir>` (run it as
+a user who can write there, or reinstall into a directory you own), `was built
+by go install` (use `go install ...@latest`), `development build` (rebuild
+from the checkout), `signature does not match` / `checksum mismatch` (do not
+bypass; report it). The cached binary the launcher uses (step 3) is pinned by
+the launcher; do not run `update` on it, a new skill version bumps it.
+
 Install by hand: download `coderefinery_<version>_<os>_<arch>.tar.gz` from
+`https://coderefinery.dev/dl/<version>/` or
 https://github.com/matheusAle/coderefinery/releases, check it against
 `SHA256SUMS`, put `coderefinery` on `PATH`. Or
 `go install github.com/matheusAle/coderefinery/cmd/coderefinery@latest`.

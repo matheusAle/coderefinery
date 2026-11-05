@@ -42,8 +42,9 @@ it as `${CLAUDE_SKILL_DIR}/scripts/coderefinery`. The launcher uses the first of
 1. `$CODEREFINERY_BIN`
 2. `coderefinery` on `PATH`
 3. `${XDG_CACHE_HOME:-$HOME/.cache}/coderefinery/<version>/coderefinery`
-4. the GitHub release asset for this OS and arch, checked against the
-   release's `SHA256SUMS` and cached (needs curl or wget, and sha256sum or shasum)
+4. the release archive for this OS and arch from `https://coderefinery.dev/dl`
+   (else from the GitHub release), checked against the release's `SHA256SUMS`
+   and cached (needs curl or wget, and sha256sum or shasum)
 5. `go install github.com/matheusAle/coderefinery/cmd/coderefinery@<version>` into
    that cache directory
 
@@ -55,7 +56,39 @@ When nothing works, the launcher exits 127 with a message.
 Release builds exist for macOS and Linux on amd64 and arm64. There is no
 Windows build: mutate kills test processes through Unix process groups.
 
-- **Release binary**: download `coderefinery_<version>_<os>_<arch>.tar.gz` from
+```bash
+curl -fsSL https://coderefinery.dev/install.sh | sh
+```
+
+The installer reads the latest version from `https://coderefinery.dev/dl/latest.json`,
+downloads the archive for your OS and CPU, checks it against the release's
+`SHA256SUMS` and installs `coderefinery` into `~/.local/bin` (it prints a
+`PATH` line when that directory is not on your `PATH`). Pin a version with
+`CODEREFINERY_VERSION=v1.2.3`, choose the directory with
+`CODEREFINERY_INSTALL_DIR=/usr/local/bin`, use a mirror with
+`CODEREFINERY_DOWNLOAD_URL=<url>`; put them after the pipe: `... | CODEREFINERY_INSTALL_DIR=/opt/bin sh`.
+
+Then keep it current:
+
+```bash
+coderefinery update           # download, verify (signature + sha256), replace this binary
+coderefinery update --check   # only say whether a newer release exists
+```
+
+`update` checks `SHA256SUMS` against the ed25519 key built into coderefinery
+and the archive against `SHA256SUMS`, test-runs the new binary, then swaps it
+in atomically; on any failure the old binary stays. A binary from `go install`
+is updated with `go install ...@latest`, and a checkout build is not updated.
+In an interactive terminal coderefinery checks for a new release at most once
+a day, in the background, and prints one line on stderr after a command when
+there is one. It never does so under `CI`, when stderr is not a terminal, or
+with `CODEREFINERY_NO_UPDATE_CHECK=1`, and never changes stdout or the exit
+code. Release layout and signing: [docs/release.md](docs/release.md).
+
+Other ways:
+
+- **Release binary by hand**: download `coderefinery_<version>_<os>_<arch>.tar.gz` from
+  `https://coderefinery.dev/dl/<version>/` or
   [Releases](https://github.com/matheusAle/coderefinery/releases), check it against
   `SHA256SUMS`, and put `coderefinery` on your `PATH`.
 - **go install** (Go 1.26+):
@@ -357,8 +390,11 @@ bench/              coderefinery vs upstream timings (bench/RESULTS.md)
 docs/               specs of the three upstream tools; ARCHITECTURE, DEVIATIONS, PARSERS,
                     PARSER-BUGS; benchmarks.md; skills-manager.md; design-tests.md;
                     design-react.md
-tests/              launcher_test.sh (tests for the skill's launcher)
-.github/workflows/  ci.yml (tests + parity), release.yml (tag vX.Y.Z → release assets)
+site/               coderefinery.dev (Vite, Cloudflare Pages): public/install.sh, functions/dl (R2 downloads)
+tests/              launcher_test.sh (the skill's launcher), install_test.sh (site/public/install.sh)
+tools/release/      signs SHA256SUMS, writes latest.json, generates the signing key
+.github/workflows/  ci.yml (tests, signing key, parity), release.yml (tag vX.Y.Z → R2 + GitHub
+                    release), site.yml (site/ → Cloudflare Pages)
 upstream/           gitignored: upstream checkouts made by harness/fetch-upstream.sh
 ```
 
@@ -372,6 +408,7 @@ when Go doesn't come from asdf, before running anything.
 ```bash
 make ci                    # gofmt, go vet, go test ./..., build
 tests/launcher_test.sh     # the skill launcher's resolution order, download and checksum paths
+tests/install_test.sh      # site/public/install.sh against a file:// release
 
 fixtures/setup.sh          # once: fixture venv (pytest, coverage), node_modules
 harness/run.sh check       # coderefinery vs golden: expect SUMMARY ... cases=36 PASS=36
@@ -392,9 +429,12 @@ normalisation rules.
 
 Releasing: set `CODEREFINERY_VERSION` in `skills/coderefinery/scripts/coderefinery`, then push
 the matching tag `vX.Y.Z`. `release.yml` checks that the two agree, runs the
-tests, builds with `make dist VERSION=vX.Y.Z`, publishes the archives and
-`SHA256SUMS` (the module sits at the repo root, so `go install` uses the same
-tag), then runs the launcher against the new release on Linux and macOS.
+tests, builds with `make dist VERSION=vX.Y.Z`, signs `SHA256SUMS`, uploads the
+release to the R2 bucket behind `coderefinery.dev/dl` and to a GitHub release
+(the module sits at the repo root, so `go install` uses the same tag), moves
+`latest.json` last, deploys the site, then installs the release through
+`install.sh` and the launcher on Linux and macOS. Secrets, signing key
+rotation and the one-time Cloudflare setup: [docs/release.md](docs/release.md).
 
 ## Credits
 

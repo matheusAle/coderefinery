@@ -74,6 +74,7 @@ Additions (opt-in, no upstream counterpart; contract in `docs/design-tests.md`):
 | `internal/branch` | maps tool branch data onto the decisions crap counts and renders the `crap --branches` section and `.metrics/branches.edn` |
 | `internal/coverage/branch*.go` | branch loaders: coverage.py arcs (branch), Istanbul JSON (branch) / V8 / LCOV `BRDA` (branch-count), JaCoCo `mb`/`cb` (branch-count), Go profile (block), llvm-cov (region, or branch with `--branch`), Cloverage (form) |
 | `internal/react` | `coderefinery react` (contract in `docs/design-react.md`): function components and custom hooks from the TSX/JSX tree, hook callbacks and handlers split into their own CRAP entries, render/logic complexity, props, hooks and render-cost metrics, thresholds, report and `.metrics/react.edn` |
+| `internal/selfupdate` | `coderefinery update` and the passive update notice (DEVIATIONS X11): release format (`latest.json`, `SHA256SUMS`, ed25519 `SHA256SUMS.sig`, built-in public key), download + verify + atomic replace, the 24 h cached check run by a detached `coderefinery __update-check`; release side in `tools/release`, layout in `docs/release.md` |
 
 Inside existing packages: `internal/crap/decisions.go` (decision nodes with
 their arms) and `branches.go` (`--branches`); `internal/mutate/attribute.go`
