@@ -8,11 +8,13 @@ import (
 	"runtime/debug"
 	"strings"
 	"testing"
+
+	"github.com/matheusAle/coderefinery/internal/selfupdate"
 )
 
 func runCapture(args []string, version string) (code int, stdout, stderr string) {
 	var out, errb bytes.Buffer
-	code = run(args, version, &out, &errb)
+	code = run(args, selfupdate.Binary{Version: version, Build: selfupdate.Release}, &out, &errb)
 	return code, out.String(), errb.String()
 }
 
@@ -50,22 +52,40 @@ func TestSubcommandHelpIsDispatchedUnchanged(t *testing.T) {
 	}
 }
 
-func TestResolveVersionPrefersStampThenBuildInfoThenDevel(t *testing.T) {
-	installed := &debug.BuildInfo{Main: debug.Module{Version: "v0.4.0"}}
+func TestIdentifyPrefersStampThenGoInstallThenDevel(t *testing.T) {
+	goInstalled := &debug.BuildInfo{Main: debug.Module{Version: "v0.4.0", Sum: "h1:abc="}}
+	checkout := &debug.BuildInfo{Main: debug.Module{Version: "v0.0.0-20261105145933-cf1fb6a9d8ea+dirty"}}
 	cases := []struct {
+		name    string
 		stamped string
 		info    *debug.BuildInfo
-		want    string
+		want    selfupdate.Binary
 	}{
-		{"v9.9.9", installed, "v9.9.9"},
-		{"", installed, "v0.4.0"},
-		{"", &debug.BuildInfo{}, "(devel)"},
-		{"", nil, "(devel)"},
+		{"release stamp wins", "v9.9.9", goInstalled, selfupdate.Binary{Version: "v9.9.9", Build: selfupdate.Release}},
+		{"module from the module cache", "", goInstalled, selfupdate.Binary{Version: "v0.4.0", Build: selfupdate.GoInstall}},
+		{"go build in a checkout", "", checkout, selfupdate.Binary{Version: "v0.0.0-20261105145933-cf1fb6a9d8ea+dirty", Build: selfupdate.Dev}},
+		{"(devel)", "", &debug.BuildInfo{Main: debug.Module{Version: "(devel)"}}, selfupdate.Binary{Version: "(devel)", Build: selfupdate.Dev}},
+		{"no version", "", &debug.BuildInfo{}, selfupdate.Binary{Version: "(devel)", Build: selfupdate.Dev}},
+		{"no build info", "", nil, selfupdate.Binary{Version: "(devel)", Build: selfupdate.Dev}},
 	}
 	for _, c := range cases {
-		if got := resolveVersion(c.stamped, c.info); got != c.want {
-			t.Errorf("resolveVersion(%q, %+v) = %q, want %q", c.stamped, c.info, got, c.want)
+		if got := identify(c.stamped, c.info); got != c.want {
+			t.Errorf("%s: identify = %+v, want %+v", c.name, got, c.want)
 		}
+	}
+}
+
+func TestUpdateIsDispatchedAndListed(t *testing.T) {
+	code, stdout, stderr := runCapture([]string{"update", "--help"}, "v1.0.0")
+	if code != 0 || stdout != selfupdate.Help || stderr != "" {
+		t.Fatalf("update --help: code=%d stdout=%q stderr=%q", code, stdout, stderr)
+	}
+	if !strings.Contains(usage, "\n  update   ") {
+		t.Errorf("usage does not list update:\n%s", usage)
+	}
+	code, stdout, stderr = runCapture([]string{"update", "--nope"}, "v1.0.0")
+	if code != 1 || stdout != "" || stderr != "Unknown option: --nope\n\n"+selfupdate.Help {
+		t.Fatalf("update --nope: code=%d stdout=%q stderr=%q", code, stdout, stderr)
 	}
 }
 

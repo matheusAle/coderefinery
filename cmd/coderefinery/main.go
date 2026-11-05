@@ -8,11 +8,13 @@ import (
 	"io"
 	"os"
 	"runtime/debug"
+	"time"
 
 	"github.com/matheusAle/coderefinery/internal/crap"
 	"github.com/matheusAle/coderefinery/internal/dry"
 	"github.com/matheusAle/coderefinery/internal/mutate"
 	"github.com/matheusAle/coderefinery/internal/react"
+	"github.com/matheusAle/coderefinery/internal/selfupdate"
 	"github.com/matheusAle/coderefinery/internal/testreport"
 	"github.com/matheusAle/coderefinery/internal/testrun"
 )
@@ -26,6 +28,7 @@ Commands:
   test     run the tests with JUnit results and coverage, .metrics/tests/
   tests    test relevance: kills, unique kills, shadowed tests, .metrics/tests.edn
   react    React components and hooks: per-callback CRAP, props, hooks, render cost, .metrics/react.edn
+  update   replace this binary with the latest release (--check: only report)
 
 Run "coderefinery <command> --help" for the command's options.
 Run "coderefinery --version" to print the version.
@@ -46,10 +49,33 @@ var commands = map[string]func(args []string, stdout, stderr io.Writer) int{
 
 func main() {
 	info, _ := debug.ReadBuildInfo()
-	os.Exit(run(os.Args[1:], resolveVersion(version, info), os.Stdout, os.Stderr))
+	bin := identify(version, info)
+	args := os.Args[1:]
+	command := ""
+	if len(args) > 0 {
+		command = args[0]
+	}
+	if len(args) == 1 && command == selfupdate.CheckCommand {
+		// The detached update check started by StartNotice.
+		selfupdate.RunCheck(os.Getenv, nil, time.Now())
+		return
+	}
+	// The update notice goes to stderr after the command, only on a terminal
+	// and never under CI (docs/DEVIATIONS.md X11); it never changes the exit code.
+	notice := selfupdate.StartNotice(selfupdate.NoticeConfig{
+		Binary: bin, Command: command, Getenv: os.Getenv, StderrIsTTY: isTerminal(os.Stderr),
+	})
+	code := run(args, bin, os.Stdout, os.Stderr)
+	notice.Finish(os.Stderr)
+	os.Exit(code)
 }
 
-func run(args []string, version string, stdout, stderr io.Writer) int {
+func isTerminal(f *os.File) bool {
+	st, err := f.Stat()
+	return err == nil && st.Mode()&os.ModeCharDevice != 0
+}
+
+func run(args []string, bin selfupdate.Binary, stdout, stderr io.Writer) int {
 	if len(args) == 0 {
 		fmt.Fprint(stderr, usage)
 		return 2
@@ -59,8 +85,10 @@ func run(args []string, version string, stdout, stderr io.Writer) int {
 		fmt.Fprint(stdout, usage)
 		return 0
 	case "--version", "version":
-		fmt.Fprintf(stdout, "coderefinery %s\n", version)
+		fmt.Fprintf(stdout, "coderefinery %s\n", bin.Version)
 		return 0
+	case "update":
+		return selfupdate.Main(args[1:], stdout, stderr, selfupdate.Options{Binary: bin})
 	}
 	cmd, ok := commands[args[0]]
 	if !ok {
@@ -70,14 +98,20 @@ func run(args []string, version string, stdout, stderr io.Writer) int {
 	return cmd(args[1:], stdout, stderr)
 }
 
-// resolveVersion prefers the -ldflags stamp, then the module version that
-// `go install …@vX.Y.Z` records in the build info, then "(devel)".
-func resolveVersion(stamped string, info *debug.BuildInfo) string {
+// identify names the running binary's version and how it was built: the
+// -ldflags stamp of a release build; else the module version in the build
+// info, which is a go install build when the module came from the module
+// cache (it has a checksum) and a development build otherwise (go build in a
+// checkout records a VCS pseudo-version, or "(devel)").
+func identify(stamped string, info *debug.BuildInfo) selfupdate.Binary {
 	if stamped != "" {
-		return stamped
+		return selfupdate.Binary{Version: stamped, Build: selfupdate.Release}
 	}
-	if info != nil && info.Main.Version != "" {
-		return info.Main.Version
+	if info == nil || info.Main.Version == "" {
+		return selfupdate.Binary{Version: "(devel)", Build: selfupdate.Dev}
 	}
-	return "(devel)"
+	if info.Main.Sum != "" {
+		return selfupdate.Binary{Version: info.Main.Version, Build: selfupdate.GoInstall}
+	}
+	return selfupdate.Binary{Version: info.Main.Version, Build: selfupdate.Dev}
 }

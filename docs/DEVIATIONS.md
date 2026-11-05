@@ -81,9 +81,10 @@ an entry whenever you introduce one.
 ## Additions (opt-in)
 
 Not upstream behaviour: none of these exist in crapper, dryer or mutator.
-Each is opt-in. The hidden flags are left out of the upstream `--help` text,
+Each is opt-in, except the update notice of X11, which is opt-out and only
+ever shown on an interactive terminal outside CI. The hidden flags are left out of the upstream `--help` text,
 which stays byte-identical (the `mutate --fix-go-coverage` precedent, M1);
-`test`, `tests` and `react` are listed only in the top-level `coderefinery --help`.
+`test`, `tests`, `react` and `update` are listed only in the top-level `coderefinery --help`.
 Without them, crap, dry and mutate keep their stdout, stderr, exit codes and
 `.metrics` bytes (harness 36/36). Contract: `docs/design-tests.md` (X1-X6),
 `docs/design-react.md` (X7-X10).
@@ -100,6 +101,7 @@ Without them, crap, dry and mutate keep their stdout, stderr, exit codes and
 | X8 | `react --profile` | flag of an addition | also runs the Vitest (else Jest) tests with a render profiler (the React DevTools global hook, installed by a generated setup file; the project is not edited) and appends `Runtime renders` (renders, mounts, updates, actualDuration total/max per component; components with updates >= 3x mounts and inline props flagged) to the report; without the flag `react`'s output is unchanged; exit 1 when the run cannot be instrumented, 2 when it fails. Contract: `docs/design-react.md` §11 | `:renders` in `.metrics/react.edn`; generated files and `profile-*.json` under `.metrics/react-profile/` |
 | X9 | `dry --jsx` (`--jsx-threshold N`, `--jsx-min-elements N`, `--jsx-min-nodes N`; each implies `--jsx`) | hidden flag | also pairs JSX element subtrees of `.tsx`/`.jsx`/`.js` files (tag and attribute names kept; text, attribute values, `key` and SVG-only subtrees dropped), with dryer's fingerprints and Jaccard; the largest enclosing pair is reported. A `Duplicate JSX` section follows the unchanged function report (with `--edn`, a second `{:jsx-candidates [...]}` map); `dry.edn` is byte-identical with or without the flag. Contract: `docs/design-react.md` §12 | `.metrics/dry-jsx.edn` |
 | X10 | `mutate --react` | hidden flag | adds React operators to the usual sites in TS/TSX/JS files: `drop render` / `always render` (`cond && <X/>` → `false` / `<X/>`), `swap ternary` (JSX branches), `drop prop` (one JSX attribute; not `key`, `className`, `style`, handlers, spreads), `noop onX` (`onX={() => {}}`), `drop dep` (one React hook dependency); site log and scan print the operator label (`noop onClick`); sites keep crapper's form ids and the upstream mutation-id shape. Contract: `docs/design-react.md` §13 | nothing new (React outcomes in `.metrics/mutate/<ns>.edn` as usual) |
+| X11 | `coderefinery update` (`--check`) and the passive update notice | new subcommand + notice | `update` downloads the latest release from `$CODEREFINERY_DOWNLOAD_URL` (default `https://coderefinery.dev/dl`), checks the archive against `SHA256SUMS` and `SHA256SUMS` against the ed25519 key built into the binary, test-runs the new binary (`--version`), then renames it over the running one (same directory, atomic); `go install` and development builds are refused with the command that updates them; exit 0 updated / up to date · 1 failure or usage. The notice: after any other command, at most one manifest fetch per 24 h (3 s timeout, in the background, never waited for), one line on stderr only when stderr is a terminal, `CI` is unset and `CODEREFINERY_NO_UPDATE_CHECK` is unset, never on stdout, never changing the exit code. The harness runs with `CI=1` and no terminal, so crap/dry/mutate output is unchanged (36/36, stderr 36/36). Release layout and signing: `docs/release.md` | the running binary; `${XDG_CACHE_HOME:-$HOME/.cache}/coderefinery/update-check.json` |
 
 ### mutate --min-timeout (test stability)
 
