@@ -282,49 +282,52 @@ func extractBinary(archive []byte, name string) ([]byte, error) {
 
 // replaceExecutable writes bin next to exe, checks that it runs and reports
 // version, then renames it over exe: the swap is atomic, and a failure at any
-// step leaves exe untouched.
-func replaceExecutable(exe string, bin []byte, version string) (err error) {
-	dir := filepath.Dir(exe)
+// step leaves exe untouched and no temp file behind.
+func replaceExecutable(exe string, bin []byte, version string) error {
 	mode := fs.FileMode(0o755)
-	if st, statErr := os.Stat(exe); statErr == nil {
+	if st, err := os.Stat(exe); err == nil {
 		mode = st.Mode().Perm() | 0o111
 	}
-	tmp, err := os.CreateTemp(dir, ".coderefinery-update-*")
+	tmp, err := writeTemp(filepath.Dir(exe), bin, mode)
 	if err != nil {
-		if errors.Is(err, fs.ErrPermission) || errors.Is(err, syscall.EROFS) {
-			reason := err
-			var pe *fs.PathError
-			if errors.As(err, &pe) {
-				reason = pe.Err
-			}
-			return fmt.Errorf("cannot write to %s (%v). Run the update as a user who can write there, or reinstall into a directory you own: %s", dir, reason, InstallCommand)
-		}
-		return fmt.Errorf("cannot write the new binary next to %s: %w", exe, err)
-	}
-	defer func() {
-		if err != nil {
-			os.Remove(tmp.Name()) // the temp file only, never a directory
-		}
-	}()
-	if _, err = tmp.Write(bin); err == nil {
-		err = tmp.Sync()
-	}
-	if closeErr := tmp.Close(); err == nil {
-		err = closeErr
-	}
-	if err == nil {
-		err = os.Chmod(tmp.Name(), mode)
-	}
-	if err != nil {
-		return fmt.Errorf("cannot write the new binary next to %s: %w", exe, err)
-	}
-	out, runErr := exec.Command(tmp.Name(), "--version").Output()
-	if want := "coderefinery " + version + "\n"; runErr != nil || string(out) != want {
-		err = fmt.Errorf("the downloaded binary does not run here (--version: %q, %v); not updated", strings.TrimSpace(string(out)), runErr)
 		return err
 	}
-	if err = os.Rename(tmp.Name(), exe); err != nil {
+	out, err := exec.Command(tmp, "--version").Output()
+	if want := "coderefinery " + version + "\n"; err != nil || string(out) != want {
+		os.Remove(tmp) // the temp file only, never a directory
+		return fmt.Errorf("the downloaded binary does not run here (--version: %q, %v); not updated", strings.TrimSpace(string(out)), err)
+	}
+	if err := os.Rename(tmp, exe); err != nil {
+		os.Remove(tmp)
 		return fmt.Errorf("cannot replace %s: %w", exe, err)
 	}
 	return nil
+}
+
+// writeTemp writes bin to a new hidden file in dir with mode and returns its
+// path. A directory the user cannot write gets a message naming the fix.
+func writeTemp(dir string, bin []byte, mode fs.FileMode) (string, error) {
+	f, err := os.CreateTemp(dir, ".coderefinery-update-*")
+	if err != nil {
+		var pe *fs.PathError
+		if errors.As(err, &pe) && (errors.Is(err, fs.ErrPermission) || errors.Is(err, syscall.EROFS)) {
+			return "", fmt.Errorf("cannot write to %s (%v). Run the update as a user who can write there, or reinstall into a directory you own: %s", dir, pe.Err, InstallCommand)
+		}
+		return "", fmt.Errorf("cannot write the new binary in %s: %w", dir, err)
+	}
+	_, err = f.Write(bin)
+	if err == nil {
+		err = f.Sync()
+	}
+	if cerr := f.Close(); err == nil {
+		err = cerr
+	}
+	if err == nil {
+		err = os.Chmod(f.Name(), mode)
+	}
+	if err != nil {
+		os.Remove(f.Name()) // the temp file only
+		return "", fmt.Errorf("cannot write the new binary in %s: %w", dir, err)
+	}
+	return f.Name(), nil
 }

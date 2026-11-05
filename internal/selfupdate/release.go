@@ -61,12 +61,6 @@ type Manifest struct {
 	Assets    map[string]Asset `json:"assets"`
 }
 
-// ArchiveName is the release archive for a version and platform, as
-// `make dist` names it.
-func ArchiveName(version, goos, goarch string) string {
-	return fmt.Sprintf("coderefinery_%s_%s_%s.tar.gz", strings.TrimPrefix(version, "v"), goos, goarch)
-}
-
 // ParseSums reads a SHA256SUMS file ("<hex>  <file>" or "<hex> *<file>" per
 // line) into file -> lowercase hex digest.
 func ParseSums(data []byte) (map[string]string, error) {

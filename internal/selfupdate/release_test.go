@@ -13,12 +13,6 @@ func TestBuiltInPublicKeyIsAnEd25519Key(t *testing.T) {
 	}
 }
 
-func TestArchiveNameMatchesMakeDist(t *testing.T) {
-	if got := ArchiveName("v1.2.3", "darwin", "arm64"); got != "coderefinery_1.2.3_darwin_arm64.tar.gz" {
-		t.Errorf("got %q", got)
-	}
-}
-
 func TestParseSumsReadsBothShasumForms(t *testing.T) {
 	a, b := strings.Repeat("a", 64), strings.Repeat("B", 64)
 	got, err := ParseSums([]byte(a + "  one.tar.gz\n" + b + " *two.tar.gz\n"))

@@ -37,7 +37,7 @@ type fakeRelease struct {
 func newFakeRelease(t *testing.T, version string, bin []byte) *fakeRelease {
 	t.Helper()
 	archive := tarGz(t, "coderefinery", bin)
-	file := ArchiveName(version, "linux", "amd64")
+	file := "coderefinery_" + strings.TrimPrefix(version, "v") + "_linux_amd64.tar.gz" // as make dist names it
 	sum := sha256.Sum256(archive)
 	sums := fmt.Sprintf("%s  %s\n", hex.EncodeToString(sum[:]), file)
 	m := Manifest{Version: version, Published: "2026-11-05T00:00:00Z",
