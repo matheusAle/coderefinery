@@ -207,7 +207,7 @@ export const STATES: DiveState[] = [
     n: 4,
     title: "Two tests catch nothing. Deleted.",
     hintKicker: "relevance = mutants this test alone kills",
-    hint: "Zero kills: it would pass with every function returning nothing. Zero unique kills: another test already catches it. Copies drift; one parametrized case does not. (preview)",
+    hint: "Zero kills: it would pass with every function returning nothing. Shadowed: other tests already catch everything it does. Copies drift; one parametrized case does not.",
     session: [
       { kind: "cmd", text: "coderefinery tests --changed" },
       { kind: "out", text: "test                               kills  unique  shadowed by", tone: "ash" },
@@ -221,7 +221,7 @@ export const STATES: DiveState[] = [
       { kind: "agent", text: "`isinstance()` passes for any float; the spy passes whenever `_settle` is called. Neither can fail on a wrong price. Deleting both. The three tier tests are one test with three rows: parametrizing." },
       { kind: "tool", head: "▸ Edit tests/test_pricing.py", body: ["apply_patch · −14 +5 · −test_price_returns_a_number · −test_settle_called · +@pytest.mark.parametrize('tier,expected', …) test_tier_rate"] },
       { kind: "cmd", text: "coderefinery tests --changed" },
-      { kind: "out", text: "5 tests · 12 kills · 0 with zero unique kills · exit 0", tone: "ingot", exit: true },
+      { kind: "out", text: "5 tests · 12 kills · 0 with zero kills · 0 shadowed · exit 0", tone: "ingot", exit: true },
     ],
     before: {
       label: "before",
@@ -251,6 +251,6 @@ export const STATES: DiveState[] = [
         { text: "exit 0", tone: "ingot", exit: true, bold: true },
       ],
     },
-    status: { verdict: "tests · 2 deleted, 3 merged, 0 kills lost · preview · ships with the tests gate", exit: "exit 3 → exit 0", tone: "ingot" },
+    status: { verdict: "tests · 2 deleted, 3 merged, 0 kills lost", exit: "exit 3 → exit 0", tone: "ingot" },
   },
 ];

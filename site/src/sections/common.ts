@@ -48,7 +48,7 @@ export function formulaStrip(): string {
     ["CRAP = CC² × (1 − cov)³ + CC", "complexity your tests never walk", "≥ 10 fails · exit 2"],
     ["score = |A ∩ B| / |A ∪ B|", "structural similarity, names erased", "≥ 0.8 fails · in the report"],
     ["killed / (killed + survived)", "mutants your tests noticed", "1 survivor fails · exit 3"],
-    ["unique kills per test", "what each test alone catches", "0 unique fails · exit 3 · preview"],
+    ["unique kills per test", "what each test alone catches", "zero kills or shadowed fails · exit 3"],
   ];
   return html`<div class="fstrip box" data-slot="visual" role="list">
     ${rows.map(

@@ -100,7 +100,7 @@ const VERDICTS: VerdictRow[] = [
   { gate: "mutate · exit 3", tone: "slag", sees: ["SURVIVED  pricing.py:6  0 → 1", "SURVIVED  pricing.py:9  1 → 0"], does: "add or sharpen the assertion that would fail. if no honest test can kill it, the code does nothing: delete it." },
   { gate: "mutate · UNCOVERED", tone: "ember", sees: ["UNCOVERED pricing.py:14  and → or"], does: "no test executes that line. write the test first; the mutant runs next time." },
   { gate: "mutate · exit 2", tone: "slag", sees: ["Baseline failed: 1 test failed before any mutation"], does: "the suite is red on its own. fix the tests, then run the gate." },
-  { gate: "tests · exit 3", tone: "slag", sees: ["test_settle_called   kills 0   unique 0", "test_quote_gold      kills 5   unique 0   shadowed by test_tier_rate[gold]"], does: "zero kills: delete. zero unique kills: delete if the shadow is at the same or a lower level; keep if it guards a seam." },
+  { gate: "tests · exit 3", tone: "slag", sees: ["test_settle_called   kills 0   unique 0", "test_quote_gold      kills 5   unique 0   shadowed by test_tier_rate[gold]"], does: "zero kills: delete. shadowed: delete if the covering tests are at the same or a lower level; keep if it guards a seam." },
   { gate: "all · exit 0", tone: "ingot", sees: ["0 functions above the gate · No duplicate candidates found. · killed 12 survived 0"], does: "commit. the hook agrees." },
 ];
 

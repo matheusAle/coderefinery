@@ -298,7 +298,7 @@ export const TESTS: Gate = {
     {
       title: "Which test killed it?",
       body: "With attribution, every killed mutant records the tests that failed on it. `kills` per test: `4, 1, 5, 0, 0`. A test with zero kills would pass with every function returning nothing.",
-      rule: "`kills 0` → delete. It is not a test. (preview: ships with the tests gate)",
+      rule: "`kills 0` → delete. It is not a test.",
       formula: [{ text: "kills(t) = { m : t fails on m } →" }, { text: "4 · 1 · 5 · 0 · 0", molten: true }],
       annotations: [
         { line: 1, tint: "ingot", note: "kills 4", tone: "ingot" },

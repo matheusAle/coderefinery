@@ -76,7 +76,7 @@ export function mountTests(): HTMLElement {
 test_settle_called         kills 0   unique 0   ← delete
 test_price_returns_number  kills 0   unique 0   ← delete
 exit 3</pre>
-            <p class="measure-prev mono ember" data-support>preview · ships with the tests gate</p>
+            <p class="measure-prev mono ember" data-support>coderefinery tests · reads JUnit XML from any runner</p>
           </div>
         </figure>
       </div>

@@ -13,7 +13,7 @@ const GATES: [string, string, string, string][] = [
   ["coderefinery crap --changed", "Is it too complex for its tests?", "counts every decision, reads the coverage report, scores `CRAP` per function. `≥ 10 → exit 2`.", "after Alberto Savoia's CRAP (2007) and Uncle Bob's crapper (ub-mode, 2025)"],
   ["coderefinery dry --changed", "Is it a copy with new names?", "normalises each function's syntax tree, erases names and literals, compares every pair. `≥ 0.8` → in the report.", "after dry4clj and Uncle Bob's dryer"],
   ["coderefinery mutate --changed", "Would the tests notice a bug?", "flips operators and constants one at a time, runs the suite per mutant, re-runs only survivors and changed functions. survivor → `exit 3`.", "after Uncle Bob's mutator; the idea is from 1978"],
-  ["coderefinery tests (preview)", "Does this test catch anything?", "attributes every kill to the tests that caused it. a test with zero unique kills is listed for deletion. → `exit 3`.", "new. reads JUnit XML from any runner."],
+  ["coderefinery tests", "Does this test catch anything?", "attributes every kill to the tests that caused it. a test with zero kills, or shadowed by other tests, is listed for deletion. → `exit 3`.", "reads JUnit XML from any runner."],
 ];
 const DOES: [string, string][] = [
   ["gates the diff", "`--changed` on every command. a ten-year codebase never passes a repo-wide mandate; a PR can."],
