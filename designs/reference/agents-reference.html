@@ -1,0 +1,1322 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Azeret+Mono%3Awght%40100..900&family=Geist%3Awght%40100..900&family=Geist+Mono%3Awght%40100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      *, ::before, ::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="height: 4620px; position: relative; width: 1440px">
+      <div
+        data-pencil-name="A0 · For agents · hero"
+        style="align-items: flex-start; background-color: #0B0C0E; box-sizing: border-box; display: flex; flex-direction: column; gap: 36px; height: 980px; justify-content: flex-start; left: 0px; overflow: hidden; padding: 64px; position: absolute; top: 0px; width: 1440px"
+      >
+        <div
+          data-pencil-name="Topbar"
+          style="align-items: center; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: fit-content; justify-content: space-between; width: 100%"
+        >
+          <div
+            data-pencil-name="Wordmark"
+            style="align-items: center; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 2px; height: fit-content; justify-content: flex-start; width: fit-content"
+          >
+            <div
+              style='box-sizing: border-box; color: #ECEDEF; font-family: "Azeret Mono", system-ui, sans-serif; font-size: 20px; font-style: normal; font-weight: 700; letter-spacing: -1px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              code
+            </div>
+            <div
+              style='box-sizing: border-box; color: #FF6A1A; font-family: "Azeret Mono", system-ui, sans-serif; font-size: 20px; font-style: normal; font-weight: 700; letter-spacing: -1px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              refinery
+            </div>
+            <div
+              data-pencil-name="Cursor"
+              style="background-color: #FF6A1A; box-sizing: border-box; flex-shrink: 0; height: 17px; width: 9px"
+            ></div>
+          </div>
+          <div
+            data-pencil-name="Nav"
+            style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 28px; height: fit-content; justify-content: flex-start; width: fit-content"
+          >
+            <div
+              style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              why
+            </div>
+            <div
+              style='box-sizing: border-box; color: #FF6A1A; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              for agents
+            </div>
+            <div
+              style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              the math
+            </div>
+            <div
+              style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              docs
+            </div>
+            <div
+              style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              github
+            </div>
+          </div>
+        </div>
+        <div
+          data-pencil-name="sp"
+          style="box-sizing: border-box; flex-shrink: 0; height: 60px; width: 10px"
+        ></div>
+        <div
+          style='box-sizing: border-box; color: #FF6A1A; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+        >
+          § for agents · why determinism
+        </div>
+        <div
+          style='box-sizing: border-box; color: #ECEDEF; font-family: "Azeret Mono", system-ui, sans-serif; font-size: 56px; font-style: normal; font-weight: 700; letter-spacing: -2px; line-height: 57px; text-align: left; width: 100%'
+        >
+          The agent gets the same answer every time. So it learns the rule, not the reviewer.
+        </div>
+        <div
+          data-pencil-name="Two"
+          style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 48px; height: fit-content; justify-content: flex-start; width: 100%"
+        >
+          <div
+            style="box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: Geist, system-ui, sans-serif; font-size: 18px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 26px; text-align: left"
+          >
+            An agent optimises for the signal it gets. A reviewer it can persuade teaches it to
+            persuade. A formula it cannot move teaches it to move the code. coderefinery gives every
+            edit a number, a threshold, a line, and an exit code. Same input, same verdict, on your
+            laptop and in CI.
+          </div>
+          <div
+            data-pencil-name="Props"
+            style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: column; flex-shrink: 0; gap: 0px; height: fit-content; justify-content: flex-start; outline-offset: -0.5px; outline: 1px solid #26282E; width: 520px"
+          >
+            <div
+              data-pencil-name="repeatable"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 12px; height: 79.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; padding: 10px 14px; width: 520px"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF6A1A; flex-shrink: 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; width: 140px'
+              >
+                repeatable
+              </div>
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left'
+              >
+                same tree in, same number out. byte-identical to the reference tools on 36/36 cases.
+              </div>
+            </div>
+            <div
+              data-pencil-name="local and fast"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 12px; height: 79.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; padding: 10px 14px; width: 520px"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF6A1A; flex-shrink: 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; width: 140px'
+              >
+                local and fast
+              </div>
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left'
+              >
+                seconds on --changed. the agent runs it after every edit, not once before the
+                commit.
+              </div>
+            </div>
+            <div
+              data-pencil-name="precise"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 12px; height: 59.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; padding: 10px 14px; width: 520px"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF6A1A; flex-shrink: 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; width: 140px'
+              >
+                precise
+              </div>
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left'
+              >
+                file:line, the metric, the threshold it crossed. nothing to interpret.
+              </div>
+            </div>
+            <div
+              data-pencil-name="un-gameable"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 12px; height: 59.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; padding: 10px 14px; width: 520px"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF6A1A; flex-shrink: 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; width: 140px'
+              >
+                un-gameable
+              </div>
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left'
+              >
+                the only way to change the number is to change the code or the tests.
+              </div>
+            </div>
+            <div
+              data-pencil-name="machine-readable"
+              style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 12px; height: fit-content; justify-content: flex-start; padding: 10px 14px; width: 100%"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF6A1A; flex-shrink: 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; width: 140px'
+              >
+                machine-readable
+              </div>
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left'
+              >
+                exit codes for the hook, .metrics/*.edn for tooling, stdout for the transcript.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div data-pencil-name="sp2" style="box-sizing: border-box; flex: 1 1 0; width: 10px"></div>
+        <div
+          data-pencil-name="Statusbar"
+          style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 1px 0px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 28.5px; justify-content: space-between; margin: -0.5px 0px 0px 0px; padding: 12px 0px 0px 0px; width: 1312px"
+        >
+          <div
+            style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+          >
+            ● no model in the loop · the gate does not read the PR description
+          </div>
+          <div
+            style='box-sizing: border-box; color: #3DDC84; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+          >
+            exit 0
+          </div>
+        </div>
+      </div>
+      <div
+        data-pencil-name="A1 · The loop"
+        style="align-items: flex-start; background-color: #0B0C0E; box-sizing: border-box; display: flex; flex-direction: column; gap: 36px; height: 900px; justify-content: flex-start; left: 0px; overflow: hidden; padding: 64px; position: absolute; top: 980px; width: 1440px"
+      >
+        <div
+          style='box-sizing: border-box; color: #FF6A1A; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+        >
+          §01 · the loop the agent lives in
+        </div>
+        <div
+          style='box-sizing: border-box; color: #ECEDEF; font-family: "Azeret Mono", system-ui, sans-serif; font-size: 56px; font-style: normal; font-weight: 700; letter-spacing: -2px; line-height: 57px; text-align: left; width: 100%'
+        >
+          Edit. Gate. Read the exit code. Fix the code, not the gate.
+        </div>
+        <div
+          data-pencil-name="Loop"
+          style="align-items: center; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: fit-content; justify-content: flex-start; width: 100%"
+        >
+          <div
+            data-pencil-name="1 · edit"
+            style="align-items: flex-start; background-color: #131417; box-sizing: border-box; display: flex; flex-direction: column; flex: 1 1 0; gap: 8px; height: fit-content; justify-content: flex-start; outline-offset: -0.5px; outline: 1px solid #8B8F99; padding: 18px"
+          >
+            <div
+              style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 700; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              1 · edit
+            </div>
+            <div
+              style='box-sizing: border-box; color: #ECEDEF; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left; width: 100%'
+            >
+              the agent changes code or tests. nothing else is in scope.
+            </div>
+          </div>
+          <div
+            data-pencil-name="arrow"
+            style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: fit-content; justify-content: flex-start; padding: 0px 10px; width: fit-content"
+          >
+            <div
+              style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 20px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              →
+            </div>
+          </div>
+          <div
+            data-pencil-name="2 · gate"
+            style="align-items: flex-start; background-color: #131417; box-sizing: border-box; display: flex; flex-direction: column; flex: 1 1 0; gap: 8px; height: fit-content; justify-content: flex-start; outline-offset: -0.5px; outline: 1px solid #FF6A1A; padding: 18px"
+          >
+            <div
+              style='box-sizing: border-box; color: #FF6A1A; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 700; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              2 · gate
+            </div>
+            <div
+              style='box-sizing: border-box; color: #ECEDEF; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left; width: 100%'
+            >
+              crap · dry · mutate · tests, on --changed only. seconds.
+            </div>
+          </div>
+          <div
+            data-pencil-name="arrow"
+            style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: fit-content; justify-content: flex-start; padding: 0px 10px; width: fit-content"
+          >
+            <div
+              style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 20px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              →
+            </div>
+          </div>
+          <div
+            data-pencil-name="3 · verdict"
+            style="align-items: flex-start; background-color: #131417; box-sizing: border-box; display: flex; flex-direction: column; flex: 1 1 0; gap: 8px; height: fit-content; justify-content: flex-start; outline-offset: -0.5px; outline: 1px solid #FFB020; padding: 18px"
+          >
+            <div
+              style='box-sizing: border-box; color: #FFB020; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 700; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              3 · verdict
+            </div>
+            <div
+              style='box-sizing: border-box; color: #ECEDEF; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left; width: 100%'
+            >
+              exit 2 · report · exit 3 · exit 0, with file:line and the number.
+            </div>
+          </div>
+          <div
+            data-pencil-name="arrow"
+            style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: fit-content; justify-content: flex-start; padding: 0px 10px; width: fit-content"
+          >
+            <div
+              style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 20px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              →
+            </div>
+          </div>
+          <div
+            data-pencil-name="4 · fix the code"
+            style="align-items: flex-start; background-color: #131417; box-sizing: border-box; display: flex; flex-direction: column; flex: 1 1 0; gap: 8px; height: fit-content; justify-content: flex-start; outline-offset: -0.5px; outline: 1px solid #3DDC84; padding: 18px"
+          >
+            <div
+              style='box-sizing: border-box; color: #3DDC84; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 700; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              4 · fix the code
+            </div>
+            <div
+              style='box-sizing: border-box; color: #ECEDEF; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left; width: 100%'
+            >
+              split, merge, add the assertion, delete the dead test. never edit the gate.
+            </div>
+          </div>
+          <div
+            data-pencil-name="arrow"
+            style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: fit-content; justify-content: flex-start; padding: 0px 10px; width: fit-content"
+          >
+            <div
+              style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 20px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              →
+            </div>
+          </div>
+          <div
+            data-pencil-name="5 · commit"
+            style="align-items: flex-start; background-color: #131417; box-sizing: border-box; display: flex; flex-direction: column; flex: 1 1 0; gap: 8px; height: fit-content; justify-content: flex-start; outline-offset: -0.5px; outline: 1px solid #3DDC84; padding: 18px"
+          >
+            <div
+              style='box-sizing: border-box; color: #3DDC84; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 700; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              5 · commit
+            </div>
+            <div
+              style='box-sizing: border-box; color: #ECEDEF; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left; width: 100%'
+            >
+              the hook re-runs the gate. exit 0 is the only way through.
+            </div>
+          </div>
+        </div>
+        <div
+          data-pencil-name="Two"
+          style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 32px; height: fit-content; justify-content: flex-start; width: 100%"
+        >
+          <div
+            data-pencil-name="Probabilistic loop"
+            style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: column; flex: 1 1 0; gap: 0px; height: fit-content; justify-content: flex-start; outline-offset: -0.5px; outline: 1px solid #26282E"
+          >
+            <div
+              data-pencil-name="Bar"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 34.5px; justify-content: space-between; margin: 0px 0px -0.5px 0px; padding: 9px 14px; width: 640px"
+            >
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                with an LLM reviewer
+              </div>
+              <div
+                style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                what the agent learns
+              </div>
+            </div>
+            <div
+              data-pencil-name="agent"
+              style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 8px; height: fit-content; justify-content: flex-start; padding: 4px 14px; width: 100%"
+            >
+              <div
+                style='box-sizing: border-box; color: #8B8F99; flex-shrink: 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 11px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; width: 46px'
+              >
+                agent
+              </div>
+              <div
+                style="box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: Geist, system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left"
+              >
+                Refactored for clarity and added comprehensive tests. Ready for review.
+              </div>
+            </div>
+            <div
+              data-pencil-name="out"
+              style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 8px; height: fit-content; justify-content: flex-start; padding: 4px 14px; width: 100%"
+            >
+              <div
+                style='box-sizing: border-box; color: #8B8F99; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left'
+              >
+                reviewer: Looks good overall. Consider simplifying price(). LGTM.
+              </div>
+            </div>
+            <div
+              data-pencil-name="agent"
+              style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 8px; height: fit-content; justify-content: flex-start; padding: 4px 14px; width: 100%"
+            >
+              <div
+                style='box-sizing: border-box; color: #8B8F99; flex-shrink: 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 11px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; width: 46px'
+              >
+                agent
+              </div>
+              <div
+                style="box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: Geist, system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left"
+              >
+                Thanks! Merging.
+              </div>
+            </div>
+            <div
+              data-pencil-name="bad"
+              style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 8px; height: fit-content; justify-content: flex-start; padding: 4px 14px; width: 100%"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF4D4D; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left'
+              >
+                lesson: a confident summary is as good as a fix.
+              </div>
+            </div>
+          </div>
+          <div
+            data-pencil-name="Deterministic loop"
+            style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: column; flex: 1 1 0; gap: 0px; height: fit-content; justify-content: flex-start; outline-offset: -0.5px; outline: 1px solid #26282E"
+          >
+            <div
+              data-pencil-name="Bar"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 34.5px; justify-content: space-between; margin: 0px 0px -0.5px 0px; padding: 9px 14px; width: 640px"
+            >
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                with the gate
+              </div>
+              <div
+                style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                what the agent learns
+              </div>
+            </div>
+            <div
+              data-pencil-name="cmd"
+              style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 8px; height: fit-content; justify-content: flex-start; padding: 4px 14px; width: 100%"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF6A1A; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                $
+              </div>
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                coderefinery crap --changed --threshold 9.9999
+              </div>
+            </div>
+            <div
+              data-pencil-name="hot"
+              style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 8px; height: fit-content; justify-content: flex-start; padding: 4px 14px; width: 100%"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF6A1A; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left'
+              >
+                billing/pricing.py:price CRAP 50.5 cov 20.0 cc 9
+              </div>
+            </div>
+            <div
+              data-pencil-name="bad"
+              style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 8px; height: fit-content; justify-content: flex-start; padding: 4px 14px; width: 100%"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF4D4D; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left'
+              >
+                CRAP threshold exceeded: 50.5 &gt; 9.9999 · exit 2
+              </div>
+            </div>
+            <div
+              data-pencil-name="agent"
+              style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 8px; height: fit-content; justify-content: flex-start; padding: 4px 14px; width: 100%"
+            >
+              <div
+                style='box-sizing: border-box; color: #8B8F99; flex-shrink: 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 11px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; width: 46px'
+              >
+                agent
+              </div>
+              <div
+                style="box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: Geist, system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left"
+              >
+                Nine decisions, a fifth covered. Splitting price() into three functions and testing
+                each.
+              </div>
+            </div>
+            <div
+              data-pencil-name="ok"
+              style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 8px; height: fit-content; justify-content: flex-start; padding: 4px 14px; width: 100%"
+            >
+              <div
+                style='box-sizing: border-box; color: #3DDC84; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left'
+              >
+                lesson: the number moves only when the code does.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          data-pencil-name="Statusbar"
+          style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 1px 0px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 28.5px; justify-content: space-between; margin: -0.5px 0px 0px 0px; padding: 12px 0px 0px 0px; width: 1312px"
+        >
+          <div
+            style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+          >
+            ● a loop that closes in seconds runs hundreds of times a day. that is where behaviour
+            comes from.
+          </div>
+          <div
+            style='box-sizing: border-box; color: #3DDC84; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+          >
+            exit 0
+          </div>
+        </div>
+      </div>
+      <div
+        data-pencil-name="A2 · What the agent reads"
+        style="align-items: flex-start; background-color: #0B0C0E; box-sizing: border-box; display: flex; flex-direction: column; gap: 36px; height: 940px; justify-content: flex-start; left: 0px; overflow: hidden; padding: 64px; position: absolute; top: 1960px; width: 1440px"
+      >
+        <div
+          style='box-sizing: border-box; color: #FF6A1A; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+        >
+          §02 · what the agent reads, and what it does next
+        </div>
+        <div
+          style='box-sizing: border-box; color: #ECEDEF; font-family: "Azeret Mono", system-ui, sans-serif; font-size: 56px; font-style: normal; font-weight: 700; letter-spacing: -2px; line-height: 57px; text-align: left; width: 100%'
+        >
+          Every verdict names the next move.
+        </div>
+        <div
+          data-pencil-name="Table"
+          style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: column; flex-shrink: 0; gap: 0px; height: fit-content; justify-content: flex-start; outline-offset: -0.5px; outline: 1px solid #26282E; width: 100%"
+        >
+          <div
+            data-pencil-name="Head"
+            style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 35.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; width: 1312px"
+          >
+            <div
+              data-pencil-name="gate · exit"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 1px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 36px; justify-content: flex-start; margin: 0px -0.5px 0px 0px; padding: 10px 14px; width: 199.5px"
+            >
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 700; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                gate · exit
+              </div>
+            </div>
+            <div
+              data-pencil-name="what the agent sees"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 1px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex: 1 1 0; gap: 0px; height: 36px; justify-content: flex-start; margin: 0px -0.5px 0px 0px; padding: 10px 14px; width: 555.5px"
+            >
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 700; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                what the agent sees
+              </div>
+            </div>
+            <div
+              data-pencil-name="what the skill tells it to do"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 1px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex: 1 1 0; gap: 0px; height: 36px; justify-content: flex-start; margin: 0px -0.5px 0px 0px; padding: 10px 14px; width: 555.5px"
+            >
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 700; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                what the skill tells it to do
+              </div>
+            </div>
+          </div>
+          <div
+            data-pencil-name="crap · exit 2"
+            style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 76.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; width: 1312px"
+          >
+            <div
+              data-pencil-name="gate"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 1px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 36px; justify-content: flex-start; margin: 0px -0.5px 0px 0px; padding: 10px 14px; width: 199.5px"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF4D4D; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 700; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                crap · exit 2
+              </div>
+            </div>
+            <div
+              data-pencil-name="sees"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 1px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex: 1 1 0; gap: 0px; height: 77px; justify-content: flex-start; margin: 0px -0.5px 0px 0px; padding: 10px 14px; width: 555.5px"
+            >
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left'
+              >
+                Function&nbsp;&nbsp;Namespace&nbsp;&nbsp;CC&nbsp;&nbsp;Cov%&nbsp;&nbsp;CRAP
+                <br />
+                price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;billing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9&nbsp;&nbsp;20.0&nbsp;&nbsp;50.5
+                <br />
+                CRAP threshold exceeded: 50.5 &gt; 9.9999
+              </div>
+            </div>
+            <div
+              data-pencil-name="does"
+              style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex: 1 1 0; gap: 0px; height: fit-content; justify-content: flex-start; padding: 10px 14px"
+            >
+              <div
+                style="box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: Geist, system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left"
+              >
+                reduce under 10 by splitting, by testing, or both. split first when CC ≥ 10: no
+                coverage can save it.
+              </div>
+            </div>
+          </div>
+          <div
+            data-pencil-name="crap · N/A"
+            style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 38.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; width: 1312px"
+          >
+            <div
+              data-pencil-name="gate"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 1px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 36px; justify-content: flex-start; margin: 0px -0.5px 0px 0px; padding: 10px 14px; width: 199.5px"
+            >
+              <div
+                style='box-sizing: border-box; color: #FFB020; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 700; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                crap · N/A
+              </div>
+            </div>
+            <div
+              data-pencil-name="sees"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 1px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex: 1 1 0; gap: 0px; height: 39px; justify-content: flex-start; margin: 0px -0.5px 0px 0px; padding: 10px 14px; width: 555.5px"
+            >
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left'
+              >
+                Cov% N/A · stderr: Python tests exited 1
+              </div>
+            </div>
+            <div
+              data-pencil-name="does"
+              style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex: 1 1 0; gap: 0px; height: fit-content; justify-content: flex-start; padding: 10px 14px"
+            >
+              <div
+                style="box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: Geist, system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left"
+              >
+                the tests or the coverage run failed. fix that before trusting the gate.
+              </div>
+            </div>
+          </div>
+          <div
+            data-pencil-name="dry · report"
+            style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 76.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; width: 1312px"
+          >
+            <div
+              data-pencil-name="gate"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 1px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 36px; justify-content: flex-start; margin: 0px -0.5px 0px 0px; padding: 10px 14px; width: 199.5px"
+            >
+              <div
+                style='box-sizing: border-box; color: #FFB020; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 700; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                dry · report
+              </div>
+            </div>
+            <div
+              data-pencil-name="sees"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 1px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex: 1 1 0; gap: 0px; height: 77px; justify-content: flex-start; margin: 0px -0.5px 0px 0px; padding: 10px 14px; width: 555.5px"
+            >
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left'
+              >
+                DUPLICATE score=0.91
+                <br />
+                &nbsp;&nbsp;billing/pricing.py:1-6
+                <br />
+                &nbsp;&nbsp;billing/quotes.py:8-13
+              </div>
+            </div>
+            <div
+              data-pencil-name="does"
+              style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex: 1 1 0; gap: 0px; height: fit-content; justify-content: flex-start; padding: 10px 14px"
+            >
+              <div
+                style="box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: Geist, system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left"
+              >
+                eliminate every pair at 0.8 or above: one body, two names. exit is 0; the skill
+                reads the report.
+              </div>
+            </div>
+          </div>
+          <div
+            data-pencil-name="mutate · exit 3"
+            style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 57.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; width: 1312px"
+          >
+            <div
+              data-pencil-name="gate"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 1px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 36px; justify-content: flex-start; margin: 0px -0.5px 0px 0px; padding: 10px 14px; width: 199.5px"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF4D4D; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 700; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                mutate · exit 3
+              </div>
+            </div>
+            <div
+              data-pencil-name="sees"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 1px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex: 1 1 0; gap: 0px; height: 58px; justify-content: flex-start; margin: 0px -0.5px 0px 0px; padding: 10px 14px; width: 555.5px"
+            >
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left'
+              >
+                SURVIVED&nbsp;&nbsp;pricing.py:6&nbsp;&nbsp;0 -&gt; 1
+                <br />
+                SURVIVED&nbsp;&nbsp;pricing.py:9&nbsp;&nbsp;1 -&gt; 0
+              </div>
+            </div>
+            <div
+              data-pencil-name="does"
+              style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex: 1 1 0; gap: 0px; height: fit-content; justify-content: flex-start; padding: 10px 14px"
+            >
+              <div
+                style="box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: Geist, system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left"
+              >
+                add or sharpen the assertion that would fail. if no honest test can kill it, the
+                code does nothing: delete it.
+              </div>
+            </div>
+          </div>
+          <div
+            data-pencil-name="mutate · UNCOVERED"
+            style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 38.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; width: 1312px"
+          >
+            <div
+              data-pencil-name="gate"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 1px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 36px; justify-content: flex-start; margin: 0px -0.5px 0px 0px; padding: 10px 14px; width: 199.5px"
+            >
+              <div
+                style='box-sizing: border-box; color: #FFB020; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 700; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                mutate · UNCOVERED
+              </div>
+            </div>
+            <div
+              data-pencil-name="sees"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 1px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex: 1 1 0; gap: 0px; height: 39px; justify-content: flex-start; margin: 0px -0.5px 0px 0px; padding: 10px 14px; width: 555.5px"
+            >
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left'
+              >
+                UNCOVERED pricing.py:14 and -&gt; or
+              </div>
+            </div>
+            <div
+              data-pencil-name="does"
+              style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex: 1 1 0; gap: 0px; height: fit-content; justify-content: flex-start; padding: 10px 14px"
+            >
+              <div
+                style="box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: Geist, system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left"
+              >
+                no test executes that line. write the test first; the mutant runs next time.
+              </div>
+            </div>
+          </div>
+          <div
+            data-pencil-name="mutate · exit 2"
+            style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 38.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; width: 1312px"
+          >
+            <div
+              data-pencil-name="gate"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 1px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 36px; justify-content: flex-start; margin: 0px -0.5px 0px 0px; padding: 10px 14px; width: 199.5px"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF4D4D; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 700; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                mutate · exit 2
+              </div>
+            </div>
+            <div
+              data-pencil-name="sees"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 1px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex: 1 1 0; gap: 0px; height: 39px; justify-content: flex-start; margin: 0px -0.5px 0px 0px; padding: 10px 14px; width: 555.5px"
+            >
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left'
+              >
+                Baseline failed: 1 test failed before any mutation
+              </div>
+            </div>
+            <div
+              data-pencil-name="does"
+              style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex: 1 1 0; gap: 0px; height: fit-content; justify-content: flex-start; padding: 10px 14px"
+            >
+              <div
+                style="box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: Geist, system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left"
+              >
+                the suite is red on its own. fix the tests, then run the gate.
+              </div>
+            </div>
+          </div>
+          <div
+            data-pencil-name="tests · exit 3"
+            style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 76.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; width: 1312px"
+          >
+            <div
+              data-pencil-name="gate"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 1px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 36px; justify-content: flex-start; margin: 0px -0.5px 0px 0px; padding: 10px 14px; width: 199.5px"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF4D4D; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 700; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                tests · exit 3
+              </div>
+            </div>
+            <div
+              data-pencil-name="sees"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 1px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex: 1 1 0; gap: 0px; height: 77px; justify-content: flex-start; margin: 0px -0.5px 0px 0px; padding: 10px 14px; width: 555.5px"
+            >
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left'
+              >
+                test_settle_called&nbsp;&nbsp;&nbsp;kills 0&nbsp;&nbsp;&nbsp;unique 0
+                <br />
+                test_quote_gold&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kills 5&nbsp;&nbsp;&nbsp;unique
+                0&nbsp;&nbsp;&nbsp;shadowed by test_tier_rate[gold]
+              </div>
+            </div>
+            <div
+              data-pencil-name="does"
+              style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex: 1 1 0; gap: 0px; height: fit-content; justify-content: flex-start; padding: 10px 14px"
+            >
+              <div
+                style="box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: Geist, system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left"
+              >
+                zero kills: delete. zero unique kills: delete if the shadow is at the same or a
+                lower level; keep if it guards a seam.
+              </div>
+            </div>
+          </div>
+          <div
+            data-pencil-name="all · exit 0"
+            style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: fit-content; justify-content: flex-start; width: 100%"
+          >
+            <div
+              data-pencil-name="gate"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 1px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 36px; justify-content: flex-start; margin: 0px -0.5px 0px 0px; padding: 10px 14px; width: 199.5px"
+            >
+              <div
+                style='box-sizing: border-box; color: #3DDC84; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 700; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                all · exit 0
+              </div>
+            </div>
+            <div
+              data-pencil-name="sees"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 1px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex: 1 1 0; gap: 0px; height: 58px; justify-content: flex-start; margin: 0px -0.5px 0px 0px; padding: 10px 14px; width: 555.5px"
+            >
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left'
+              >
+                0 functions above the gate · No duplicate candidates found. · killed 12 survived 0
+              </div>
+            </div>
+            <div
+              data-pencil-name="does"
+              style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex: 1 1 0; gap: 0px; height: fit-content; justify-content: flex-start; padding: 10px 14px"
+            >
+              <div
+                style="box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: Geist, system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left"
+              >
+                commit. the hook agrees.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          data-pencil-name="Statusbar"
+          style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 1px 0px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 28.5px; justify-content: space-between; margin: -0.5px 0px 0px 0px; padding: 12px 0px 0px 0px; width: 1312px"
+        >
+          <div
+            style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+          >
+            ● output is sorted worst first and never depends on time, locale or machine. the
+            transcript is the same in CI.
+          </div>
+          <div
+            style='box-sizing: border-box; color: #3DDC84; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+          >
+            exit 0
+          </div>
+        </div>
+      </div>
+      <div
+        data-pencil-name="A3 · Reliable tests"
+        style="align-items: flex-start; background-color: #0B0C0E; box-sizing: border-box; display: flex; flex-direction: column; gap: 36px; height: 980px; justify-content: flex-start; left: 0px; overflow: hidden; padding: 64px; position: absolute; top: 2940px; width: 1440px"
+      >
+        <div
+          style='box-sizing: border-box; color: #FF6A1A; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+        >
+          §03 · reliable tests, mechanically
+        </div>
+        <div
+          style='box-sizing: border-box; color: #ECEDEF; font-family: "Azeret Mono", system-ui, sans-serif; font-size: 56px; font-style: normal; font-weight: 700; letter-spacing: -2px; line-height: 57px; text-align: left; width: 100%'
+        >
+          The mutant tells the agent which test to write.
+        </div>
+        <div
+          style="box-sizing: border-box; color: #8B8F99; font-family: Geist, system-ui, sans-serif; font-size: 17px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 25px; text-align: left; width: 100%"
+        >
+          A surviving mutant is a precise specification of a missing assertion. The agent does not
+          have to guess what a good test is; it reads the edit that went unnoticed and writes the
+          case that would notice it.
+        </div>
+        <div
+          data-pencil-name="Two"
+          style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 32px; height: fit-content; justify-content: flex-start; width: 100%"
+        >
+          <div
+            data-pencil-name="Mutant to test"
+            style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: column; flex: 1 1 0; gap: 0px; height: fit-content; justify-content: flex-start; outline-offset: -0.5px; outline: 1px solid #26282E"
+          >
+            <div
+              data-pencil-name="Bar"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 34.5px; justify-content: space-between; margin: 0px 0px -0.5px 0px; padding: 9px 14px; width: 760px"
+            >
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                surviving mutant
+              </div>
+              <div
+                style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                the test it demands
+              </div>
+            </div>
+            <div
+              data-pencil-name="&lt;  →  &lt;="
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 12px; height: 37.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; padding: 9px 14px; width: 760px"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF6A1A; flex-shrink: 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; width: 130px'
+              >
+                &lt; → &lt;=
+              </div>
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left'
+              >
+                a case exactly on the boundary. the equality is the bug.
+              </div>
+            </div>
+            <div
+              data-pencil-name="0  →  1"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 12px; height: 37.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; padding: 9px 14px; width: 760px"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF6A1A; flex-shrink: 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; width: 130px'
+              >
+                0 → 1
+              </div>
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left'
+              >
+                a case where the result must be zero, not merely small.
+              </div>
+            </div>
+            <div
+              data-pencil-name="and  →  or"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 12px; height: 37.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; padding: 9px 14px; width: 760px"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF6A1A; flex-shrink: 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; width: 130px'
+              >
+                and → or
+              </div>
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left'
+              >
+                each operand alone: one true, one false, assert the branch is not taken.
+              </div>
+            </div>
+            <div
+              data-pencil-name="−  →  +"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 12px; height: 57.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; padding: 9px 14px; width: 760px"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF6A1A; flex-shrink: 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; width: 130px'
+              >
+                − → +
+              </div>
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left'
+              >
+                an expected value that changes sign or direction, not one that happens to match.
+              </div>
+            </div>
+            <div
+              data-pencil-name="true  →  false"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 12px; height: 37.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; padding: 9px 14px; width: 760px"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF6A1A; flex-shrink: 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; width: 130px'
+              >
+                true → false
+              </div>
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left'
+              >
+                both branches observed through the result, not through a spy.
+              </div>
+            </div>
+            <div
+              data-pencil-name="delete not"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 12px; height: 37.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; padding: 9px 14px; width: 760px"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF6A1A; flex-shrink: 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; width: 130px'
+              >
+                delete not
+              </div>
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left'
+              >
+                the negated input, asserted on the outcome.
+              </div>
+            </div>
+            <div
+              data-pencil-name="==  →  !="
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 12px; height: 57.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; padding: 9px 14px; width: 760px"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF6A1A; flex-shrink: 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; width: 130px'
+              >
+                == → !=
+              </div>
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left'
+              >
+                a case that is equal and a case that is not, with different expected results.
+              </div>
+            </div>
+            <div
+              data-pencil-name="delete −x"
+              style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 12px; height: fit-content; justify-content: flex-start; padding: 9px 14px; width: 100%"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF6A1A; flex-shrink: 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; width: 130px'
+              >
+                delete −x
+              </div>
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; flex: 1 1 0; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left'
+              >
+                a negative input whose sign reaches the output.
+              </div>
+            </div>
+          </div>
+          <div
+            data-pencil-name="Rules the skill enforces"
+            style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: column; flex-shrink: 0; gap: 0px; height: fit-content; justify-content: flex-start; outline-offset: -0.5px; outline: 1px solid #26282E; width: 520px"
+          >
+            <div
+              data-pencil-name="Bar"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 34.5px; justify-content: space-between; margin: 0px 0px -0.5px 0px; padding: 9px 14px; width: 520px"
+            >
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                what the skill says
+              </div>
+              <div
+                style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                what enforces it
+              </div>
+            </div>
+            <div
+              data-pencil-name="write the failing test before the code"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: column; flex-shrink: 0; gap: 4px; height: 76.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; padding: 9px 14px; width: 520px"
+            >
+              <div
+                style="box-sizing: border-box; color: #ECEDEF; font-family: Geist, system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left; width: 100%"
+              >
+                write the failing test before the code
+              </div>
+              <div
+                style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 18px; text-align: left; width: 100%'
+              >
+                mutate: a test written after the fact that cannot fail has zero kills
+              </div>
+            </div>
+            <div
+              data-pencil-name="test behaviour, not implementation"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: column; flex-shrink: 0; gap: 4px; height: 76.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; padding: 9px 14px; width: 520px"
+            >
+              <div
+                style="box-sizing: border-box; color: #ECEDEF; font-family: Geist, system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left; width: 100%"
+              >
+                test behaviour, not implementation
+              </div>
+              <div
+                style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 18px; text-align: left; width: 100%'
+              >
+                tests: a spy on a private call kills nothing; it is listed for deletion
+              </div>
+            </div>
+            <div
+              data-pencil-name="if it would pass with every function returning nothing, throw it out"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: column; flex-shrink: 0; gap: 4px; height: 58.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; padding: 9px 14px; width: 520px"
+            >
+              <div
+                style="box-sizing: border-box; color: #ECEDEF; font-family: Geist, system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left; width: 100%"
+              >
+                if it would pass with every function returning nothing, throw it out
+              </div>
+              <div
+                style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 18px; text-align: left; width: 100%'
+              >
+                tests: zero kills, exit 3
+              </div>
+            </div>
+            <div
+              data-pencil-name="split before you test"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: column; flex-shrink: 0; gap: 4px; height: 58.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; padding: 9px 14px; width: 520px"
+            >
+              <div
+                style="box-sizing: border-box; color: #ECEDEF; font-family: Geist, system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left; width: 100%"
+              >
+                split before you test
+              </div>
+              <div
+                style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 18px; text-align: left; width: 100%'
+              >
+                crap: CC ≥ 10 cannot pass at any coverage
+              </div>
+            </div>
+            <div
+              data-pencil-name="one body, two names is one body"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: column; flex-shrink: 0; gap: 4px; height: 58.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; padding: 9px 14px; width: 520px"
+            >
+              <div
+                style="box-sizing: border-box; color: #ECEDEF; font-family: Geist, system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left; width: 100%"
+              >
+                one body, two names is one body
+              </div>
+              <div
+                style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 18px; text-align: left; width: 100%'
+              >
+                dry: 0.8 on the normalised tree, names erased
+              </div>
+            </div>
+            <div
+              data-pencil-name="delete what no honest test can kill"
+              style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 0px 0px 1px 0px; box-sizing: content-box; display: flex; flex-direction: column; flex-shrink: 0; gap: 4px; height: 58.5px; justify-content: flex-start; margin: 0px 0px -0.5px 0px; padding: 9px 14px; width: 520px"
+            >
+              <div
+                style="box-sizing: border-box; color: #ECEDEF; font-family: Geist, system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left; width: 100%"
+              >
+                delete what no honest test can kill
+              </div>
+              <div
+                style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 18px; text-align: left; width: 100%'
+              >
+                mutate: a survivor nobody can kill marks dead code
+              </div>
+            </div>
+            <div
+              data-pencil-name="test the diff, not the repo"
+              style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: column; flex-shrink: 0; gap: 4px; height: fit-content; justify-content: flex-start; padding: 9px 14px; width: 100%"
+            >
+              <div
+                style="box-sizing: border-box; color: #ECEDEF; font-family: Geist, system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 19px; text-align: left; width: 100%"
+              >
+                test the diff, not the repo
+              </div>
+              <div
+                style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 18px; text-align: left; width: 100%'
+              >
+                --changed on every gate; the hook runs in seconds
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          data-pencil-name="Statusbar"
+          style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 1px 0px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 28.5px; justify-content: space-between; margin: -0.5px 0px 0px 0px; padding: 12px 0px 0px 0px; width: 1312px"
+        >
+          <div
+            style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+          >
+            ● the skill is advice. the exit code is the enforcement. the research found no other way
+            that survives contact with an agent.
+          </div>
+          <div
+            style='box-sizing: border-box; color: #3DDC84; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+          >
+            exit 0
+          </div>
+        </div>
+      </div>
+      <div
+        data-pencil-name="A4 · Same everywhere + CTA"
+        style="align-items: flex-start; background-color: #0B0C0E; box-sizing: border-box; display: flex; flex-direction: column; gap: 36px; height: 700px; justify-content: flex-start; left: 0px; overflow: hidden; padding: 64px; position: absolute; top: 3920px; width: 1440px"
+      >
+        <div
+          style='box-sizing: border-box; color: #FF6A1A; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+        >
+          §04 · same everywhere
+        </div>
+        <div
+          style='box-sizing: border-box; color: #ECEDEF; font-family: "Azeret Mono", system-ui, sans-serif; font-size: 56px; font-style: normal; font-weight: 700; letter-spacing: -2px; line-height: 57px; text-align: left; width: 100%'
+        >
+          Your laptop, the hook, CI: one binary, one answer.
+        </div>
+        <div
+          data-pencil-name="Three"
+          style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 24px; height: fit-content; justify-content: flex-start; width: 100%"
+        >
+          <div
+            data-pencil-name="no runtime"
+            style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: column; flex: 1 1 0; gap: 10px; height: fit-content; justify-content: flex-start; outline-offset: -0.5px; outline: 1px solid #26282E; padding: 18px"
+          >
+            <div
+              style='box-sizing: border-box; color: #FF6A1A; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 700; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              no runtime
+            </div>
+            <div
+              style="box-sizing: border-box; color: #ECEDEF; font-family: Geist, system-ui, sans-serif; font-size: 14px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left; width: 100%"
+            >
+              one Go binary, stdlib only, 7.2 MB. nothing to install in the agent's sandbox, nothing
+              to version-skew in CI.
+            </div>
+          </div>
+          <div
+            data-pencil-name="no clock, no dice"
+            style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: column; flex: 1 1 0; gap: 10px; height: fit-content; justify-content: flex-start; outline-offset: -0.5px; outline: 1px solid #26282E; padding: 18px"
+          >
+            <div
+              style='box-sizing: border-box; color: #FF6A1A; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 700; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              no clock, no dice
+            </div>
+            <div
+              style="box-sizing: border-box; color: #ECEDEF; font-family: Geist, system-ui, sans-serif; font-size: 14px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left; width: 100%"
+            >
+              output never depends on time, locale, machine or ordering. two runs diff clean. the
+              agent can diff them too.
+            </div>
+          </div>
+          <div
+            data-pencil-name="no second config"
+            style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: column; flex: 1 1 0; gap: 10px; height: fit-content; justify-content: flex-start; outline-offset: -0.5px; outline: 1px solid #26282E; padding: 18px"
+          >
+            <div
+              style='box-sizing: border-box; color: #FF6A1A; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 700; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              no second config
+            </div>
+            <div
+              style="box-sizing: border-box; color: #ECEDEF; font-family: Geist, system-ui, sans-serif; font-size: 14px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: 20px; text-align: left; width: 100%"
+            >
+              the hook, the CI job and the agent's own run use the same three commands and read the
+              same .metrics/.
+            </div>
+          </div>
+        </div>
+        <div
+          data-pencil-name="CTA"
+          style="align-items: center; background-color: #131417; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: fit-content; justify-content: space-between; outline-offset: -0.5px; outline: 1px solid #FF6A1A; padding: 20px 24px; width: 100%"
+        >
+          <div
+            data-pencil-name="Left"
+            style="align-items: flex-start; box-sizing: border-box; display: flex; flex-direction: column; flex-shrink: 0; gap: 6px; height: fit-content; justify-content: flex-start; width: fit-content"
+          >
+            <div
+              style='box-sizing: border-box; color: #ECEDEF; font-family: "Azeret Mono", system-ui, sans-serif; font-size: 22px; font-style: normal; font-weight: 700; letter-spacing: -0.5px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              Give the agent a number it cannot argue with.
+            </div>
+            <div
+              data-pencil-name="Install"
+              style="align-items: center; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 10px; height: fit-content; justify-content: flex-start; width: fit-content"
+            >
+              <div
+                style='box-sizing: border-box; color: #FF6A1A; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                $
+              </div>
+              <div
+                style='box-sizing: border-box; color: #ECEDEF; font-family: "Geist Mono", system-ui, sans-serif; font-size: 14px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                npx skills add coderefinery
+              </div>
+              <div
+                style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 12px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+              >
+                · then add the hook (two minutes)
+              </div>
+            </div>
+          </div>
+          <div
+            data-pencil-name="Button"
+            style="align-items: flex-start; background-color: #FF6A1A; box-sizing: border-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: fit-content; justify-content: flex-start; padding: 14px 22px; width: fit-content"
+          >
+            <div
+              style='box-sizing: border-box; color: #0B0C0E; font-family: "Geist Mono", system-ui, sans-serif; font-size: 14px; font-style: normal; font-weight: 700; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+            >
+              see the hook →
+            </div>
+          </div>
+        </div>
+        <div data-pencil-name="sp" style="box-sizing: border-box; flex: 1 1 0; width: 10px"></div>
+        <div
+          data-pencil-name="Statusbar"
+          style="align-items: flex-start; border-color: #26282E; border-style: solid; border-width: 1px 0px 0px 0px; box-sizing: content-box; display: flex; flex-direction: row; flex-shrink: 0; gap: 0px; height: 28.5px; justify-content: space-between; margin: -0.5px 0px 0px 0px; padding: 12px 0px 0px 0px; width: 1312px"
+        >
+          <div
+            style='box-sizing: border-box; color: #8B8F99; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+          >
+            ● byte-identical to crapper, dryer and mutator · 36/36 · measured on 12 repos
+          </div>
+          <div
+            style='box-sizing: border-box; color: #3DDC84; font-family: "Geist Mono", system-ui, sans-serif; font-size: 13px; font-style: normal; font-weight: 400; letter-spacing: 0px; line-height: normal; text-align: left; white-space: nowrap'
+          >
+            exit 0
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
