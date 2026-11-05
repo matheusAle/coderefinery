@@ -30,8 +30,9 @@ ASSET=coderefinery_${VERSION#v}_${os}_${arch}.tar.gz
 GOROOT_BIN=$(go env GOROOT)/bin
 
 # sysbin: the base tools the launcher may use, without go or coderefinery.
+# GNU tar (Linux) runs gzip for -z; bsdtar (macOS) does not need it.
 mkdir -p "$T/sysbin"
-for tool in sh uname mkdir rmdir rm mv chmod awk tar curl sha256sum shasum cat; do
+for tool in sh uname mkdir rmdir rm mv chmod awk tar gzip curl sha256sum shasum cat; do
 	if p=$(command -v "$tool" 2>/dev/null); then ln -s "$p" "$T/sysbin/$tool"; fi
 done
 # shasum is a perl script on macOS.
