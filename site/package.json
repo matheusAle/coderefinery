@@ -1,0 +1,16 @@
+{
+  "name": "coderefinery-site",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "deploy": "npm run build && npm_config_cache=../.local/npm-cache npx --yes wrangler@latest pages deploy dist --project-name coderefinery --branch main --commit-dirty=true"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  }
+}

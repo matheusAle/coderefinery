@@ -1,0 +1,542 @@
+/* ---------- the pin ---------- */
+.dive {
+  position: relative;
+  /* 4 states × 100 vh of scrub + the 100 vh the sticky viewport occupies (D5) */
+  height: 500vh;
+  --ground: 0;
+  --glow: 0;
+  --leave: 1;
+}
+.dive-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+.dive-sticky > .dive-stage {
+  position: absolute;
+  inset: 0;
+}
+/* ground: coke → furnace over the first 15 % of K1 (scrubbed) */
+.dive-stage {
+  --ground: 0;
+  --glow: 0;
+  background: color-mix(in srgb, var(--furnace) calc(var(--ground) * 100%), var(--coke));
+  color: var(--chalk);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  /* full bleed (§13.1): the stage, its furnace ground, glow and canvas span the viewport edge to edge; only the
+     content keeps the page column, through the side margin --side */
+  --side: max(0px, (100% - var(--page-max)) / 2);
+  padding: 32px calc(40px + var(--side)) 32px calc(88px + var(--side));
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
+.dive-stage .dive-ash {
+  color: var(--dive-ash);
+}
+.furnace-host {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: calc(var(--ground) * var(--leave));
+}
+.furnace-host canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+/* CSS fallback for the furnace shader: the static gradient of the design */
+.heat-glow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -260px;
+  height: 520px;
+  background: radial-gradient(ellipse 70% 100% at 50% 0%, var(--heat-glow), transparent 70%);
+  opacity: calc(var(--glow) * var(--leave));
+  pointer-events: none;
+  z-index: 0;
+}
+.dive-stage > .dive-head,
+.dive-stage > .dive-row {
+  position: relative;
+  z-index: 1;
+}
+/* below 900 px of height the panes zoom with the type scale, so head + panes + status bar fit 100 vh (D21) */
+.dive-sticky .dive-row {
+  zoom: min(1, calc(var(--u) / 0.88));
+}
+
+/* ---------- depth gauge (left edge) ---------- */
+.dive-stage > .gauge {
+  position: absolute;
+  left: var(--side);
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  border-right: 1px solid color-mix(in srgb, var(--heat-seam) calc(var(--ground) * 100%), var(--seam));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0;
+  z-index: 1;
+}
+.gauge-l {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--dive-ash);
+}
+.gauge-track {
+  position: relative;
+  width: 1px;
+  height: 260px;
+  background: var(--heat-seam);
+}
+.gauge-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(var(--p, 0) * 100% * var(--leave));
+  background: var(--molten);
+}
+.gauge-mark {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--i) * 33.33%);
+  width: 6px;
+  height: 6px;
+  transform: translate(-50%, -50%);
+  background: var(--heat-seam);
+  transition:
+    background-color 160ms linear,
+    width 160ms var(--ease-out),
+    height 160ms var(--ease-out);
+}
+.gauge-mark.passed {
+  background: var(--molten);
+}
+.gauge-mark.active {
+  width: 10px;
+  height: 10px;
+}
+.dive-stage > .dive-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  background: transparent;
+}
+.dive-progress-done {
+  height: 100%;
+  width: calc(var(--p, 0) * 100%);
+  background: var(--molten);
+}
+
+/* ---------- head: kicker, title, hint ---------- */
+.dive-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  min-height: 96px;
+}
+.dive-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+.dive-kicker {
+  font-size: 12px;
+}
+.k-gates {
+  display: inline-grid;
+}
+.k-gate {
+  grid-area: 1 / 1;
+  opacity: var(--o, 0);
+  transform: translateX(calc(var(--x, 0) * 1px));
+}
+.dive-title-stack {
+  display: grid;
+}
+.dive-title {
+  grid-area: 1 / 1;
+  font-size: 28px;
+  line-height: 1.25;
+  letter-spacing: -1px;
+  opacity: var(--o, 0);
+}
+.hint-stack {
+  display: grid;
+  width: 420px;
+  flex: 0 0 420px;
+}
+.hint {
+  grid-area: 1 / 1;
+  align-self: start;
+  position: relative;
+  background: var(--hint-fill);
+  padding: var(--pad-tile);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-title);
+  clip-path: inset(0 0 calc((1 - var(--o, 0)) * 100%) 0);
+  transform: translateY(calc((1 - var(--o, 0)) * 8px));
+  visibility: hidden;
+}
+.hint.on {
+  visibility: visible;
+}
+/* molten stroke draws clockwise from top-left over the settle range */
+.hint::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--molten);
+  clip-path: polygon(0 0, calc(var(--draw) * 200%) 0, calc(var(--draw) * 200%) 100%, 0 100%);
+  pointer-events: none;
+}
+.hint-k {
+  font-size: 11px;
+  color: var(--molten);
+}
+.hint .hint-p {
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 19px;
+  color: var(--chalk);
+}
+
+/* ---------- row: the agent's session + the outputs pane (§13.3) ---------- */
+.dive-row {
+  display: grid;
+  grid-template-columns: 1fr 460px;
+  gap: 20px;
+  align-items: start;
+}
+/* ---------- the two panes ---------- */
+.term {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--furnace-slab);
+  border: 1px solid var(--heat-seam);
+}
+.term .pane-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: calc(14px * var(--uf)) var(--pad-card);
+  font-size: 12px;
+  border-bottom: 1px solid var(--heat-seam);
+}
+.flash-host {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.flash-host canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.term > :not(.flash-host) {
+  position: relative;
+  z-index: 1;
+}
+.term-stack {
+  display: grid;
+}
+.term-sec {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  opacity: var(--o, 0);
+  visibility: hidden;
+}
+.term-sec.on {
+  visibility: visible;
+}
+.term-session .term-sec {
+  gap: var(--gap-row);
+  padding: var(--pad-card);
+}
+/* a session line lands: 120 ms fade + 6 px rise when the scrubbed position passes it */
+.tl {
+  font-size: 12px;
+  line-height: 19px;
+  white-space: pre-wrap;
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 120ms var(--ease-out),
+    transform 120ms var(--ease-out);
+  color: var(--chalk);
+}
+.tl.on,
+.ob.on,
+.ob-row.on,
+.tl-tool .tool-b.on {
+  opacity: 1;
+  transform: none;
+}
+.tl.ash,
+.ob-row.ash {
+  color: var(--dive-ash);
+}
+.tl.slag,
+.ob-row.slag {
+  color: var(--slag);
+}
+.tl.ingot,
+.ob-row.ingot {
+  color: var(--ingot);
+}
+.tl.molten,
+.ob-row.molten {
+  color: var(--molten);
+}
+.tl.ember,
+.ob-row.ember {
+  color: var(--ember);
+}
+.ob-row.chalk {
+  color: var(--chalk);
+}
+.ob-row.bold {
+  font-weight: 700;
+}
+.tl-cmd .prompt,
+.tl-bridge .prompt {
+  color: var(--molten);
+}
+/* the bridge line is a flex row (the label sits right), where a space text node collapses: keep "$ " fixed */
+.tl-bridge .prompt {
+  margin-right: 1ch;
+}
+.tl-agent {
+  border: 1px solid var(--heat-seam);
+  padding: var(--cell-v) var(--cell-h);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  white-space: normal;
+}
+.agent-k {
+  font-size: 10px;
+  color: var(--dive-ash);
+}
+.agent-p {
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.tl-tool {
+  background: var(--furnace);
+  border: 1px solid var(--heat-seam);
+  padding: var(--cell-v) var(--cell-h);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.tool-h {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+.tool-done {
+  font-size: 10px;
+  opacity: 0;
+  transition: opacity 120ms linear;
+}
+.tool-done.on {
+  opacity: 1;
+}
+/* scoped to the dive: the §08 setup transcript has its own .tool-b (QA r6 D2) */
+.tl-tool .tool-b {
+  font-size: 11px;
+  line-height: 17px;
+  color: var(--dive-ash);
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity 120ms var(--ease-out),
+    transform 120ms var(--ease-out);
+}
+.tl-bridge {
+  display: flex;
+  align-items: center;
+  margin-top: 4px;
+  opacity: 0;
+}
+.tl-bridge.on {
+  opacity: 1;
+  transform: none;
+}
+.bridge-label {
+  margin-left: auto;
+  font-size: 10px;
+}
+/* outputs: three blocks, before / what the agent changed / after */
+.ob {
+  display: flex;
+  flex-direction: column;
+  gap: calc(4px * var(--uf));
+  padding: calc(16px * var(--uf)) var(--pad-card);
+  border-bottom: 1px solid var(--heat-seam);
+  opacity: 0;
+  transition: opacity 120ms var(--ease-out);
+}
+.ob:last-child {
+  border-bottom: 0;
+}
+.ob-l {
+  font-size: 10px;
+}
+.ob-row {
+  display: grid;
+  /* columns are set per table in pane.ts: the first cell wide, the numbers right-aligned */
+  font-size: 11px;
+  line-height: 17px;
+  color: var(--chalk);
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity 120ms var(--ease-out),
+    transform 120ms var(--ease-out);
+  column-gap: var(--cell-h);
+}
+.ob-row.ob-head {
+  opacity: 1;
+  transform: none;
+}
+.ob-row.ob-text {
+  display: block;
+  white-space: pre-wrap;
+}
+.ob-row.exit {
+  font-size: 12px;
+}
+.ob-row > span:not(:first-child) {
+  text-align: right;
+}
+/* an exit line lands with a molten underline drawn left to right (§5a) */
+.tl.exit,
+.ob-row.exit {
+  width: fit-content;
+}
+.tl.exit::after,
+.ob-row.exit::after {
+  content: "";
+  display: block;
+  height: 2px;
+  margin-top: 1px;
+  background: var(--molten);
+  transform: scaleX(var(--underline, 0));
+  transform-origin: left;
+}
+.tl.exit.drawn::after,
+.ob-row.exit.drawn::after {
+  transition: transform 240ms linear;
+}
+
+/* ---------- snapshots (reduced motion, mobile) ---------- */
+.dive-stage.snapshot {
+  --ground: 1;
+}
+.dive-stage.snapshot .tl,
+.dive-stage.snapshot .ob,
+.dive-stage.snapshot .ob-row,
+.dive-stage.snapshot .tl-tool .tool-b,
+.dive-stage.snapshot .hint {
+  transition: none;
+}
+.dive-stage.snapshot .tl-bridge,
+.dive-stage.snapshot .cursor {
+  display: none;
+}
+.dive.stacked {
+  height: auto;
+}
+.dive.stacked .dive-stage {
+  position: relative;
+  min-height: 0;
+  padding: 32px calc(24px + var(--side)) 32px calc(56px + var(--side));
+}
+
+@media (max-width: 1023px) {
+  .dive-head {
+    flex-direction: column;
+  }
+  .hint-stack {
+    width: 100%;
+    flex: 0 0 auto;
+  }
+  .dive-row {
+    grid-template-columns: 1fr;
+  }
+  /* stacked states: no depth gauge (it would sit over the panes, D19); the content takes the full width */
+  .dive-stage > .gauge {
+    display: none;
+  }
+  .dive.stacked .dive-stage {
+    padding-left: calc(24px + var(--side));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dive-sticky .dive-stage {
+    transition: opacity 240ms linear;
+  }
+  .tl,
+  .ob,
+  .ob-row,
+  .tl-tool .tool-b,
+  .gauge-mark {
+    transition: none;
+  }
+}
+
+/* outputs tables: cells keep the 14 / 18 floor (§0c); the label rows and free lines stay single lines */
+.ob-row:not(.ob-text):not(.exit) > span {
+  padding-block: calc(var(--cell-v) / 2);
+}
+
+/* stacked states on a phone: the verdict flash's CSS fallback, a band sweeping the pane once (§14.4, §17.2) */
+.term.flash-slag::after,
+.term.flash-ingot::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 28%;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(to bottom, transparent, var(--flash-c, rgba(255, 77, 77, 0.08)), transparent);
+  animation: term-flash 240ms linear forwards;
+}
+.term.flash-ingot::after {
+  --flash-c: rgba(61, 220, 132, 0.08);
+}
+@keyframes term-flash {
+  from {
+    transform: translateY(-100%);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(360%);
+    opacity: 0;
+  }
+}

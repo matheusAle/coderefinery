@@ -1,0 +1,836 @@
+      "*, ::before, ::after { box-sizing: border-box; } body { margin: 0; }"  [ / ]
+      <#P0 · Hero (pain + mechanism) | bg#0B0C0E | w1440px | h900px>
+        <#Event stream (background · rises bottom→top) | w1440px | h900px>
+          <#event · PR #479 | bg#0B0C0E | w294.4px | h26px | gap8px | pad4px 10px | row>
+              "✓"  [Geist Mono 11px/400 #3DDC84]
+              "tests · 1,204 passed · 4:50"  [Geist Mono 11px/400 #ECEDEF]
+              "PR #479"  [Geist Mono 10px/400 #8B8F99]
+          <#event · PR #468 | bg#0B0C0E | w248.2px | h26px | gap8px | pad4px 10px | row>
+              "▸"  [Geist Mono 11px/400 #FFB020]
+              "build · running 0:22"  [Geist Mono 11px/400 #ECEDEF]
+              "PR #468"  [Geist Mono 10px/400 #8B8F99]
+          <#event · PR #471 · agent | bg#0B0C0E | w294.4px | h26px | gap8px | pad4px 10px | row>
+              "✗"  [Geist Mono 11px/400 #FF4D4D]
+              "build failed · 12 s"  [Geist Mono 11px/400 #ECEDEF]
+              "PR #471 · agent"  [Geist Mono 10px/400 #8B8F99]
+          <#event · PR #479 | bg#0B0C0E | w373.6px | h26px | gap8px | pad4px 10px | row>
+              "⛔"  [Geist Mono 11px/400 #FF4D4D]
+              "coderefinery gate · survived 2 · exit 3"  [Geist Mono 11px/400 #ECEDEF]
+              "PR #479"  [Geist Mono 10px/400 #8B8F99]
+          <#event · PR #482 | bg#0B0C0E | w294.4px | h26px | gap8px | pad4px 10px | row>
+              "○"  [Geist Mono 11px/400 #8B8F99]
+              "waiting for checks · 14 min"  [Geist Mono 11px/400 #8B8F99]
+              "PR #482"  [Geist Mono 10px/400 #8B8F99]
+          <#event · PR #482 | bg#0B0C0E | w202px | h26px | gap8px | pad4px 10px | row>
+              "✓"  [Geist Mono 11px/400 #3DDC84]
+              "lint · ok 2 s"  [Geist Mono 11px/400 #ECEDEF]
+              "PR #482"  [Geist Mono 10px/400 #8B8F99]
+          <#event · PR #482 | bg#0B0C0E | w334px | h26px | gap8px | pad4px 10px | row>
+              "▸"  [Geist Mono 11px/400 #FFB020]
+              "tests · 1,204 · running ▂▃▅▆ 3:12"  [Geist Mono 11px/400 #ECEDEF]
+              "PR #482"  [Geist Mono 10px/400 #8B8F99]
+          <#event · PR #471 | bg#0B0C0E | w261.4px | h26px | gap8px | pad4px 10px | row>
+              "↑"  [Geist Mono 11px/400 #8B8F99]
+              "agent pushed 3 commits"  [Geist Mono 11px/400 #8B8F99]
+              "PR #471"  [Geist Mono 10px/400 #8B8F99]
+          <#event · PR #486 | bg#0B0C0E | w426.4px | h26px | gap8px | pad4px 10px | row>
+              "⛔"  [Geist Mono 11px/400 #FF4D4D]
+              "CRAP threshold exceeded: 50.5 > 9.9999 · exit 2"  [Geist Mono 11px/400 #ECEDEF]
+              "PR #486"  [Geist Mono 10px/400 #8B8F99]
+          <#event · PR #468 | bg#0B0C0E | w367px | h26px | gap8px | pad4px 10px | row>
+              "✓"  [Geist Mono 11px/400 #3DDC84]
+              "coderefinery gate · killed 12 · exit 0"  [Geist Mono 11px/400 #ECEDEF]
+              "PR #468"  [Geist Mono 10px/400 #8B8F99]
+          <#event · PR #482 | bg#0B0C0E | w301px | h26px | gap8px | pad4px 10px | row>
+              "○"  [Geist Mono 11px/400 #8B8F99]
+              "review requested · 2 pending"  [Geist Mono 11px/400 #8B8F99]
+              "PR #482"  [Geist Mono 10px/400 #8B8F99]
+          <#event · PR #490 | bg#0B0C0E | w320.8px | h26px | gap8px | pad4px 10px | row>
+              "✗"  [Geist Mono 11px/400 #FF4D4D]
+              "tests · 3 failed · 1,201 passed"  [Geist Mono 11px/400 #ECEDEF]
+              "PR #490"  [Geist Mono 10px/400 #8B8F99]
+          <#event · PR #468 | bg#0B0C0E | w221.8px | h26px | gap8px | pad4px 10px | row>
+              "✓"  [Geist Mono 11px/400 #3DDC84]
+              "merged · 4f2c1d9"  [Geist Mono 11px/400 #ECEDEF]
+              "PR #468"  [Geist Mono 10px/400 #8B8F99]
+          <#event · PR #486 | bg#0B0C0E | w393.4px | h26px | gap8px | pad4px 10px | row>
+              "▸"  [Geist Mono 11px/400 #FFB020]
+              "coderefinery mutate --changed · 12 mutants"  [Geist Mono 11px/400 #ECEDEF]
+              "PR #486"  [Geist Mono 10px/400 #8B8F99]
+          <#event · PR #493 | bg#0B0C0E | w208.6px | h26px | gap8px | pad4px 10px | row>
+              "○"  [Geist Mono 11px/400 #8B8F99]
+              "queued · 6 min"  [Geist Mono 11px/400 #8B8F99]
+              "PR #493"  [Geist Mono 10px/400 #8B8F99]
+          <#event · PR #490 | bg#0B0C0E | w413.2px | h26px | gap8px | pad4px 10px | row>
+              "✗"  [Geist Mono 11px/400 #FF4D4D]
+              "DUPLICATE score=0.91 · pricing.py ↔ quotes.py"  [Geist Mono 11px/400 #ECEDEF]
+              "PR #490"  [Geist Mono 10px/400 #8B8F99]
+          <#pipe | bg#26282E | w1440px | h1px>
+          <#pipe | bg#26282E | w1440px | h1px>
+          <#pipe | bg#26282E | w1440px | h1px>
+          <#pipe | bg#26282E | w1440px | h1px>
+          <#pipe | bg#26282E | w1440px | h1px>
+          <#pipe | bg#26282E | w1440px | h1px>
+          <#pipe | bg#26282E | w1440px | h1px>
+          <#pipe | bg#26282E | w1440px | h1px>
+          <#spark | bg#FF6A1A | w3px | h3px>
+          <#spark | bg#FF6A1A | w2px | h2px>
+          <#spark | bg#FF6A1A | w2px | h2px>
+          <#spark | bg#FF6A1A | w3px | h3px>
+          <#spark | bg#FF6A1A | w2px | h2px>
+          <#spark | bg#FF6A1A | w2px | h2px>
+          <#spark | bg#FF6A1A | w3px | h3px>
+          <#spark | bg#FF6A1A | w2px | h2px>
+          <#spark | bg#FF6A1A | w2px | h2px>
+          <#spark | bg#FF6A1A | w2px | h2px>
+          <#spark | bg#FF6A1A | w2px | h2px>
+          <#spark | bg#FF6A1A | w2px | h2px>
+          <#spark | bg#FF6A1A | w2px | h2px>
+          <#blink · failing event | bg#FF4D4D44 | w10px | h10px>
+            "$ gh pr checks --watch · events rise, fade past the foot line, vanish at the sub-heading · ci minutes this week: 2.1B · agent PRs: 17M"  [Geist Mono 10px/400 #26282E]
+        <#Topbar | w1312px | hfit-content | gap0px | row>
+          <#Wordmark | wfit-content | hfit-content | gap2px | row>
+              "code"  [Azeret Mono 20px/700 #ECEDEF]
+              "refinery"  [Azeret Mono 20px/700 #FF6A1A]
+            <#Cursor | bg#FF6A1A | w9px | h17px>
+          <#Nav | wfit-content | hfit-content | gap28px | row>
+              "why"  [Geist Mono 13px/400 #8B8F99]
+              "for agents"  [Geist Mono 13px/400 #8B8F99]
+              "the math"  [Geist Mono 13px/400 #8B8F99]
+              "docs"  [Geist Mono 13px/400 #8B8F99]
+              "github"  [Geist Mono 13px/400 #8B8F99]
+        <#Two columns | w1312px | hfit-content | gap64px | row>
+          <#Pitch | hfit-content | gap26px | column>
+              "Your agent says"  [Azeret Mono 76px/700 #ECEDEF]
+              <br>
+              "all tests pass."  [Azeret Mono 76px/700 #ECEDEF]
+              "Prove it."  [Azeret Mono 76px/700 #FF6A1A]
+              "Three gates on the diff, before the commit. Complexity without tests. Copies under new names. Tests that cannot fail. If one fails, the commit fails."  [Geist 19px/400 #1e2120]
+            <#Install | wfit-content | hfit-content | gap12px | pad13px 16px | row>
+                "$"  [Geist Mono 13px/400 #FF6A1A]
+                "npx skills add coderefinery"  [Geist Mono 15px/400 #ECEDEF]
+              <#Cursor | bg#FF6A1A | w9px | h16px>
+                "one binary · no runtime · Claude Code, Cursor, CI · byte-identical to Uncle Bob's crapper, dryer, mutator"  [Geist Mono 13px/400 #8B8F99]
+          <#Big numbers | bg#0B0C0ECC | w520px | hfit-content | gap0px | column>
+            <#row | w520px | h164.5px | gap0px | row>
+              <#+441 % | w259.5px | h165px | gap8px | pad26px 22px | column>
+                  "+441 %"  [Azeret Mono 52px/700 #ECEDEF]
+                  "longer in review"  [Geist Mono 13px/400 #ECEDEF]
+                  "Faros · 2026"  [Geist Mono 11px/400 #8B8F99]
+              <#31 % | hfit-content | gap8px | pad26px 22px | column>
+                  "31 %"  [Azeret Mono 52px/700 #ECEDEF]
+                  "of PRs merged unreviewed"  [Geist Mono 13px/400 #ECEDEF]
+                  "Faros · 2026"  [Geist Mono 11px/400 #8B8F99]
+            <#row | w100% | hfit-content | gap0px | row>
+              <#80 % | w259.5px | h183px | gap8px | pad26px 22px | column>
+                  "80 %"  [Azeret Mono 52px/700 #FF6A1A]
+                  "of agent tests assert nothing that matters"  [Geist Mono 13px/400 #ECEDEF]
+                  "arXiv 2606.18168"  [Geist Mono 11px/400 #8B8F99]
+              <#3–120× | hfit-content | gap8px | pad26px 22px | column>
+                  "3–120×"  [Azeret Mono 52px/700 #ECEDEF]
+                  "faster than the originals"  [Geist Mono 13px/400 #ECEDEF]
+                  "12 repos · docs/benchmarks"  [Geist Mono 11px/400 #8B8F99]
+        <#Statusbar | w1312px | h26.5px | gap0px | pad10px 0px 0px 0px | row>
+            "● the exit code is the only review that cannot be rubber-stamped"  [Geist Mono 13px/400 #8B8F99]
+            "scroll ↓"  [Geist Mono 13px/400 #FF6A1A]
+      <#P1 · The pains | bg#0B0C0E | w1440px | h900px | gap36px | pad64px | column>
+          "§01 · what changed"  [Geist Mono 13px/400 #FF6A1A]
+          "The cost moved from writing code to checking it."  [Azeret Mono 56px/700 #ECEDEF]
+        <#Columns | w100% | hfit-content | gap32px | row>
+          <#review | w416px | h379.5px | gap14px | pad18px 0px 0px 0px | column>
+              "review"  [Geist Mono 13px/500 #ECEDEF]
+              "+98 %"  [Azeret Mono 48px/700 #FF6A1A]
+              "merged PRs per developer, 2025 · review time +91 %"  [Geist Mono 13px/400 #8B8F99]
+            <#Quote | w415px | h64px | gap6px | pad0px 0px 0px 14px | column>
+                "“Believable crap. It looks right, it reads right, and it is wrong in a way that takes twenty minutes to find.”"  [Geist 15px/400 #ECEDEF]
+                "staff engineer · Hacker News · 2026"  [Geist Mono 11px/400 #8B8F99]
+              "· DORA 2025: time saved writing is re-spent auditing and verifying"  [Geist Mono 13px/400 #ECEDEF]
+              "· Sonar 2026: 96 % do not fully trust AI-written code; 48 % always check"  [Geist Mono 13px/400 #ECEDEF]
+              "· CodeRabbit: AI PRs carry 1.7× the issues, logic errors +75 %"  [Geist Mono 13px/400 #ECEDEF]
+          <#trust | w416px | h396.5px | gap14px | pad18px 0px 0px 0px | column>
+              "trust"  [Geist Mono 13px/500 #ECEDEF]
+              "66 %"  [Azeret Mono 48px/700 #FF6A1A]
+              "name “almost right” as their top frustration with AI code"  [Geist Mono 13px/400 #8B8F99]
+            <#Quote | w415px | h64px | gap6px | pad0px 0px 0px 14px | column>
+                "“Time saved in creation is re-allocated to auditing and verification.”"  [Geist 15px/400 #ECEDEF]
+                "DORA · State of AI-assisted development · 2025"  [Geist Mono 11px/400 #8B8F99]
+              "· Sonar 2026: 96 % do not fully trust AI-written code; only 48 % always check it"  [Geist Mono 13px/400 #ECEDEF]
+              "· Stack Overflow 2025: 46 % distrust the output, 33 % trust it"  [Geist Mono 13px/400 #ECEDEF]
+              "· DORA 2025: 30 % report little or no trust, while throughput and instability both rise"  [Geist Mono 13px/400 #ECEDEF]
+          <#ci | w416px | h356.5px | gap14px | pad18px 0px 0px 0px | column>
+              "ci"  [Geist Mono 13px/500 #ECEDEF]
+              "18×"  [Azeret Mono 48px/700 #FF6A1A]
+              "CI jobs per week on one runner fleet, 5M → 90M in 2026"  [Geist Mono 13px/400 #8B8F99]
+            <#Quote | w415px | h64px | gap6px | pad0px 0px 0px 14px | column>
+                "“Ten to twenty CI runs per task. The agent loops until green, and every loop is a bill.”"  [Geist 15px/400 #ECEDEF]
+                "Blacksmith · 2026"  [Geist Mono 11px/400 #8B8F99]
+              "· GitHub Actions: 500M → 2.1B minutes a week"  [Geist Mono 13px/400 #ECEDEF]
+              "· agent PRs 4M → 17M in six months"  [Geist Mono 13px/400 #ECEDEF]
+              "· most of those minutes run tests that would pass with every function returning nothing"  [Geist Mono 13px/400 #ECEDEF]
+        <#Statusbar | w1312px | h28.5px | gap0px | pad12px 0px 0px 0px | row>
+            "sources: Faros 2025/2026 · DORA 2025 · Sonar 2026 · Stack Overflow 2025 · Blacksmith 2026 · full list in /why"  [Geist Mono 13px/400 #8B8F99]
+            "exit 3"  [Geist Mono 13px/400 #FF4D4D]
+      <#P2 · How coderefinery helps | bg#0B0C0E | w1440px | h900px | gap36px | pad64px | column>
+          "§02 · coderefinery"  [Geist Mono 13px/400 #FF6A1A]
+          "Four gates. One binary. Exit codes."  [Azeret Mono 56px/700 #ECEDEF]
+        <#Gates | w100% | hfit-content | gap0px | row>
+          <#crap --changed | w327.5px | h223px | gap10px | pad16px 18px | column>
+              "$ coderefinery crap --changed"  [Geist Mono 13px/500 #FF6A1A]
+              "Is it too complex for its tests?"  [Azeret Mono 20px/700 #ECEDEF]
+              "counts every decision, reads the coverage report, scores CRAP per function. ≥ 10 → exit 2."  [Geist Mono 13px/400 #ECEDEF]
+              "after Alberto Savoia's CRAP (2007) and Uncle Bob's crapper (ub-mode, 2025)"  [Geist Mono 11px/400 #8B8F99]
+          <#dry --changed | w327.5px | h226px | gap10px | pad16px 18px | column>
+              "$ coderefinery dry --changed"  [Geist Mono 13px/500 #FF6A1A]
+              "Is it a copy with new names?"  [Azeret Mono 20px/700 #ECEDEF]
+              "normalises each function's syntax tree, erases names and literals, compares every pair. ≥ 0.8 → in the report."  [Geist Mono 13px/400 #ECEDEF]
+              "after dry4clj and Uncle Bob's dryer"  [Geist Mono 11px/400 #8B8F99]
+          <#mutate --changed | w327.5px | h243px | gap10px | pad16px 18px | column>
+              "$ coderefinery mutate --changed"  [Geist Mono 13px/500 #FF6A1A]
+              "Would the tests notice a bug?"  [Azeret Mono 20px/700 #ECEDEF]
+              "flips operators and constants one at a time, runs the suite per mutant, re-runs only survivors and changed functions. survivor → exit 3."  [Geist Mono 13px/400 #ECEDEF]
+              "after Uncle Bob's mutator; the idea is from 1978"  [Geist Mono 11px/400 #8B8F99]
+          <#tests  (preview) | hfit-content | gap10px | pad16px 18px | column>
+              "$ coderefinery tests (preview)"  [Geist Mono 13px/500 #FF6A1A]
+              "Does this test catch anything?"  [Azeret Mono 20px/700 #ECEDEF]
+              "attributes every kill to the tests that caused it. a test with zero unique kills is listed for deletion. → exit 3."  [Geist Mono 13px/400 #ECEDEF]
+              "new. reads JUnit XML from any runner."  [Geist Mono 11px/400 #8B8F99]
+        <#Two lists | w100% | hfit-content | gap24px | row>
+          <#what it does | hfit-content | gap0px | column>
+            <#Head | w644px | h32.5px | gap0px | pad8px 14px | row>
+                "what it does"  [Geist Mono 13px/700 #3DDC84]
+            <#Row | w644px | h51.5px | gap12px | pad8px 14px | row>
+                "gates the diff"  [Geist Mono 12px/400 #3DDC84]
+                "--changed on every command. a ten-year codebase never passes a repo-wide mandate; a PR can."  [Geist Mono 12px/400 #ECEDEF]
+            <#Row | w644px | h51.5px | gap12px | pad8px 14px | row>
+                "refuses, then explains"  [Geist Mono 12px/400 #3DDC84]
+                "exit code first, line numbers second. the agent reads both and fixes the code, not the gate."  [Geist Mono 12px/400 #ECEDEF]
+            <#Row | w644px | h51.5px | gap12px | pad8px 14px | row>
+                "runs where the agent runs"  [Geist Mono 12px/400 #3DDC84]
+                "a hook in Claude Code or Cursor, the same three commands in CI. one binary, no runtime."  [Geist Mono 12px/400 #ECEDEF]
+            <#Row | w644px | h51.5px | gap12px | pad8px 14px | row>
+                "stays honest"  [Geist Mono 12px/400 #3DDC84]
+                "byte-identical to the reference tools on 36/36 cases. 3–120× faster, measured on 12 repos."  [Geist Mono 12px/400 #ECEDEF]
+          <#what it refuses to be | hfit-content | gap0px | column>
+            <#Head | w644px | h32.5px | gap0px | pad8px 14px | row>
+                "what it refuses to be"  [Geist Mono 13px/700 #FF4D4D]
+            <#Row | w644px | h51.5px | gap12px | pad8px 14px | row>
+                "a coverage %"  [Geist Mono 12px/400 #FF4D4D]
+                "agents write assert True to hit 90 %. the gate asks whether the test can fail."  [Geist Mono 12px/400 #ECEDEF]
+            <#Row | w644px | h33.5px | gap12px | pad8px 14px | row>
+                "another AI reviewer"  [Geist Mono 12px/400 #FF4D4D]
+                "no model in the loop. same input, same verdict."  [Geist Mono 12px/400 #ECEDEF]
+            <#Row | w644px | h33.5px | gap12px | pad8px 14px | row>
+                "a repo-wide audit"  [Geist Mono 12px/400 #FF4D4D]
+                "it does not grade your legacy. it grades the change."  [Geist Mono 12px/400 #ECEDEF]
+            <#Row | w644px | h33.5px | gap12px | pad8px 14px | row>
+                "a warning"  [Geist Mono 12px/400 #FF4D4D]
+                "a warning is a suggestion. an exit code is a decision."  [Geist Mono 12px/400 #ECEDEF]
+        <#Statusbar | w1312px | h28.5px | gap0px | pad12px 0px 0px 0px | row>
+            "● crap · dry · mutate · tests · next: why a formula changes what the agent does"  [Geist Mono 13px/400 #8B8F99]
+            "exit 0"  [Geist Mono 13px/400 #3DDC84]
+      <#P3 · Gates beat reasoning | bg#0B0C0E | w1440px | h900px | gap36px | pad64px | column>
+          "§03 · why a formula, for an agent"  [Geist Mono 13px/400 #FF6A1A]
+          "A model can be talked into it."  [Azeret Mono 56px/700 #ECEDEF]
+          <br>
+          "A formula cannot. The agent notices."  [Azeret Mono 56px/700 #ECEDEF]
+          "An agent optimises for the signal it gets. Give it a reviewer it can persuade and it learns to persuade. Give it a number it cannot move and it learns to move the code."  [Geist 18px/400 #8B8F99]
+        <#Versus | w100% | hfit-content | gap0px | row>
+          <#Head col | w219.5px | h240px | gap0px | column>
+            <#what the agent is to | w220px | h39.5px | gap0px | pad10px 14px | row>
+                "what the agent is told"  [Geist Mono 13px/400 #8B8F99]
+            <#what it learns | w220px | h39.5px | gap0px | pad10px 14px | row>
+                "what it learns"  [Geist Mono 13px/400 #8B8F99]
+            <#can it argue? | w220px | h39.5px | gap0px | pad10px 14px | row>
+                "can it argue?"  [Geist Mono 13px/400 #8B8F99]
+            <#same diff tomorrow | w220px | h39.5px | gap0px | pad10px 14px | row>
+                "same diff tomorrow"  [Geist Mono 13px/400 #8B8F99]
+            <#what stops the commi | w100% | hfit-content | gap0px | pad10px 14px | row>
+                "what stops the commit"  [Geist Mono 13px/400 #8B8F99]
+          <#LLM col | w545.5px | h240px | gap0px | column>
+            <#an LLM reviewing the | w546px | h39.5px | gap0px | pad10px 14px | row>
+                "an LLM reviewing the diff"  [Geist Mono 13px/700 #FF4D4D]
+            <#“Looks good. Conside | w546px | h39.5px | gap0px | pad10px 14px | row>
+                "“Looks good. Consider simplifying price().”"  [Geist Mono 13px/400 #ECEDEF]
+            <#write a better summa | w546px | h39.5px | gap0px | pad10px 14px | row>
+                "write a better summary"  [Geist Mono 13px/400 #ECEDEF]
+            <#yes, and it will. th | w546px | h39.5px | gap0px | pad10px 14px | row>
+                "yes, and it will. the reviewer reads the PR description it wrote."  [Geist Mono 13px/400 #ECEDEF]
+            <#a different verdict | w546px | h39.5px | gap0px | pad10px 14px | row>
+                "a different verdict"  [Geist Mono 13px/400 #ECEDEF]
+            <#nothing | w100% | hfit-content | gap0px | pad10px 14px | row>
+                "nothing"  [Geist Mono 13px/400 #ECEDEF]
+          <#Gate col | hfit-content | gap0px | column>
+            <#a deterministic gate | w546px | h39.5px | gap0px | pad10px 14px | row>
+                "a deterministic gate"  [Geist Mono 13px/700 #3DDC84]
+            <#CRAP 50.5 > 9.9999 · | w546px | h39.5px | gap0px | pad10px 14px | row>
+                "CRAP 50.5 > 9.9999 · pricing.py:1 · exit 2"  [Geist Mono 13px/400 #ECEDEF]
+            <#split the function | w546px | h39.5px | gap0px | pad10px 14px | row>
+                "split the function"  [Geist Mono 13px/400 #ECEDEF]
+            <#no. the gate reads t | w546px | h39.5px | gap0px | pad10px 14px | row>
+                "no. the gate reads the syntax tree and the coverage report."  [Geist Mono 13px/400 #ECEDEF]
+            <#the same number, on  | w546px | h39.5px | gap0px | pad10px 14px | row>
+                "the same number, on the laptop and in CI"  [Geist Mono 13px/400 #ECEDEF]
+            <#the exit code, throu | w100% | hfit-content | gap0px | pad10px 14px | row>
+                "the exit code, through the hook"  [Geist Mono 13px/400 #ECEDEF]
+        <#Two | w100% | hfit-content | gap32px | row>
+          <#Probabilistic loop | hfit-content | gap0px | column>
+            <#Bar | w640px | h34.5px | gap0px | pad9px 14px | row>
+                "with an LLM reviewer"  [Geist Mono 13px/400 #ECEDEF]
+                "what the agent learns"  [Geist Mono 13px/400 #8B8F99]
+            <#agent | w100% | hfit-content | gap8px | pad4px 14px | row>
+                "agent"  [Geist Mono 11px/400 #8B8F99]
+                "Refactored for clarity and added comprehensive tests. Ready for review."  [Geist 13px/400 #ECEDEF]
+            <#out | w100% | hfit-content | gap8px | pad4px 14px | row>
+                "reviewer: Looks good overall. Consider simplifying price(). LGTM."  [Geist Mono 13px/400 #8B8F99]
+            <#agent | w100% | hfit-content | gap8px | pad4px 14px | row>
+                "agent"  [Geist Mono 11px/400 #8B8F99]
+                "Thanks! Merging."  [Geist 13px/400 #ECEDEF]
+            <#bad | w100% | hfit-content | gap8px | pad4px 14px | row>
+                "lesson: a confident summary is as good as a fix."  [Geist Mono 13px/400 #FF4D4D]
+          <#Deterministic loop | hfit-content | gap0px | column>
+            <#Bar | w640px | h34.5px | gap0px | pad9px 14px | row>
+                "with the gate"  [Geist Mono 13px/400 #ECEDEF]
+                "what the agent learns"  [Geist Mono 13px/400 #8B8F99]
+            <#cmd | w100% | hfit-content | gap8px | pad4px 14px | row>
+                "$"  [Geist Mono 13px/400 #FF6A1A]
+                "coderefinery crap --changed --threshold 9.9999"  [Geist Mono 13px/400 #ECEDEF]
+            <#hot | w100% | hfit-content | gap8px | pad4px 14px | row>
+                "billing/pricing.py:price CRAP 50.5 cov 20.0 cc 9"  [Geist Mono 13px/400 #FF6A1A]
+            <#bad | w100% | hfit-content | gap8px | pad4px 14px | row>
+                "CRAP threshold exceeded: 50.5 > 9.9999 · exit 2"  [Geist Mono 13px/400 #FF4D4D]
+            <#agent | w100% | hfit-content | gap8px | pad4px 14px | row>
+                "agent"  [Geist Mono 11px/400 #8B8F99]
+                "Nine decisions, a fifth covered. Splitting price() into three functions and testing each."  [Geist 13px/400 #ECEDEF]
+            <#ok | w100% | hfit-content | gap8px | pad4px 14px | row>
+                "lesson: the number moves only when the code does."  [Geist Mono 13px/400 #3DDC84]
+        <#Statusbar | w1312px | h28.5px | gap0px | pad12px 0px 0px 0px | row>
+            "● the full argument, with every verdict and the move it names: /agents"  [Geist Mono 13px/400 #8B8F99]
+            "exit 0"  [Geist Mono 13px/400 #3DDC84]
+      <#P4 · The tests | bg#0B0C0E | w1440px | h1000px | gap36px | pad64px | column>
+          "§04 · the tests"  [Geist Mono 13px/400 #FF6A1A]
+          "Nobody verifies whether the new tests can fail."  [Azeret Mono 56px/700 #ECEDEF]
+        <#Row | w100% | hfit-content | gap40px | row>
+          <#Evidence | hfit-content | gap20px | column>
+            <#Stats | w100% | hfit-content | gap0px | row>
+              <#Stat | w250.167px | h151px | gap6px | pad16px | column>
+                  "80 %"  [Azeret Mono 36px/700 #FF6A1A]
+                  "of 86,156 agent-written test patches have weak or no assertion"  [Geist Mono 12px/400 #ECEDEF]
+                  "arXiv 2606.18168 · 2026"  [Geist Mono 11px/400 #8B8F99]
+              <#Stat | w250.167px | h151px | gap6px | pad16px | column>
+                  "73 %"  [Azeret Mono 36px/700 #ECEDEF]
+                  "of agent test runs piped through tail or head, hiding the exit code"  [Geist Mono 12px/400 #ECEDEF]
+                  "claude-code #104504"  [Geist Mono 11px/400 #8B8F99]
+              <#Stat | hfit-content | gap6px | pad16px | column>
+                  "357"  [Azeret Mono 36px/700 #ECEDEF]
+                  "“all tests pass” claims in 150 sessions; 80 had no run behind them"  [Geist Mono 12px/400 #ECEDEF]
+                  "claude-code #104504"  [Geist Mono 11px/400 #8B8F99]
+            <#Quote | w751px | h45px | gap6px | pad0px 0px 0px 14px | column>
+                "“The genie was cheating, for example by disabling or deleting tests.”"  [Geist 17px/400 #ECEDEF]
+                "Kent Beck · June 2025"  [Geist Mono 11px/400 #8B8F99]
+            <#Patterns | w100% | hfit-content | gap6px | column>
+                "what the suite fills up with"  [Geist Mono 13px/400 #ECEDEF]
+                "assert isinstance(result, float) passes if the function returns 0.0"  [Geist Mono 13px/400 #8B8F99]
+                "mock every dependency, assert the mock was called tests the implementation"  [Geist Mono 13px/400 #8B8F99]
+                "reimplement the function inside the test mirrors the bug perfectly"  [Geist Mono 13px/400 #8B8F99]
+                "the same test three times with new names drifts, never fails"  [Geist Mono 13px/400 #8B8F99]
+                "skipped: flaky in CI the agent's favourite fix"  [Geist Mono 13px/400 #8B8F99]
+          <#The measure | bg#131417 | w520px | hfit-content | gap0px | column>
+            <#Bar | w520px | h36.5px | gap0px | pad10px 16px | row>
+                "what the agent does with a survivor"  [Geist Mono 13px/400 #ECEDEF]
+                "mutate · tests"  [Geist Mono 13px/400 #8B8F99]
+            <#Body | w100% | hfit-content | gap14px | pad16px | column>
+                "The mutant tells the agent which test to write."  [Azeret Mono 22px/700 #ECEDEF]
+                "A surviving mutant is a precise spec of a missing assertion. The agent reads the edit nobody noticed and writes the case that would notice it."  [Geist 14px/400 #8B8F99]
+              <#Mutant to test | w100% | hfit-content | gap0px | column>
+                <#0  →  1 | w488px | h33.5px | gap12px | pad8px 12px | row>
+                    "0 → 1"  [Geist Mono 12px/400 #FF6A1A]
+                    "a case where the result must be exactly zero"  [Geist Mono 12px/400 #ECEDEF]
+                <#<  →  <= | w488px | h33.5px | gap12px | pad8px 12px | row>
+                    "< → <="  [Geist Mono 12px/400 #FF6A1A]
+                    "a case on the boundary"  [Geist Mono 12px/400 #ECEDEF]
+                <#and  →  or | w488px | h33.5px | gap12px | pad8px 12px | row>
+                    "and → or"  [Geist Mono 12px/400 #FF6A1A]
+                    "each operand alone"  [Geist Mono 12px/400 #ECEDEF]
+                <#1  →  0 | w100% | hfit-content | gap12px | pad8px 12px | row>
+                    "1 → 0"  [Geist Mono 12px/400 #FF6A1A]
+                    "the default path, observed through the result"  [Geist Mono 12px/400 #ECEDEF]
+                "and a test that kills nothing is listed for deletion:"  [Geist Mono 12px/400 #8B8F99]
+                "$ coderefinery tests --changed"  [Geist Mono 12px/400 #ECEDEF]
+                <br>
+                "test_settle_called kills 0 unique 0 ← delete"  [Geist Mono 12px/400 #ECEDEF]
+                <br>
+                "test_price_returns_number kills 0 unique 0 ← delete"  [Geist Mono 12px/400 #ECEDEF]
+                <br>
+                "exit 3"  [Geist Mono 12px/400 #ECEDEF]
+                "preview · ships with the tests gate"  [Geist Mono 11px/400 #FFB020]
+        <#CTA | bg#131417 | w100% | hfit-content | gap0px | pad20px 24px | row>
+          <#Left | wfit-content | hfit-content | gap4px | column>
+              "Next: inside the gates. Watch the loop run on one function."  [Azeret Mono 22px/700 #ECEDEF]
+              "no click needed · the page pins and the code changes as you scroll · four stops"  [Geist Mono 13px/400 #8B8F99]
+          <#Button | bg#FF6A1A | wfit-content | hfit-content | gap8px | pad14px 22px | row>
+              "keep scrolling ↓ · the gate opens"  [Geist Mono 14px/700 #0B0C0E]
+        <#Statusbar | w1312px | h28.5px | gap0px | pad12px 0px 0px 0px | row>
+            "● green is not a verdict. a suite that cannot fail cannot be trusted."  [Geist Mono 13px/400 #8B8F99]
+            "exit 3"  [Geist Mono 13px/400 #FF4D4D]
+      <#K1 · crap | bg#110B09 | w1440px | h720px | gap16px | pad32px 40px 28px 88px | column>
+        <#Heat glow | w1440px | h520px>
+        <#Depth gauge | w55.5px | h720px | gap0px | column>
+            "surface"  [Geist Mono 9px/400 #A9ADB6]
+          <#tick | bg#FF6A1A | w1px | h34px>
+          <#mark | wfit-content | hfit-content | gap0px | row>
+            <#dot | bg#FF6A1A | w10px | h10px>
+          <#tick | bg#FF6A1A33 | w1px | h34px>
+          <#mark | wfit-content | hfit-content | gap0px | row>
+            <#dot | bg#FF6A1A33 | w6px | h6px>
+          <#tick | bg#FF6A1A33 | w1px | h34px>
+          <#mark | wfit-content | hfit-content | gap0px | row>
+            <#dot | bg#FF6A1A33 | w6px | h6px>
+          <#tick | bg#FF6A1A33 | w1px | h34px>
+          <#mark | wfit-content | hfit-content | gap0px | row>
+            <#dot | bg#FF6A1A33 | w6px | h6px>
+          <#tick | bg#FF6A1A33 | w1px | h34px>
+            "core"  [Geist Mono 9px/400 #A9ADB6]
+        <#Progress | w1384px | h4px | gap0px | row>
+          <#done | bg#FF6A1A | w346px | h4px>
+        <#Head | w100% | hfit-content | gap0px | row>
+          <#Titles | wfit-content | hfit-content | gap4px | column>
+              "▼ inside the gate · 01/04 · crap"  [Geist Mono 12px/400 #FF6A1A]
+              "The gate speaks first. The agent reads, then edits."  [Azeret Mono 28px/700 #ECEDEF]
+          <#Hint | bg#FF6A1A14 | w420px | hfit-content | gap4px | pad10px 14px | column>
+              "CRAP = CC² × (1 − cov)³ + CC"  [Geist Mono 11px/400 #FF6A1A]
+              "Nine paths, a fifth covered: 81 × 0.512 + 9 = 50.5. Ten or more fails. The agent does not argue with a number; it splits."  [Geist 13px/400 #ECEDEF]
+        <#Row | w100% | gap20px | row>
+          <#Agent session | bg#191210 | hfit-content | gap0px | column>
+            <#Bar | w832px | h27.5px | gap0px | pad6px 12px | row>
+                "claude code · ~/work/billing"  [Geist Mono 12px/400 #ECEDEF]
+                "● live"  [Geist Mono 12px/400 #3DDC84]
+            <#Transcript | w100% | hfit-content | gap8px | pad12px | column>
+              <#cmd | wfit-content | hfit-content | gap6px | row>
+                  "$"  [Geist Mono 12px/400 #FF6A1A]
+                  "coderefinery crap --changed --threshold 9.9999"  [Geist Mono 12px/400 #ECEDEF]
+                "billing/pricing.py:price CRAP 50.5 cov 20.0 cc 9"  [Geist Mono 12px/400 #FF6A1A]
+                "CRAP threshold exceeded: 50.5 > 9.9999 · exit 2"  [Geist Mono 12px/400 #FF4D4D]
+              <#agent | w100% | hfit-content | gap3px | pad8px 10px | column>
+                  "agent · reads the output"  [Geist Mono 10px/400 #A9ADB6]
+                  "Nine decisions in one function, one of them covered. Splitting price() into _item_cost and _apply_tier, turning the tier chain into a table, and testing each piece."  [Geist 13px/400 #ECEDEF]
+              <#tool | bg#110B09 | w100% | hfit-content | gap3px | pad6px 10px | column>
+                <#head | w100% | hfit-content | gap0px | row>
+                    "▸ Edit billing/pricing.py"  [Geist Mono 12px/400 #ECEDEF]
+                    "done"  [Geist Mono 10px/400 #3DDC84]
+                  "apply_patch · −12 +9 · price() → price, _item_cost, _apply_tier, TIER_RATE"  [Geist Mono 11px/400 #A9ADB6]
+              <#tool | bg#110B09 | w100% | hfit-content | gap3px | pad6px 10px | column>
+                <#head | w100% | hfit-content | gap0px | row>
+                    "▸ Write tests/test_pricing.py"  [Geist Mono 12px/400 #ECEDEF]
+                    "done"  [Geist Mono 10px/400 #3DDC84]
+                  "+4 cases · digital, physical, each tier, coupon"  [Geist Mono 11px/400 #A9ADB6]
+              <#cmd | wfit-content | hfit-content | gap6px | row>
+                  "$"  [Geist Mono 12px/400 #FF6A1A]
+                  "coderefinery crap --changed --threshold 9.9999"  [Geist Mono 12px/400 #ECEDEF]
+                "price 3 · _item_cost 3 · _apply_tier 1 · all 100 % covered"  [Geist Mono 12px/400 #3DDC84]
+                "0 functions above the gate · exit 0"  [Geist Mono 12px/400 #3DDC84]
+          <#Outputs | bg#191210 | w460px | hfit-content | gap0px | column>
+            <#before | w460px | h87.5px | gap3px | pad8px 12px | column>
+                "before"  [Geist Mono 10px/400 #A9ADB6]
+                "Function Namespace CC Cov% CRAP"  [Geist Mono 11px/400 #ECEDEF]
+                "price billing 9 20.0 50.5"  [Geist Mono 11px/400 #FF6A1A]
+                "exit 2"  [Geist Mono 12px/700 #FF4D4D]
+            <#what the agent changed | w460px | h167.5px | gap3px | pad8px 12px | column>
+                "what the agent changed"  [Geist Mono 10px/400 #A9ADB6]
+                "− for item in order.items: … (lines 3–7)"  [Geist Mono 11px/400 #A9ADB6]
+                "+ total = sum(_item_cost(i) for i in order.items)"  [Geist Mono 11px/400 #3DDC84]
+                "− if user.tier == 'gold': … (lines 8–11)"  [Geist Mono 11px/400 #A9ADB6]
+                "+ total = _apply_tier(total, user.tier)"  [Geist Mono 11px/400 #3DDC84]
+                "+ def _item_cost(item) · + def _apply_tier(total, tier)"  [Geist Mono 11px/400 #3DDC84]
+                "+ tests: 4 cases · cov 20 % → 100 %"  [Geist Mono 11px/400 #3DDC84]
+                "−12 +9 · 2 files"  [Geist Mono 12px/700 #A9ADB6]
+            <#after | w460px | h127.5px | gap3px | pad8px 12px | column>
+                "after"  [Geist Mono 10px/400 #A9ADB6]
+                "Function Namespace CC Cov% CRAP"  [Geist Mono 11px/400 #ECEDEF]
+                "price billing 3 100.0 3.0"  [Geist Mono 11px/400 #3DDC84]
+                "_item_cost billing 3 100.0 3.0"  [Geist Mono 11px/400 #3DDC84]
+                "_apply_tier billing 1 100.0 1.0"  [Geist Mono 11px/400 #3DDC84]
+                "exit 0"  [Geist Mono 12px/700 #3DDC84]
+        <#Statusbar | w1312px | h23.5px | gap0px | pad8px 0px 0px 0px | row>
+            "● crap · 50.5 → 3 · the agent split, the gate agreed"  [Geist Mono 12px/400 #A9ADB6]
+            "exit 2 → exit 0"  [Geist Mono 12px/400 #3DDC84]
+      <#K2 · dry | bg#110B09 | w1440px | h720px | gap16px | pad32px 40px 28px 88px | column>
+        <#Heat glow | w1440px | h520px>
+        <#Depth gauge | w55.5px | h720px | gap0px | column>
+            "surface"  [Geist Mono 9px/400 #A9ADB6]
+          <#tick | bg#FF6A1A | w1px | h34px>
+          <#mark | wfit-content | hfit-content | gap0px | row>
+            <#dot | bg#FF6A1A | w6px | h6px>
+          <#tick | bg#FF6A1A | w1px | h34px>
+          <#mark | wfit-content | hfit-content | gap0px | row>
+            <#dot | bg#FF6A1A | w10px | h10px>
+          <#tick | bg#FF6A1A33 | w1px | h34px>
+          <#mark | wfit-content | hfit-content | gap0px | row>
+            <#dot | bg#FF6A1A33 | w6px | h6px>
+          <#tick | bg#FF6A1A33 | w1px | h34px>
+          <#mark | wfit-content | hfit-content | gap0px | row>
+            <#dot | bg#FF6A1A33 | w6px | h6px>
+          <#tick | bg#FF6A1A33 | w1px | h34px>
+            "core"  [Geist Mono 9px/400 #A9ADB6]
+        <#Progress | w1384px | h4px | gap0px | row>
+          <#done | bg#FF6A1A | w692px | h4px>
+        <#Head | w100% | hfit-content | gap0px | row>
+          <#Titles | wfit-content | hfit-content | gap4px | column>
+              "▼ inside the gate · 02/04 · dry"  [Geist Mono 12px/400 #FF6A1A]
+              "Same body, new names. The agent merges."  [Azeret Mono 28px/700 #ECEDEF]
+          <#Hint | bg#FF6A1A14 | w420px | hfit-content | gap4px | pad10px 14px | column>
+              "score = |A ∩ B| / |A ∪ B|"  [Geist Mono 11px/400 #FF6A1A]
+              "Fingerprints of the syntax tree with names erased: 20 of 22 shared, 0.91. At 0.8 or above, one body. The report says so; the skill reads the report."  [Geist 13px/400 #ECEDEF]
+        <#Row | w100% | gap20px | row>
+          <#Agent session | bg#191210 | hfit-content | gap0px | column>
+            <#Bar | w832px | h27.5px | gap0px | pad6px 12px | row>
+                "claude code · ~/work/billing"  [Geist Mono 12px/400 #ECEDEF]
+                "● live"  [Geist Mono 12px/400 #3DDC84]
+            <#Transcript | w100% | hfit-content | gap8px | pad12px | column>
+              <#cmd | wfit-content | hfit-content | gap6px | row>
+                  "$"  [Geist Mono 12px/400 #FF6A1A]
+                  "coderefinery dry --changed --threshold 0.8"  [Geist Mono 12px/400 #ECEDEF]
+                "DUPLICATE score=0.91"  [Geist Mono 12px/400 #FF6A1A]
+                <br>
+                "billing/pricing.py:1-6"  [Geist Mono 12px/400 #FF6A1A]
+                <br>
+                "billing/quotes.py:8-13"  [Geist Mono 12px/400 #FF6A1A]
+                "1 pair at or above 0.80 · exit 0 · verdict is in the report"  [Geist Mono 12px/400 #A9ADB6]
+              <#agent | w100% | hfit-content | gap3px | pad8px 10px | column>
+                  "agent · reads the output"  [Geist Mono 10px/400 #A9ADB6]
+                  "quote() is price() with the arguments renamed. Both delegate to one _settle(items, tier, discount); the public names stay so nothing that calls them changes."  [Geist 13px/400 #ECEDEF]
+              <#tool | bg#110B09 | w100% | hfit-content | gap3px | pad6px 10px | column>
+                <#head | w100% | hfit-content | gap0px | row>
+                    "▸ Edit billing/pricing.py · billing/quotes.py"  [Geist Mono 12px/400 #ECEDEF]
+                    "done"  [Geist Mono 10px/400 #3DDC84]
+                  "apply_patch · −10 +4 · +_settle(items, tier, discount=None) · price and quote delegate"  [Geist Mono 11px/400 #A9ADB6]
+              <#cmd | wfit-content | hfit-content | gap6px | row>
+                  "$"  [Geist Mono 12px/400 #FF6A1A]
+                  "coderefinery dry --changed --threshold 0.8"  [Geist Mono 12px/400 #ECEDEF]
+                "No duplicate candidates found. · exit 0"  [Geist Mono 12px/400 #3DDC84]
+          <#Outputs | bg#191210 | w460px | hfit-content | gap0px | column>
+            <#before | w460px | h107.5px | gap3px | pad8px 12px | column>
+                "before"  [Geist Mono 10px/400 #A9ADB6]
+                "DUPLICATE score=0.91"  [Geist Mono 11px/400 #FF6A1A]
+                "billing/pricing.py:1-6"  [Geist Mono 11px/400 #ECEDEF]
+                "billing/quotes.py:8-13"  [Geist Mono 11px/400 #ECEDEF]
+                "1 pair · report"  [Geist Mono 12px/700 #FFB020]
+            <#what the agent changed | w460px | h147.5px | gap3px | pad8px 12px | column>
+                "what the agent changed"  [Geist Mono 10px/400 #A9ADB6]
+                "+ def _settle(items, tier, discount=None): … one body"  [Geist Mono 11px/400 #3DDC84]
+                "− price(): 5-line body"  [Geist Mono 11px/400 #A9ADB6]
+                "+ return _settle(order.items, user.tier, coupon)"  [Geist Mono 11px/400 #3DDC84]
+                "− quote(): 5-line body"  [Geist Mono 11px/400 #A9ADB6]
+                "+ return _settle(cart.items, account.tier, promo)"  [Geist Mono 11px/400 #3DDC84]
+                "−10 +4 · 2 files"  [Geist Mono 12px/700 #A9ADB6]
+            <#after | w460px | h67.5px | gap3px | pad8px 12px | column>
+                "after"  [Geist Mono 10px/400 #A9ADB6]
+                "No duplicate candidates found."  [Geist Mono 11px/400 #3DDC84]
+                "exit 0"  [Geist Mono 12px/700 #3DDC84]
+        <#Statusbar | w1312px | h23.5px | gap0px | pad8px 0px 0px 0px | row>
+            "● dry · 0.91 → none · one implementation, two names"  [Geist Mono 12px/400 #A9ADB6]
+            "report → clean"  [Geist Mono 12px/400 #3DDC84]
+      <#K3 · mutate | bg#110B09 | w1440px | h720px | gap16px | pad32px 40px 28px 88px | column>
+        <#Heat glow | w1440px | h520px>
+        <#Depth gauge | w55.5px | h720px | gap0px | column>
+            "surface"  [Geist Mono 9px/400 #A9ADB6]
+          <#tick | bg#FF6A1A | w1px | h34px>
+          <#mark | wfit-content | hfit-content | gap0px | row>
+            <#dot | bg#FF6A1A | w6px | h6px>
+          <#tick | bg#FF6A1A | w1px | h34px>
+          <#mark | wfit-content | hfit-content | gap0px | row>
+            <#dot | bg#FF6A1A | w6px | h6px>
+          <#tick | bg#FF6A1A | w1px | h34px>
+          <#mark | wfit-content | hfit-content | gap0px | row>
+            <#dot | bg#FF6A1A | w10px | h10px>
+          <#tick | bg#FF6A1A33 | w1px | h34px>
+          <#mark | wfit-content | hfit-content | gap0px | row>
+            <#dot | bg#FF6A1A33 | w6px | h6px>
+          <#tick | bg#FF6A1A33 | w1px | h34px>
+            "core"  [Geist Mono 9px/400 #A9ADB6]
+        <#Progress | w1384px | h4px | gap0px | row>
+          <#done | bg#FF6A1A | w1038px | h4px>
+        <#Head | w100% | hfit-content | gap0px | row>
+          <#Titles | wfit-content | hfit-content | gap4px | column>
+              "▼ inside the gate · 03/04 · mutate"  [Geist Mono 12px/400 #FF6A1A]
+              "Two survive. The agent writes the tests that kill them."  [Azeret Mono 28px/700 #ECEDEF]
+          <#Hint | bg#FF6A1A14 | w420px | hfit-content | gap4px | pad10px 14px | column>
+              "would the tests notice?"  [Geist Mono 11px/400 #FF6A1A]
+              "One edit per mutant, the suite per edit. A survivor is a bug the suite would ship. One survivor fails; the agent adds the assertion, never weakens the test."  [Geist 13px/400 #ECEDEF]
+        <#Row | w100% | gap20px | row>
+          <#Agent session | bg#191210 | hfit-content | gap0px | column>
+            <#Bar | w832px | h27.5px | gap0px | pad6px 12px | row>
+                "claude code · ~/work/billing"  [Geist Mono 12px/400 #ECEDEF]
+                "● live"  [Geist Mono 12px/400 #3DDC84]
+            <#Transcript | w100% | hfit-content | gap8px | pad12px | column>
+              <#cmd | wfit-content | hfit-content | gap6px | row>
+                  "$"  [Geist Mono 12px/400 #FF6A1A]
+                  "coderefinery mutate --changed --use-existing-coverage"  [Geist Mono 12px/400 #ECEDEF]
+                "12 sites · 12 mutants · baseline 1.8 s · timeout 18 s"  [Geist Mono 12px/400 #A9ADB6]
+                "SURVIVED billing/pricing.py:6 0 → 1"  [Geist Mono 12px/400 #FF6A1A]
+                <br>
+                "SURVIVED billing/pricing.py:9 1 → 0"  [Geist Mono 12px/400 #FF6A1A]
+                "killed 10 · survived 2 · exit 3"  [Geist Mono 12px/400 #FF4D4D]
+              <#agent | w100% | hfit-content | gap3px | pad8px 10px | column>
+                  "agent · reads the output"  [Geist Mono 10px/400 #A9ADB6]
+                  "The floor at max(total, 0) and the default tier rate are never asserted. A coupon larger than the total must price to exactly 0; an unknown tier must pay full price. Adding both cases, not touching the code."  [Geist 13px/400 #ECEDEF]
+              <#tool | bg#110B09 | w100% | hfit-content | gap3px | pad6px 10px | column>
+                <#head | w100% | hfit-content | gap0px | row>
+                    "▸ Write tests/test_pricing.py"  [Geist Mono 12px/400 #ECEDEF]
+                    "done"  [Geist Mono 10px/400 #3DDC84]
+                  "+def test_coupon_never_goes_negative(): assert price(order(5), gold, coupon(50)) == 0.0"  [Geist Mono 11px/400 #A9ADB6]
+                  <br>
+                  "+def test_unknown_tier_pays_full_price(): assert price(order(100), bronze) == 100.0"  [Geist Mono 11px/400 #A9ADB6]
+              <#cmd | wfit-content | hfit-content | gap6px | row>
+                  "$"  [Geist Mono 12px/400 #FF6A1A]
+                  "coderefinery mutate --changed --use-existing-coverage"  [Geist Mono 12px/400 #ECEDEF]
+                "killed 12 · survived 0 · re-ran 2 mutants only · exit 0"  [Geist Mono 12px/400 #3DDC84]
+          <#Outputs | bg#191210 | w460px | hfit-content | gap0px | column>
+            <#before | w460px | h127.5px | gap3px | pad8px 12px | column>
+                "before"  [Geist Mono 10px/400 #A9ADB6]
+                "Function Killed Survived Uncovered Sites Score"  [Geist Mono 11px/400 #ECEDEF]
+                "_settle 5 1 0 6 83.3%"  [Geist Mono 11px/400 #FF6A1A]
+                "_apply_tier 2 1 0 3 66.7%"  [Geist Mono 11px/400 #FF6A1A]
+                "_item_cost 3 0 0 3 100.0%"  [Geist Mono 11px/400 #A9ADB6]
+                "exit 3"  [Geist Mono 12px/700 #FF4D4D]
+            <#what the agent changed | w460px | h107.5px | gap3px | pad8px 12px | column>
+                "what the agent changed"  [Geist Mono 10px/400 #A9ADB6]
+                "+ test_coupon_never_goes_negative kills 0 → 1"  [Geist Mono 11px/400 #3DDC84]
+                "+ test_unknown_tier_pays_full_price kills 1 → 0"  [Geist Mono 11px/400 #3DDC84]
+                "no source line changed"  [Geist Mono 11px/400 #A9ADB6]
+                "+2 tests · 1 file"  [Geist Mono 12px/700 #A9ADB6]
+            <#after | w460px | h107.5px | gap3px | pad8px 12px | column>
+                "after"  [Geist Mono 10px/400 #A9ADB6]
+                "_settle 6 0 0 6 100.0%"  [Geist Mono 11px/400 #3DDC84]
+                "_apply_tier 3 0 0 3 100.0%"  [Geist Mono 11px/400 #3DDC84]
+                "_item_cost 3 0 0 3 100.0%"  [Geist Mono 11px/400 #3DDC84]
+                "exit 0"  [Geist Mono 12px/700 #3DDC84]
+        <#Statusbar | w1312px | h23.5px | gap0px | pad8px 0px 0px 0px | row>
+            "● mutate · survived 2 → 0 · two assertions that can fail"  [Geist Mono 12px/400 #A9ADB6]
+            "exit 3 → exit 0"  [Geist Mono 12px/400 #3DDC84]
+      <#K4 · tests | bg#110B09 | w1440px | h720px | gap16px | pad32px 40px 28px 88px | column>
+        <#Heat glow | w1440px | h520px>
+        <#Depth gauge | w55.5px | h720px | gap0px | column>
+            "surface"  [Geist Mono 9px/400 #A9ADB6]
+          <#tick | bg#FF6A1A | w1px | h34px>
+          <#mark | wfit-content | hfit-content | gap0px | row>
+            <#dot | bg#FF6A1A | w6px | h6px>
+          <#tick | bg#FF6A1A | w1px | h34px>
+          <#mark | wfit-content | hfit-content | gap0px | row>
+            <#dot | bg#FF6A1A | w6px | h6px>
+          <#tick | bg#FF6A1A | w1px | h34px>
+          <#mark | wfit-content | hfit-content | gap0px | row>
+            <#dot | bg#FF6A1A | w6px | h6px>
+          <#tick | bg#FF6A1A | w1px | h34px>
+          <#mark | wfit-content | hfit-content | gap0px | row>
+            <#dot | bg#FF6A1A | w10px | h10px>
+          <#tick | bg#FF6A1A33 | w1px | h34px>
+            "core"  [Geist Mono 9px/400 #A9ADB6]
+        <#Progress | w1384px | h4px | gap0px | row>
+          <#done | bg#FF6A1A | w1384px | h4px>
+        <#Head | w100% | hfit-content | gap0px | row>
+          <#Titles | wfit-content | hfit-content | gap4px | column>
+              "▼ inside the gate · 04/04 · tests"  [Geist Mono 12px/400 #FF6A1A]
+              "Two tests catch nothing. Deleted."  [Azeret Mono 28px/700 #ECEDEF]
+          <#Hint | bg#FF6A1A14 | w420px | hfit-content | gap4px | pad10px 14px | column>
+              "relevance = mutants this test alone kills"  [Geist Mono 11px/400 #FF6A1A]
+              "Zero kills: it would pass with every function returning nothing. Zero unique kills: another test already catches it. Copies drift; one parametrized case does not. (preview)"  [Geist 13px/400 #ECEDEF]
+        <#Row | w100% | gap20px | row>
+          <#Agent session | bg#191210 | hfit-content | gap0px | column>
+            <#Bar | w832px | h27.5px | gap0px | pad6px 12px | row>
+                "claude code · ~/work/billing"  [Geist Mono 12px/400 #ECEDEF]
+                "● live"  [Geist Mono 12px/400 #3DDC84]
+            <#Transcript | w100% | hfit-content | gap8px | pad12px | column>
+              <#cmd | wfit-content | hfit-content | gap6px | row>
+                  "$"  [Geist Mono 12px/400 #FF6A1A]
+                  "coderefinery tests --changed"  [Geist Mono 12px/400 #ECEDEF]
+                "test kills unique shadowed by"  [Geist Mono 12px/400 #A9ADB6]
+                "test_tier_rate[gold] 4 2 —"  [Geist Mono 12px/400 #3DDC84]
+                <br>
+                "test_coupon_never_goes_negative 1 1 —"  [Geist Mono 12px/400 #3DDC84]
+                "test_price_returns_a_number 0 0 —"  [Geist Mono 12px/400 #FF6A1A]
+                <br>
+                "test_settle_called 0 0 —"  [Geist Mono 12px/400 #FF6A1A]
+                "2 tests with no kills · exit 3"  [Geist Mono 12px/400 #FF4D4D]
+              <#cmd | wfit-content | hfit-content | gap6px | row>
+                  "$"  [Geist Mono 12px/400 #FF6A1A]
+                  "coderefinery dry tests/test_pricing.py"  [Geist Mono 12px/400 #ECEDEF]
+                "DUPLICATE score=0.93 ×2 · test_gold_discount ↔ test_silver_discount, test_bronze_pays_full"  [Geist Mono 12px/400 #FF6A1A]
+              <#agent | w100% | hfit-content | gap3px | pad8px 10px | column>
+                  "agent · reads the output"  [Geist Mono 10px/400 #A9ADB6]
+                  "isinstance() passes for any float; the spy passes whenever _settle is called. Neither can fail on a wrong price. Deleting both. The three tier tests are one test with three rows: parametrizing."  [Geist 13px/400 #ECEDEF]
+              <#tool | bg#110B09 | w100% | hfit-content | gap3px | pad6px 10px | column>
+                <#head | w100% | hfit-content | gap0px | row>
+                    "▸ Edit tests/test_pricing.py"  [Geist Mono 12px/400 #ECEDEF]
+                    "done"  [Geist Mono 10px/400 #3DDC84]
+                  "apply_patch · −14 +5 · −test_price_returns_a_number · −test_settle_called · +@pytest.mark.parametrize('tier,expected', …) test_tier_rate"  [Geist Mono 11px/400 #A9ADB6]
+              <#cmd | wfit-content | hfit-content | gap6px | row>
+                  "$"  [Geist Mono 12px/400 #FF6A1A]
+                  "coderefinery tests --changed"  [Geist Mono 12px/400 #ECEDEF]
+                "5 tests · 12 kills · 0 with zero unique kills · exit 0"  [Geist Mono 12px/400 #3DDC84]
+          <#Outputs | bg#191210 | w460px | hfit-content | gap0px | column>
+            <#before | w460px | h127.5px | gap3px | pad8px 12px | column>
+                "before"  [Geist Mono 10px/400 #A9ADB6]
+                "test kills unique"  [Geist Mono 11px/400 #ECEDEF]
+                "test_price_returns_a_number 0 0"  [Geist Mono 11px/400 #FF6A1A]
+                "test_settle_called 0 0"  [Geist Mono 11px/400 #FF6A1A]
+                "test_gold/silver/bronze 3 copies at 0.93"  [Geist Mono 11px/400 #A9ADB6]
+                "exit 3"  [Geist Mono 12px/700 #FF4D4D]
+            <#what the agent changed | w460px | h144.5px | gap3px | pad8px 12px | column>
+                "what the agent changed"  [Geist Mono 10px/400 #A9ADB6]
+                "− test_price_returns_a_number"  [Geist Mono 11px/400 #FF4D4D]
+                "− test_settle_called"  [Geist Mono 11px/400 #FF4D4D]
+                "− test_gold_discount · test_silver_discount · test_bronze_pays_full"  [Geist Mono 11px/400 #FF4D4D]
+                "+ @parametrize test_tier_rate[gold | silver | bronze]"  [Geist Mono 11px/400 #3DDC84]
+                "−14 +5 · 1 file"  [Geist Mono 12px/700 #A9ADB6]
+            <#after | w460px | h87.5px | gap3px | pad8px 12px | column>
+                "after"  [Geist Mono 10px/400 #A9ADB6]
+                "5 tests · 12 kills · every test kills something only it kills"  [Geist Mono 11px/400 #3DDC84]
+                "No duplicate candidates found."  [Geist Mono 11px/400 #3DDC84]
+                "exit 0"  [Geist Mono 12px/700 #3DDC84]
+        <#Statusbar | w1312px | h23.5px | gap0px | pad8px 0px 0px 0px | row>
+            "● tests · 2 deleted, 3 merged, 0 kills lost · preview · ships with the tests gate"  [Geist Mono 12px/400 #A9ADB6]
+            "exit 3 → exit 0"  [Geist Mono 12px/400 #3DDC84]
+      <#S9 · the numbers | bg#0B0C0E | w1440px | h900px | gap48px | pad64px | column>
+        <#Head | w100% | hfit-content | gap10px | column>
+            "§06 · after the intro"  [Geist Mono 14px/400 #FF6A1A]
+            "Same output as the originals."  [Azeret Mono 56px/700 #ECEDEF]
+            <br>
+            "A fraction of the time."  [Azeret Mono 56px/700 #ECEDEF]
+        <#Big numbers | w100% | hfit-content | gap0px | row>
+          <#Stat | w327.5px | h192px | gap8px | pad28px | column>
+              "3.8×"  [Azeret Mono 88px/700 #ECEDEF]
+              "crap, 12 repos"  [Geist Mono 14px/400 #8B8F99]
+          <#Stat | w327.5px | h192px | gap8px | pad28px | column>
+              "120×"  [Azeret Mono 88px/700 #FF6A1A]
+              "dry on django"  [Geist Mono 14px/400 #8B8F99]
+          <#Stat | w327.5px | h192px | gap8px | pad28px | column>
+              "5.0×"  [Azeret Mono 88px/700 #ECEDEF]
+              "mutate --scan"  [Geist Mono 14px/400 #8B8F99]
+          <#Stat | hfit-content | gap8px | pad28px | column>
+              "36/36"  [Azeret Mono 88px/700 #ECEDEF]
+              "cases byte-identical"  [Geist Mono 14px/400 #8B8F99]
+        <#Facts | w100% | hfit-content | gap48px | row>
+          <#languages · 7 | hfit-content | gap8px | column>
+              "languages · 7"  [Geist Mono 14px/400 #ECEDEF]
+              "────────────────────────────────────────"  [Geist Mono 14px/400 #26282E]
+              "python · typescript · tsx · javascript"  [Geist Mono 14px/400 #8B8F99]
+              "go · java · rust · clojure"  [Geist Mono 14px/400 #8B8F99]
+              "same tree shape as tree-sitter, hand-written in Go"  [Geist Mono 14px/400 #8B8F99]
+          <#one binary | hfit-content | gap8px | column>
+              "one binary"  [Geist Mono 14px/400 #ECEDEF]
+              "────────────────────────────────────────"  [Geist Mono 14px/400 #26282E]
+              "7.2 MB · stdlib only · no cgo"  [Geist Mono 14px/400 #8B8F99]
+              "macOS + Linux · amd64 + arm64"  [Geist Mono 14px/400 #8B8F99]
+              "no venv, no node, no jvm to run it"  [Geist Mono 14px/400 #8B8F99]
+          <#install | hfit-content | gap8px | column>
+              "install"  [Geist Mono 14px/400 #ECEDEF]
+              "────────────────────────────────────────"  [Geist Mono 14px/400 #26282E]
+              "$ curl -fsSL https://get.coderefinery.dev | sh"  [Geist Mono 14px/400 #8B8F99]
+              "$ npx skills add coderefinery"  [Geist Mono 14px/400 #8B8F99]
+              "$ go install github.com/.../coderefinery@latest"  [Geist Mono 14px/400 #8B8F99]
+        <#spacer | w10px>
+        <#Statusbar | w1312px | h29.5px | gap0px | pad12px 0px 0px 0px | row>
+            "● measured 2026-11-03 · 3 runs · median · same machine as upstream"  [Geist Mono 14px/400 #8B8F99]
+            "exit 0"  [Geist Mono 14px/400 #3DDC84]
+      <#M · the math (teaser → /math) | bg#0B0C0E | w1440px | h620px | gap36px | pad64px | column>
+        <#Head | w100% | hfit-content | gap10px | column>
+            "§07 · the math"  [Geist Mono 13px/400 #FF6A1A]
+            "Three numbers. Three rules. No opinions."  [Azeret Mono 44px/700 #ECEDEF]
+            "Every verdict is a formula you can check by hand. What each gate counts, where its threshold comes from, and what the number implies."  [Geist 17px/400 #8B8F99]
+        <#Formulas | w100% | hfit-content | gap0px | row>
+          <#CRAP = CC² × (1 − cov)³ + CC | w327.5px | h133px | gap8px | pad18px | column>
+              "CRAP = CC² × (1 − cov)³ + CC"  [Azeret Mono 19px/700 #ECEDEF]
+              "complexity your tests never walk"  [Geist Mono 13px/400 #8B8F99]
+              "≥ 10 fails · exit 2"  [Geist Mono 12px/400 #FF6A1A]
+          <#score = |A ∩ B| / |A ∪ B| | w327.5px | h133px | gap8px | pad18px | column>
+              "score = |A ∩ B| / |A ∪ B|"  [Azeret Mono 19px/700 #ECEDEF]
+              "structural similarity, names erased"  [Geist Mono 13px/400 #8B8F99]
+              "≥ 0.8 fails · in the report"  [Geist Mono 12px/400 #FF6A1A]
+          <#killed / (killed + survived) | w327.5px | h133px | gap8px | pad18px | column>
+              "killed / (killed + survived)"  [Azeret Mono 19px/700 #ECEDEF]
+              "mutants your tests noticed"  [Geist Mono 13px/400 #8B8F99]
+              "1 survivor fails · exit 3"  [Geist Mono 12px/400 #FF6A1A]
+          <#unique kills per test | hfit-content | gap8px | pad18px | column>
+              "unique kills per test"  [Azeret Mono 19px/700 #ECEDEF]
+              "what each test alone catches"  [Geist Mono 13px/400 #8B8F99]
+              "0 unique fails · exit 3 · preview"  [Geist Mono 12px/400 #FF6A1A]
+        <#CTA | bg#131417 | w100% | hfit-content | gap0px | pad16px 24px | row>
+            "The full math: decisions per language, the curve, every exit code."  [Azeret Mono 20px/700 #ECEDEF]
+          <#Button | bg#FF6A1A | wfit-content | hfit-content | gap0px | pad12px 20px | row>
+              "read the math →"  [Geist Mono 14px/700 #0B0C0E]
+        <#Footer | w1312px | h30.5px | gap0px | pad14px 0px 0px 0px | row>
+            "formulas and thresholds as implemented · byte-identical to crapper, dryer and mutator"  [Geist Mono 13px/400 #8B8F99]
+            "exit 0"  [Geist Mono 13px/400 #3DDC84]
+      <#P8 · Recommended setup (last card) | bg#0B0C0E | w1440px | h900px | gap36px | pad64px | column>
+          "§08 · recommended setup · two minutes"  [Geist Mono 13px/400 #FF6A1A]
+          "Add the hook. Install the skill."  [Azeret Mono 56px/700 #ECEDEF]
+          <br>
+          "Let the agent police itself."  [Azeret Mono 56px/700 #ECEDEF]
+        <#Two panes | w100% | gap32px | row>
+          <#Hook config | bg#131417 | w520px | hfit-content | gap0px | column>
+            <#Bar | w520px | h36.5px | gap0px | pad10px 16px | row>
+                ".claude/settings.json (Cursor: .cursor/hooks.json)"  [Geist Mono 13px/400 #ECEDEF]
+                "step 2 · add to your project"  [Geist Mono 13px/400 #8B8F99]
+              "{"  [Geist Mono 12px/400 #ECEDEF]
+              <br>
+              ""hooks": {"  [Geist Mono 12px/400 #ECEDEF]
+              <br>
+              ""PreToolUse": [{"  [Geist Mono 12px/400 #ECEDEF]
+              <br>
+              ""matcher": "Bash(git commit*)","  [Geist Mono 12px/400 #ECEDEF]
+              <br>
+              ""hooks": [{"  [Geist Mono 12px/400 #ECEDEF]
+              <br>
+              ""type": "command","  [Geist Mono 12px/400 #ECEDEF]
+              <br>
+              ""command": "coderefinery crap --changed --threshold 9.9999 && coderefinery dry --changed && coderefinery mutate --changed --use-existing-coverage""  [Geist Mono 12px/400 #ECEDEF]
+              <br>
+              "}]"  [Geist Mono 12px/400 #ECEDEF]
+              <br>
+              "}]"  [Geist Mono 12px/400 #ECEDEF]
+              <br>
+              "}"  [Geist Mono 12px/400 #ECEDEF]
+              <br>
+              "}"  [Geist Mono 12px/400 #ECEDEF]
+            <#rule | bg#26282E | w100% | h1px>
+            <#Notes | w100% | hfit-content | gap6px | pad16px | column>
+                "· step 1 · npx skills add coderefinery installs the skill: gate order, thresholds, what to do per verdict"  [Geist Mono 12px/400 #ECEDEF]
+                "· step 2 · the hook above exit ≠ 0 blocks the tool call; the agent sees stderr and fixes the code"  [Geist Mono 12px/400 #ECEDEF]
+                "· step 3 · the same three commands in CI same exit codes, same .metrics/, no second config"  [Geist Mono 12px/400 #ECEDEF]
+                "· what the skill adds: TDD first, split before test, delete what no honest test can kill"  [Geist Mono 12px/400 #ECEDEF]
+          <#Session | bg#131417 | hfit-content | gap0px | column>
+            <#Bar | w760px | h36.5px | gap0px | pad10px 16px | row>
+                "claude code · ~/work/billing"  [Geist Mono 13px/400 #ECEDEF]
+                "● live"  [Geist Mono 13px/400 #3DDC84]
+            <#Transcript | w100% | hfit-content | gap10px | pad16px | column>
+              <#cmd | wfit-content | hfit-content | gap8px | row>
+                  "$"  [Geist Mono 13px/400 #FF6A1A]
+                  "git commit -m "add quote endpoint""  [Geist Mono 13px/400 #ECEDEF]
+              <#tool | bg#0B0C0E | w100% | hfit-content | gap4px | pad8px 10px | column>
+                  "▸ PreToolUse hook · coderefinery mutate --changed"  [Geist Mono 13px/400 #ECEDEF]
+                  "SURVIVED billing/pricing.py:6 0 -> 1"  [Geist Mono 12px/400 #8B8F99]
+                  <br>
+                  "SURVIVED billing/pricing.py:9 1 -> 0"  [Geist Mono 12px/400 #8B8F99]
+                  <br>
+                  "exit 3"  [Geist Mono 12px/400 #8B8F99]
+                "✗ Bash(git commit) blocked by hook"  [Geist Mono 13px/400 #FF4D4D]
+              <#agent | w100% | hfit-content | gap4px | pad10px | column>
+                  "agent"  [Geist Mono 11px/400 #8B8F99]
+                  "Two survivors. The tests never assert the floor or an unknown tier. I will add tests that fail on these mutants, not weaken the ones that exist."  [Geist 14px/400 #ECEDEF]
+              <#tool | bg#0B0C0E | w100% | hfit-content | gap4px | pad8px 10px | column>
+                  "▸ Write tests/test_pricing.py"  [Geist Mono 13px/400 #ECEDEF]
+                  "+def test_coupon_never_goes_negative(): …"  [Geist Mono 12px/400 #8B8F99]
+                  <br>
+                  "+def test_unknown_tier_pays_full_price(): …"  [Geist Mono 12px/400 #8B8F99]
+              <#cmd | wfit-content | hfit-content | gap8px | row>
+                  "$"  [Geist Mono 13px/400 #FF6A1A]
+                  "git commit -m "add quote endpoint""  [Geist Mono 13px/400 #ECEDEF]
+              <#tool | bg#0B0C0E | w100% | hfit-content | gap4px | pad8px 10px | column>
+                  "▸ PreToolUse hook · coderefinery mutate --changed"  [Geist Mono 13px/400 #ECEDEF]
+                  "killed 12 survived 0"  [Geist Mono 12px/400 #8B8F99]
+                  <br>
+                  "exit 0"  [Geist Mono 12px/400 #8B8F99]
+                "✓ [main 4f2c1d9] add quote endpoint · 3 files changed"  [Geist Mono 13px/400 #3DDC84]
+        <#Statusbar | w1312px | h28.5px | gap0px | pad12px 0px 0px 0px | row>
+            "● what you get: one refused commit, two new tests, zero deleted, no human in the loop until the gate is green"  [Geist Mono 13px/400 #8B8F99]
+            "exit 0"  [Geist Mono 13px/400 #3DDC84]

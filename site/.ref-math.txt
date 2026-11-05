@@ -1,0 +1,2128 @@
+      "*, ::before, ::after { box-sizing: border-box; } body { margin: 0; }"  [ / ]
+      <#M0 · The math · hero | bg#0B0C0E | w1440px | h900px | gap28px | pad64px | column>
+        <#Topbar | w100% | hfit-content | gap0px | row>
+          <#Wordmark | wfit-content | hfit-content | gap2px | row>
+              "code"  [Azeret Mono 20px/700 #ECEDEF]
+              "refinery"  [Azeret Mono 20px/700 #FF6A1A]
+            <#Cursor | bg#FF6A1A | w9px | h17px>
+          <#Nav | wfit-content | hfit-content | gap28px | row>
+              "why"  [Geist Mono 13px/400 #8B8F99]
+              "for agents"  [Geist Mono 13px/400 #8B8F99]
+              "the math"  [Geist Mono 13px/400 #FF6A1A]
+              "docs"  [Geist Mono 13px/400 #8B8F99]
+              "github"  [Geist Mono 13px/400 #8B8F99]
+        <#sp | w10px | h60px>
+          "§ the math · every verdict, by hand"  [Geist Mono 13px/400 #FF6A1A]
+          "Three numbers. Three rules."  [Azeret Mono 64px/700 #ECEDEF]
+          <br>
+          "No opinions."  [Azeret Mono 64px/700 #ECEDEF]
+          "Every verdict coderefinery gives is a formula you can check with a pencil. This page shows what each gate counts, how it scores, where its threshold comes from, and what the number quietly implies. All of it as implemented, byte-identical to crapper, dryer and mutator."  [Geist 18px/400 #8B8F99]
+        <#Formulas | w100% | hfit-content | gap0px | row>
+          <#CRAP = CC² × (1 − cov)³ + CC | w327.5px | h133px | gap8px | pad18px | column>
+              "CRAP = CC² × (1 − cov)³ + CC"  [Azeret Mono 19px/700 #ECEDEF]
+              "complexity your tests never walk"  [Geist Mono 13px/400 #8B8F99]
+              "≥ 10 fails · exit 2"  [Geist Mono 12px/400 #FF6A1A]
+          <#score = |A ∩ B| / |A ∪ B| | w327.5px | h133px | gap8px | pad18px | column>
+              "score = |A ∩ B| / |A ∪ B|"  [Azeret Mono 19px/700 #ECEDEF]
+              "structural similarity, names erased"  [Geist Mono 13px/400 #8B8F99]
+              "≥ 0.8 fails · in the report"  [Geist Mono 12px/400 #FF6A1A]
+          <#killed / (killed + survived) | w327.5px | h133px | gap8px | pad18px | column>
+              "killed / (killed + survived)"  [Azeret Mono 19px/700 #ECEDEF]
+              "mutants your tests noticed"  [Geist Mono 13px/400 #8B8F99]
+              "1 survivor fails · exit 3"  [Geist Mono 12px/400 #FF6A1A]
+          <#unique kills per test | hfit-content | gap8px | pad18px | column>
+              "unique kills per test"  [Azeret Mono 19px/700 #ECEDEF]
+              "what each test alone catches"  [Geist Mono 13px/400 #8B8F99]
+              "0 unique fails · exit 3 · preview"  [Geist Mono 12px/400 #FF6A1A]
+        <#sp2 | w10px>
+        <#Statusbar | w1312px | h28.5px | gap0px | pad12px 0px 0px 0px | row>
+            "● sources: docs/spec-crapper.md · spec-dryer.md · spec-mutator.md · the skill · every number below is reproducible with the fixtures in the repo"  [Geist Mono 13px/400 #8B8F99]
+            "exit 0"  [Geist Mono 13px/400 #3DDC84]
+      <#M1.1 · crap · Count the decisions. | bg#0B0C0E | w1440px | h700px | gap20px | pad36px 64px 28px 64px | column>
+        <#Head | w100% | hfit-content | gap0px | row>
+            "§01 · crap · 1/3"  [Geist Mono 12px/400 #FF6A1A]
+          <#Rail | wfit-content | hfit-content | gap8px | row>
+            <#dot | bg#FF6A1A | w22px | h6px>
+            <#dot | bg#26282E | w6px | h6px>
+            <#dot | bg#26282E | w6px | h6px>
+        <#Formula | w100% | hfit-content | gap0px | row>
+          <#term | >
+            "CRAP ="  [Azeret Mono 48px/700 #ECEDEF]
+          <#term | >
+            "9²"  [Azeret Mono 48px/700 #FF6A1A]
+          <#term | >
+            "× (1 − cov)³ +"  [Azeret Mono 48px/700 #ECEDEF]
+          <#term | >
+            "9"  [Azeret Mono 48px/700 #ECEDEF]
+        <#Row | w100% | gap28px | row>
+          <#Code | bg#131417 | hfit-content | gap0px | column>
+            <#Filebar | w844px | h27.5px | gap0px | pad6px 12px | row>
+                "billing/pricing.py"  [Geist Mono 12px/400 #ECEDEF]
+                "python"  [Geist Mono 12px/400 #8B8F99]
+            <#Lines | w100% | hfit-content | gap0px | pad6px 0px | column>
+              <#L1 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "1"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "price"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "(order, user, coupon="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "None"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "):"  [Geist Mono 12px/400 #ECEDEF]
+              <#L2 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "2"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total ="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0"  [Geist Mono 12px/400 #FFC95C]
+              <#L3 | bg#FF6A1A26 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "3"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "for"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "item"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "in"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "order.items:"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "1 · for"  [Geist Mono 10px/400 #FF6A1A]
+              <#L4 | bg#FF6A1A26 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "4"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "item.kind =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "'digital'"  [Geist Mono 12px/400 #8FD9A8]
+                  <#t | >
+                    ":"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "2 · if"  [Geist Mono 10px/400 #FF6A1A]
+              <#L5 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "5"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total += item.price"  [Geist Mono 12px/400 #ECEDEF]
+              <#L6 | bg#FF6A1A26 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "6"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "elif"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "item.kind =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "'physical'"  [Geist Mono 12px/400 #8FD9A8]
+                  <#t | >
+                    ":"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "3 · elif"  [Geist Mono 10px/400 #FF6A1A]
+              <#L7 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "7"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total += item.price + item.weight *"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0.5"  [Geist Mono 12px/400 #FFC95C]
+              <#L8 | bg#FF6A1A26 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "8"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "user.tier =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "'gold'"  [Geist Mono 12px/400 #8FD9A8]
+                  <#t | >
+                    ":"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "4 · if"  [Geist Mono 10px/400 #FF6A1A]
+              <#L9 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "9"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total *="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0.9"  [Geist Mono 12px/400 #FFC95C]
+              <#L10 | bg#FF6A1A26 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "10"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "elif"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "user.tier =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "'silver'"  [Geist Mono 12px/400 #8FD9A8]
+                  <#t | >
+                    ":"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "5 · elif"  [Geist Mono 10px/400 #FF6A1A]
+              <#L11 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "11"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total *="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0.95"  [Geist Mono 12px/400 #FFC95C]
+              <#L12 | bg#FF6A1A26 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "12"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "coupon"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "and"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "coupon.valid():"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "6 · if · 7 · and"  [Geist Mono 10px/400 #FF6A1A]
+              <#L13 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "13"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total -= coupon.amount"  [Geist Mono 12px/400 #ECEDEF]
+              <#L14 | bg#FF6A1A26 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "14"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "total <="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    ":"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "8 · if"  [Geist Mono 10px/400 #FF6A1A]
+              <#L15 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "15"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total ="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0"  [Geist Mono 12px/400 #FFC95C]
+              <#L16 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "16"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "return"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "round(total,"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "2"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    ")"  [Geist Mono 12px/400 #ECEDEF]
+          <#Card | w440px | h273px | gap12px | pad16px 0px 0px 0px | column>
+              "Count the decisions."  [Azeret Mono 24px/700 #ECEDEF]
+              "Every if, loop, case and boolean operator in `price()` is a path. `CC` is one plus the number of them. Eight decisions here, so `CC = 9`. The square is the point: paths multiply."  [Geist 15px/400 #ECEDEF]
+            <#Heuristic | w100% | hfit-content | gap10px | pad10px 12px | row>
+                "rule"  [Geist Mono 11px/400 #FF6A1A]
+                "CC 9 means nine inputs to walk every path. One test walks one."  [Geist Mono 12px/400 #ECEDEF]
+            <#Visual | bg#131417 | w100% | hfit-content | gap8px | pad12px | column>
+              <#squares | wfit-content | hfit-content | gap6px | row>
+                <#d | bg#FF6A1A | w22px | h22px>
+                <#d | bg#FF6A1A | w22px | h22px>
+                <#d | bg#FF6A1A | w22px | h22px>
+                <#d | bg#FF6A1A | w22px | h22px>
+                <#d | bg#FF6A1A | w22px | h22px>
+                <#d | bg#FF6A1A | w22px | h22px>
+                <#d | bg#FF6A1A | w22px | h22px>
+                <#d | bg#FF6A1A | w22px | h22px>
+                <#d | bg#FF6A1A | w22px | h22px>
+                "CC = 1 + 8 = 9"  [Geist Mono 12px/400 #ECEDEF]
+        <#Statusbar | w1312px | h25.5px | gap0px | pad10px 0px 0px 0px | row>
+            "● crap · count the decisions"  [Geist Mono 12px/400 #8B8F99]
+            "exit 2"  [Geist Mono 12px/400 #FF4D4D]
+      <#M1.2 · crap · Discount by what the tests never walk. | bg#0B0C0E | w1440px | h700px | gap20px | pad36px 64px 28px 64px | column>
+        <#Head | w100% | hfit-content | gap0px | row>
+            "§01 · crap · 2/3"  [Geist Mono 12px/400 #FF6A1A]
+          <#Rail | wfit-content | hfit-content | gap8px | row>
+            <#dot | bg#26282E | w6px | h6px>
+            <#dot | bg#FF6A1A | w22px | h6px>
+            <#dot | bg#26282E | w6px | h6px>
+        <#Formula | w100% | hfit-content | gap0px | row>
+          <#term | >
+            "CRAP = 9² ×"  [Azeret Mono 48px/700 #ECEDEF]
+          <#term | >
+            "(1 − 0.20)³"  [Azeret Mono 48px/700 #FF6A1A]
+          <#term | >
+            "+ 9"  [Azeret Mono 48px/700 #ECEDEF]
+        <#Row | w100% | gap28px | row>
+          <#Code | bg#131417 | hfit-content | gap0px | column>
+            <#Filebar | w844px | h27.5px | gap0px | pad6px 12px | row>
+                "billing/pricing.py"  [Geist Mono 12px/400 #ECEDEF]
+                "python"  [Geist Mono 12px/400 #8B8F99]
+            <#Lines | w100% | hfit-content | gap0px | pad6px 0px | column>
+              <#L1 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "1"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "price"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "(order, user, coupon="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "None"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "):"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "covered"  [Geist Mono 10px/400 #3DDC84]
+              <#L2 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "2"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total ="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0"  [Geist Mono 12px/400 #FFC95C]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "covered"  [Geist Mono 10px/400 #3DDC84]
+              <#L3 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "3"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "for"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "item"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "in"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "order.items:"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "covered"  [Geist Mono 10px/400 #3DDC84]
+              <#L4 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "4"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "item.kind =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "'digital'"  [Geist Mono 12px/400 #8FD9A8]
+                  <#t | >
+                    ":"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "covered"  [Geist Mono 10px/400 #3DDC84]
+              <#L5 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "5"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total += item.price"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "covered"  [Geist Mono 10px/400 #3DDC84]
+              <#L6 | bg#FFB02022 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "6"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "elif"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "item.kind =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "'physical'"  [Geist Mono 12px/400 #8FD9A8]
+                  <#t | >
+                    ":"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "never run"  [Geist Mono 10px/400 #FFB020]
+              <#L7 | bg#FFB02022 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "7"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total += item.price + item.weight *"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0.5"  [Geist Mono 12px/400 #FFC95C]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "never run"  [Geist Mono 10px/400 #FFB020]
+              <#L8 | bg#FFB02022 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "8"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "user.tier =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "'gold'"  [Geist Mono 12px/400 #8FD9A8]
+                  <#t | >
+                    ":"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "never run"  [Geist Mono 10px/400 #FFB020]
+              <#L9 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "9"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total *="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0.9"  [Geist Mono 12px/400 #FFC95C]
+              <#L10 | bg#FFB02022 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "10"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "elif"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "user.tier =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "'silver'"  [Geist Mono 12px/400 #8FD9A8]
+                  <#t | >
+                    ":"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "never run"  [Geist Mono 10px/400 #FFB020]
+              <#L11 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "11"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total *="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0.95"  [Geist Mono 12px/400 #FFC95C]
+              <#L12 | bg#FFB02022 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "12"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "coupon"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "and"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "coupon.valid():"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "never run"  [Geist Mono 10px/400 #FFB020]
+              <#L13 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "13"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total -= coupon.amount"  [Geist Mono 12px/400 #ECEDEF]
+              <#L14 | bg#FFB02022 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "14"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "total <="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    ":"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "never run"  [Geist Mono 10px/400 #FFB020]
+              <#L15 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "15"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total ="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0"  [Geist Mono 12px/400 #FFC95C]
+              <#L16 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "16"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "return"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "round(total,"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "2"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    ")"  [Geist Mono 12px/400 #ECEDEF]
+          <#Card | w440px | h291px | gap12px | pad16px 0px 0px 0px | column>
+              "Discount by what the tests never walk."  [Azeret Mono 24px/700 #ECEDEF]
+              "`cov` is the share of lines a test executed. The one test covers the digital path: 3 of 15 lines, `cov = 0.20`. The cube keeps `0.8³ = 0.512` of the risk; at 80 % coverage only `0.008` would remain."  [Geist 15px/400 #ECEDEF]
+            <#Heuristic | w100% | hfit-content | gap10px | pad10px 12px | row>
+                "rule"  [Geist Mono 11px/400 #FF6A1A]
+                "Below 50 % coverage the score barely moves. Test the branches, not the percentage."  [Geist Mono 12px/400 #ECEDEF]
+            <#Visual | bg#131417 | w100% | hfit-content | gap8px | pad12px | column>
+              <#bar | w100% | h10px | gap0px | row>
+                <#cov | bg#3DDC84 | w80px | h10px>
+                <#rest | bg#26282E | h10px>
+                "cov = 0.20 · (1 − 0.20)³ = 0.512"  [Geist Mono 12px/400 #ECEDEF]
+        <#Statusbar | w1312px | h25.5px | gap0px | pad10px 0px 0px 0px | row>
+            "● crap · discount by what the tests never walk"  [Geist Mono 12px/400 #8B8F99]
+            "exit 2"  [Geist Mono 12px/400 #FF4D4D]
+      <#M1.3 · crap · Compare with ten. | bg#0B0C0E | w1440px | h700px | gap20px | pad36px 64px 28px 64px | column>
+        <#Head | w100% | hfit-content | gap0px | row>
+            "§01 · crap · 3/3"  [Geist Mono 12px/400 #FF6A1A]
+          <#Rail | wfit-content | hfit-content | gap8px | row>
+            <#dot | bg#26282E | w6px | h6px>
+            <#dot | bg#26282E | w6px | h6px>
+            <#dot | bg#FF6A1A | w22px | h6px>
+        <#Formula | w100% | hfit-content | gap0px | row>
+          <#term | >
+            "CRAP = 81 × 0.512 + 9 ="  [Azeret Mono 48px/700 #ECEDEF]
+          <#term | >
+            "50.5"  [Azeret Mono 48px/700 #FF6A1A]
+        <#Row | w100% | gap28px | row>
+          <#Code | bg#131417 | hfit-content | gap0px | column>
+            <#Filebar | w844px | h27.5px | gap0px | pad6px 12px | row>
+                "billing/pricing.py"  [Geist Mono 12px/400 #ECEDEF]
+                "python"  [Geist Mono 12px/400 #8B8F99]
+            <#Lines | w100% | hfit-content | gap0px | pad6px 0px | column>
+              <#L1 | bg#FF6A1A26 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "1"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "price"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "(order, user, coupon="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "None"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "):"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "CRAP 50.5 · exit 2"  [Geist Mono 10px/400 #FF6A1A]
+              <#L2 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "2"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total ="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0"  [Geist Mono 12px/400 #FFC95C]
+              <#L3 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "3"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "for"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "item"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "in"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "order.items:"  [Geist Mono 12px/400 #ECEDEF]
+              <#L4 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "4"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "item.kind =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "'digital'"  [Geist Mono 12px/400 #8FD9A8]
+                  <#t | >
+                    ":"  [Geist Mono 12px/400 #ECEDEF]
+              <#L5 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "5"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total += item.price"  [Geist Mono 12px/400 #ECEDEF]
+              <#L6 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "6"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "elif"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "item.kind =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "'physical'"  [Geist Mono 12px/400 #8FD9A8]
+                  <#t | >
+                    ":"  [Geist Mono 12px/400 #ECEDEF]
+              <#L7 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "7"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total += item.price + item.weight *"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0.5"  [Geist Mono 12px/400 #FFC95C]
+              <#L8 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "8"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "user.tier =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "'gold'"  [Geist Mono 12px/400 #8FD9A8]
+                  <#t | >
+                    ":"  [Geist Mono 12px/400 #ECEDEF]
+              <#L9 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "9"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total *="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0.9"  [Geist Mono 12px/400 #FFC95C]
+              <#L10 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "10"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "elif"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "user.tier =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "'silver'"  [Geist Mono 12px/400 #8FD9A8]
+                  <#t | >
+                    ":"  [Geist Mono 12px/400 #ECEDEF]
+              <#L11 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "11"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total *="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0.95"  [Geist Mono 12px/400 #FFC95C]
+              <#L12 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "12"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "coupon"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "and"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "coupon.valid():"  [Geist Mono 12px/400 #ECEDEF]
+              <#L13 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "13"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total -= coupon.amount"  [Geist Mono 12px/400 #ECEDEF]
+              <#L14 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "14"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "total <="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    ":"  [Geist Mono 12px/400 #ECEDEF]
+              <#L15 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "15"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total ="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0"  [Geist Mono 12px/400 #FFC95C]
+              <#L16 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "16"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "return"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "round(total,"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "2"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    ")"  [Geist Mono 12px/400 #ECEDEF]
+          <#Card | w440px | h304px | gap12px | pad16px 0px 0px 0px | column>
+              "Compare with ten."  [Azeret Mono 24px/700 #ECEDEF]
+              "`81 × 0.512 + 9 = 50.47`. Ten is the line, and the skill fails at exactly 10 by passing `--threshold 9.9999`. Savoia drew it at 30 in 2007; ub-mode draws it at 10 so a function still reads in one sitting."  [Geist 15px/400 #ECEDEF]
+            <#Heuristic | w100% | hfit-content | gap10px | pad10px 12px | row>
+                "rule"  [Geist Mono 11px/400 #FF6A1A]
+                "CRAP ≥ 10 → exit 2. At CC 10 or more no coverage can pass: split first."  [Geist Mono 12px/400 #ECEDEF]
+            <#Visual | bg#131417 | w100% | hfit-content | gap8px | pad12px | column>
+              <#Markers | wfit-content | hfit-content | gap28px | row>
+                <#before · exit 2 | wfit-content | hfit-content | gap2px | column>
+                    "50.5"  [Azeret Mono 34px/700 #FF4D4D]
+                    "before · exit 2"  [Geist Mono 10px/400 #8B8F99]
+                <#after the split | wfit-content | hfit-content | gap2px | column>
+                    "9"  [Azeret Mono 34px/700 #3DDC84]
+                    "after the split"  [Geist Mono 10px/400 #8B8F99]
+        <#Statusbar | w1312px | h25.5px | gap0px | pad10px 0px 0px 0px | row>
+            "● crap · compare with ten"  [Geist Mono 12px/400 #8B8F99]
+            "exit 2"  [Geist Mono 12px/400 #FF4D4D]
+      <#M2.1 · dry · Erase the names. Keep the shape. | bg#0B0C0E | w1440px | h700px | gap20px | pad36px 64px 28px 64px | column>
+        <#Head | w100% | hfit-content | gap0px | row>
+            "§02 · dry · 1/3"  [Geist Mono 12px/400 #FF6A1A]
+          <#Rail | wfit-content | hfit-content | gap8px | row>
+            <#dot | bg#FF6A1A | w22px | h6px>
+            <#dot | bg#26282E | w6px | h6px>
+            <#dot | bg#26282E | w6px | h6px>
+        <#Formula | w100% | hfit-content | gap0px | row>
+          <#term | >
+            "A = fp(price) ·"  [Azeret Mono 48px/700 #ECEDEF]
+          <#term | >
+            "22"  [Azeret Mono 48px/700 #FF6A1A]
+          <#term | >
+            "B = fp(quote) ·"  [Azeret Mono 48px/700 #ECEDEF]
+          <#term | >
+            "22"  [Azeret Mono 48px/700 #ECEDEF]
+        <#Row | w100% | gap28px | row>
+          <#Code | bg#131417 | hfit-content | gap0px | column>
+            <#Filebar | w844px | h27.5px | gap0px | pad6px 12px | row>
+                "billing/pricing.py · billing/quotes.py"  [Geist Mono 12px/400 #ECEDEF]
+                "python"  [Geist Mono 12px/400 #8B8F99]
+            <#Lines | w100% | hfit-content | gap0px | pad6px 0px | column>
+              <#L1 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "1"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "price"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "(order, user, coupon="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "None"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "):"  [Geist Mono 12px/400 #ECEDEF]
+              <#L2 | bg#FFB02022 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "2"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total = sum(_item_cost(i)"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "for"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "i"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "in"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "order.items)"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "order → :symbol"  [Geist Mono 10px/400 #FFB020]
+              <#L3 | bg#FFB02022 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "3"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total = _apply_tier(total, user.tier)"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "user → :symbol"  [Geist Mono 10px/400 #FFB020]
+              <#L4 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "4"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "coupon"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "and"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "coupon.valid():"  [Geist Mono 12px/400 #ECEDEF]
+              <#L5 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "5"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total -= coupon.amount"  [Geist Mono 12px/400 #ECEDEF]
+              <#L6 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "6"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "return"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "round(max(total,"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "),"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "2"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    ")"  [Geist Mono 12px/400 #ECEDEF]
+              <#L7 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "7"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+              <#L8 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "8"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "quote"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "(cart, account, promo="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "None"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "):"  [Geist Mono 12px/400 #ECEDEF]
+              <#L9 | bg#FFB02022 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "9"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "amount = sum(_item_cost(i)"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "for"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "i"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "in"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "cart.items)"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "cart → :symbol"  [Geist Mono 10px/400 #FFB020]
+              <#L10 | bg#FFB02022 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "10"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "amount = _apply_tier(amount, account.tier)"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "account → :symbol"  [Geist Mono 10px/400 #FFB020]
+              <#L11 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "11"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "promo"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "and"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "promo.valid():"  [Geist Mono 12px/400 #ECEDEF]
+              <#L12 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "12"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "amount -= promo.amount"  [Geist Mono 12px/400 #ECEDEF]
+              <#L13 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "13"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "return"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "round(max(amount,"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "),"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "2"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    ")"  [Geist Mono 12px/400 #ECEDEF]
+          <#Card | w440px | h243px | gap12px | pad16px 0px 0px 0px | column>
+              "Erase the names. Keep the shape."  [Azeret Mono 24px/700 #ECEDEF]
+              "Each function becomes a tree of calls, operators and keywords; local names and literals become placeholders. Every subtree, printed, is one fingerprint. `price()` has 22, `quote()` has 22, and renaming `order` to `cart` changes none of them."  [Geist 15px/400 #ECEDEF]
+            <#Heuristic | w100% | hfit-content | gap10px | pad10px 12px | row>
+                "rule"  [Geist Mono 11px/400 #FF6A1A]
+                "Rename every variable: `A` is unchanged. Replace `sum` with `max`: five fingerprints change."  [Geist Mono 12px/400 #ECEDEF]
+        <#Statusbar | w1312px | h25.5px | gap0px | pad10px 0px 0px 0px | row>
+            "● dry · erase the names. keep the shape"  [Geist Mono 12px/400 #8B8F99]
+            "exit 0"  [Geist Mono 12px/400 #3DDC84]
+      <#M2.2 · dry · Measure the overlap. | bg#0B0C0E | w1440px | h700px | gap20px | pad36px 64px 28px 64px | column>
+        <#Head | w100% | hfit-content | gap0px | row>
+            "§02 · dry · 2/3"  [Geist Mono 12px/400 #FF6A1A]
+          <#Rail | wfit-content | hfit-content | gap8px | row>
+            <#dot | bg#26282E | w6px | h6px>
+            <#dot | bg#FF6A1A | w22px | h6px>
+            <#dot | bg#26282E | w6px | h6px>
+        <#Formula | w100% | hfit-content | gap0px | row>
+          <#term | >
+            "score ="  [Azeret Mono 48px/700 #ECEDEF]
+          <#term | >
+            "20"  [Azeret Mono 48px/700 #FF6A1A]
+          <#term | >
+            "/"  [Azeret Mono 48px/700 #ECEDEF]
+          <#term | >
+            "22"  [Azeret Mono 48px/700 #ECEDEF]
+        <#Row | w100% | gap28px | row>
+          <#Code | bg#131417 | hfit-content | gap0px | column>
+            <#Filebar | w844px | h27.5px | gap0px | pad6px 12px | row>
+                "billing/pricing.py · billing/quotes.py"  [Geist Mono 12px/400 #ECEDEF]
+                "python"  [Geist Mono 12px/400 #8B8F99]
+            <#Lines | w100% | hfit-content | gap0px | pad6px 0px | column>
+              <#L1 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "1"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "price"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "(order, user, coupon="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "None"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "):"  [Geist Mono 12px/400 #ECEDEF]
+              <#L2 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "2"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total = sum(_item_cost(i)"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "for"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "i"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "in"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "order.items)"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "= line 9"  [Geist Mono 10px/400 #3DDC84]
+              <#L3 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "3"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total = _apply_tier(total, user.tier)"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "= line 10"  [Geist Mono 10px/400 #3DDC84]
+              <#L4 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "4"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "coupon"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "and"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "coupon.valid():"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "= line 11"  [Geist Mono 10px/400 #3DDC84]
+              <#L5 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "5"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total -= coupon.amount"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "= line 12"  [Geist Mono 10px/400 #3DDC84]
+              <#L6 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "6"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "return"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "round(max(total,"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "),"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "2"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    ")"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "= line 13"  [Geist Mono 10px/400 #3DDC84]
+              <#L7 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "7"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+              <#L8 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "8"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "quote"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "(cart, account, promo="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "None"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "):"  [Geist Mono 12px/400 #ECEDEF]
+              <#L9 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "9"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "amount = sum(_item_cost(i)"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "for"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "i"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "in"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "cart.items)"  [Geist Mono 12px/400 #ECEDEF]
+              <#L10 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "10"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "amount = _apply_tier(amount, account.tier)"  [Geist Mono 12px/400 #ECEDEF]
+              <#L11 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "11"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "promo"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "and"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "promo.valid():"  [Geist Mono 12px/400 #ECEDEF]
+              <#L12 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "12"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "amount -= promo.amount"  [Geist Mono 12px/400 #ECEDEF]
+              <#L13 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "13"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "return"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "round(max(amount,"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "),"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "2"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    ")"  [Geist Mono 12px/400 #ECEDEF]
+          <#Card | w440px | h213px | gap12px | pad16px 0px 0px 0px | column>
+              "Measure the overlap."  [Azeret Mono 24px/700 #ECEDEF]
+              "Jaccard: the fingerprints both share, over all the fingerprints either has. The two bodies share 20 of 22. The two that differ are the two `def` headers, whose names are kept in head position."  [Geist 15px/400 #ECEDEF]
+            <#Heuristic | w100% | hfit-content | gap10px | pad10px 12px | row>
+                "rule"  [Geist Mono 11px/400 #FF6A1A]
+                "Shape, not text: a search for the copied line would find nothing."  [Geist Mono 12px/400 #ECEDEF]
+        <#Statusbar | w1312px | h25.5px | gap0px | pad10px 0px 0px 0px | row>
+            "● dry · measure the overlap"  [Geist Mono 12px/400 #8B8F99]
+            "exit 0"  [Geist Mono 12px/400 #3DDC84]
+      <#M2.3 · dry · Decide at 0.8. | bg#0B0C0E | w1440px | h700px | gap20px | pad36px 64px 28px 64px | column>
+        <#Head | w100% | hfit-content | gap0px | row>
+            "§02 · dry · 3/3"  [Geist Mono 12px/400 #FF6A1A]
+          <#Rail | wfit-content | hfit-content | gap8px | row>
+            <#dot | bg#26282E | w6px | h6px>
+            <#dot | bg#26282E | w6px | h6px>
+            <#dot | bg#FF6A1A | w22px | h6px>
+        <#Formula | w100% | hfit-content | gap0px | row>
+          <#term | >
+            "score = 0.91 ≥"  [Azeret Mono 48px/700 #ECEDEF]
+          <#term | >
+            "0.80"  [Azeret Mono 48px/700 #FF6A1A]
+          <#term | >
+            "→ DUPLICATE"  [Azeret Mono 48px/700 #ECEDEF]
+        <#Row | w100% | gap28px | row>
+          <#Code | bg#131417 | hfit-content | gap0px | column>
+            <#Filebar | w844px | h27.5px | gap0px | pad6px 12px | row>
+                "billing/pricing.py · billing/quotes.py"  [Geist Mono 12px/400 #ECEDEF]
+                "python"  [Geist Mono 12px/400 #8B8F99]
+            <#Lines | w100% | hfit-content | gap0px | pad6px 0px | column>
+              <#L1 | bg#FF6A1A26 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "1"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "price"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "(order, user, coupon="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "None"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "):"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "DUPLICATE score=0.91"  [Geist Mono 10px/400 #FF6A1A]
+              <#L2 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "2"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total = sum(_item_cost(i)"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "for"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "i"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "in"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "order.items)"  [Geist Mono 12px/400 #ECEDEF]
+              <#L3 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "3"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total = _apply_tier(total, user.tier)"  [Geist Mono 12px/400 #ECEDEF]
+              <#L4 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "4"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "coupon"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "and"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "coupon.valid():"  [Geist Mono 12px/400 #ECEDEF]
+              <#L5 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "5"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total -= coupon.amount"  [Geist Mono 12px/400 #ECEDEF]
+              <#L6 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "6"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "return"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "round(max(total,"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "),"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "2"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    ")"  [Geist Mono 12px/400 #ECEDEF]
+              <#L7 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "7"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+              <#L8 | bg#FF6A1A26 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "8"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "quote"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "(cart, account, promo="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "None"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "):"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "↔ pricing.py:1-6"  [Geist Mono 10px/400 #FF6A1A]
+              <#L9 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "9"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "amount = sum(_item_cost(i)"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "for"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "i"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "in"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "cart.items)"  [Geist Mono 12px/400 #ECEDEF]
+              <#L10 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "10"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "amount = _apply_tier(amount, account.tier)"  [Geist Mono 12px/400 #ECEDEF]
+              <#L11 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "11"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "promo"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "and"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "promo.valid():"  [Geist Mono 12px/400 #ECEDEF]
+              <#L12 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "12"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "amount -= promo.amount"  [Geist Mono 12px/400 #ECEDEF]
+              <#L13 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "13"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "return"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "round(max(amount,"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "),"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "2"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    ")"  [Geist Mono 12px/400 #ECEDEF]
+          <#Card | w440px | h195px | gap12px | pad16px 0px 0px 0px | column>
+              "Decide at 0.8."  [Azeret Mono 24px/700 #ECEDEF]
+              "The tool's default is 0.82; the skill lowers it to 0.8, and a pair on the line is reported. Functions under 20 normalised nodes are never compared. `dry` exits 0 either way; the verdict is the pair in the report, and the skill reads it."  [Geist 15px/400 #ECEDEF]
+            <#Heuristic | w100% | hfit-content | gap10px | pad10px 12px | row>
+                "rule"  [Geist Mono 11px/400 #FF6A1A]
+                "score ≥ 0.8 → one body, two names. Merge it."  [Geist Mono 12px/400 #ECEDEF]
+        <#Statusbar | w1312px | h25.5px | gap0px | pad10px 0px 0px 0px | row>
+            "● dry · decide at 0.8"  [Geist Mono 12px/400 #8B8F99]
+            "exit 0"  [Geist Mono 12px/400 #3DDC84]
+      <#M3.1 · mutate · Change one token. | bg#0B0C0E | w1440px | h700px | gap20px | pad36px 64px 28px 64px | column>
+        <#Head | w100% | hfit-content | gap0px | row>
+            "§03 · mutate · 1/3"  [Geist Mono 12px/400 #FF6A1A]
+          <#Rail | wfit-content | hfit-content | gap8px | row>
+            <#dot | bg#FF6A1A | w22px | h6px>
+            <#dot | bg#26282E | w6px | h6px>
+            <#dot | bg#26282E | w6px | h6px>
+        <#Formula | w100% | hfit-content | gap0px | row>
+          <#term | >
+            "sites ="  [Azeret Mono 48px/700 #ECEDEF]
+          <#term | >
+            "12"  [Azeret Mono 48px/700 #FF6A1A]
+          <#term | >
+            "mutants ="  [Azeret Mono 48px/700 #ECEDEF]
+          <#term | >
+            "12"  [Azeret Mono 48px/700 #ECEDEF]
+        <#Row | w100% | gap28px | row>
+          <#Code | bg#131417 | hfit-content | gap0px | column>
+            <#Filebar | w844px | h27.5px | gap0px | pad6px 12px | row>
+                "billing/pricing.py"  [Geist Mono 12px/400 #ECEDEF]
+                "python"  [Geist Mono 12px/400 #8B8F99]
+            <#Lines | w100% | hfit-content | gap0px | pad6px 0px | column>
+              <#L1 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "1"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "_settle"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "(items, tier, discount="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "None"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "):"  [Geist Mono 12px/400 #ECEDEF]
+              <#L2 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "2"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total = sum(_item_cost(i)"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "for"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "i"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "in"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "items)"  [Geist Mono 12px/400 #ECEDEF]
+              <#L3 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "3"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total = _apply_tier(total, tier)"  [Geist Mono 12px/400 #ECEDEF]
+              <#L4 | bg#FF6A1A26 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "4"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "discount"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "and"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "discount.valid():"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "and → or"  [Geist Mono 10px/400 #FF6A1A]
+              <#L5 | bg#FF6A1A26 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "5"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total -= discount.amount"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "− → +"  [Geist Mono 10px/400 #FF6A1A]
+              <#L6 | bg#FF6A1A26 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "6"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "return"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "round(max(total,"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "),"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "2"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    ")"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "0 → 1"  [Geist Mono 10px/400 #FF6A1A]
+              <#L7 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "7"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+              <#L8 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "8"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "_apply_tier"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "(total, tier):"  [Geist Mono 12px/400 #ECEDEF]
+              <#L9 | bg#FF6A1A26 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "9"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "return"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "total * TIER_RATE.get(tier,"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "1"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    ")"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "* → / · 1 → 0"  [Geist Mono 10px/400 #FF6A1A]
+              <#L10 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "10"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+              <#L11 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "11"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "test_gold_discount"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "():"  [Geist Mono 12px/400 #ECEDEF]
+              <#L12 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "12"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "assert"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "price(order("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "100"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "), gold) =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "90.0"  [Geist Mono 12px/400 #FFC95C]
+              <#L13 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "13"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "test_coupon"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "():"  [Geist Mono 12px/400 #ECEDEF]
+              <#L14 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "14"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "assert"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "price(order("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "100"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "), gold, coupon("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "10"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    ")) =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "80.0"  [Geist Mono 12px/400 #FFC95C]
+          <#Card | w440px | h213px | gap12px | pad16px 0px 0px 0px | column>
+              "Change one token."  [Azeret Mono 24px/700 #ECEDEF]
+              "A site is a token the tool knows how to flip; a mutant is the file with one site changed. Twelve sites in these two functions: `and`, `-`, `0`, `*`, `1`, the comparisons. Each mutant is the smallest bug that can be written."  [Geist 15px/400 #ECEDEF]
+            <#Heuristic | w100% | hfit-content | gap10px | pad10px 12px | row>
+                "rule"  [Geist Mono 11px/400 #FF6A1A]
+                "Uncovered sites never run; no test reaches them, so the answer is already known."  [Geist Mono 12px/400 #ECEDEF]
+        <#Statusbar | w1312px | h25.5px | gap0px | pad10px 0px 0px 0px | row>
+            "● mutate · change one token"  [Geist Mono 12px/400 #8B8F99]
+            "exit 3"  [Geist Mono 12px/400 #FF4D4D]
+      <#M3.2 · mutate · Run the suite twelve times. | bg#0B0C0E | w1440px | h700px | gap20px | pad36px 64px 28px 64px | column>
+        <#Head | w100% | hfit-content | gap0px | row>
+            "§03 · mutate · 2/3"  [Geist Mono 12px/400 #FF6A1A]
+          <#Rail | wfit-content | hfit-content | gap8px | row>
+            <#dot | bg#26282E | w6px | h6px>
+            <#dot | bg#FF6A1A | w22px | h6px>
+            <#dot | bg#26282E | w6px | h6px>
+        <#Formula | w100% | hfit-content | gap0px | row>
+          <#term | >
+            "score ="  [Azeret Mono 48px/700 #ECEDEF]
+          <#term | >
+            "10"  [Azeret Mono 48px/700 #FF6A1A]
+          <#term | >
+            "/ ("  [Azeret Mono 48px/700 #ECEDEF]
+          <#term | >
+            "10 + 2"  [Azeret Mono 48px/700 #ECEDEF]
+          <#term | >
+            ")"  [Azeret Mono 48px/700 #ECEDEF]
+        <#Row | w100% | gap28px | row>
+          <#Code | bg#131417 | hfit-content | gap0px | column>
+            <#Filebar | w844px | h27.5px | gap0px | pad6px 12px | row>
+                "billing/pricing.py"  [Geist Mono 12px/400 #ECEDEF]
+                "python"  [Geist Mono 12px/400 #8B8F99]
+            <#Lines | w100% | hfit-content | gap0px | pad6px 0px | column>
+              <#L1 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "1"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "_settle"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "(items, tier, discount="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "None"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "):"  [Geist Mono 12px/400 #ECEDEF]
+              <#L2 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "2"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total = sum(_item_cost(i)"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "for"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "i"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "in"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "items)"  [Geist Mono 12px/400 #ECEDEF]
+              <#L3 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "3"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total = _apply_tier(total, tier)"  [Geist Mono 12px/400 #ECEDEF]
+              <#L4 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "4"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "discount"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "and"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "discount.valid():"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "killed"  [Geist Mono 10px/400 #3DDC84]
+              <#L5 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "5"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total -= discount.amount"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "killed"  [Geist Mono 10px/400 #3DDC84]
+              <#L6 | bg#FF4D4D22 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "6"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "return"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                    "round(max(total,"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                    "0"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                    "),"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                    "2"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                    ")"  [Geist Mono 12px/400 #8B8F99]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "0 → 1 · SURVIVED"  [Geist Mono 10px/400 #FF4D4D]
+              <#L7 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "7"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+              <#L8 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "8"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "_apply_tier"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "(total, tier):"  [Geist Mono 12px/400 #ECEDEF]
+              <#L9 | bg#FF4D4D22 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "9"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "return"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                    "total * TIER_RATE.get(tier,"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                    "1"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                    ")"  [Geist Mono 12px/400 #8B8F99]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "1 → 0 · SURVIVED"  [Geist Mono 10px/400 #FF4D4D]
+              <#L10 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "10"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+              <#L11 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "11"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "test_gold_discount"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "():"  [Geist Mono 12px/400 #ECEDEF]
+              <#L12 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "12"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "assert"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "price(order("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "100"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "), gold) =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "90.0"  [Geist Mono 12px/400 #FFC95C]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "kills and→or, −→+"  [Geist Mono 10px/400 #FF6A1A]
+              <#L13 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "13"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "test_coupon"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "():"  [Geist Mono 12px/400 #ECEDEF]
+              <#L14 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "14"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "assert"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "price(order("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "100"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "), gold, coupon("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "10"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    ")) =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "80.0"  [Geist Mono 12px/400 #FFC95C]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "kills nothing at the floor"  [Geist Mono 10px/400 #FF6A1A]
+          <#Card | w440px | h235px | gap12px | pad16px 0px 0px 0px | column>
+              "Run the suite twelve times."  [Azeret Mono 24px/700 #ECEDEF]
+              "The suite runs once per mutant. Red means killed: a test noticed. Green means survived: that line was never really tested. Two survived: the floor at `max(total, 0)` and the default `TIER_RATE.get(tier, 1)`, because no test crosses zero or uses an unknown tier."  [Geist 15px/400 #ECEDEF]
+            <#Heuristic | w100% | hfit-content | gap10px | pad10px 12px | row>
+                "rule"  [Geist Mono 11px/400 #FF6A1A]
+                "No middle ground. A survivor is a specific bug, with a file and a line."  [Geist Mono 12px/400 #ECEDEF]
+        <#Statusbar | w1312px | h25.5px | gap0px | pad10px 0px 0px 0px | row>
+            "● mutate · run the suite twelve times"  [Geist Mono 12px/400 #8B8F99]
+            "exit 3"  [Geist Mono 12px/400 #FF4D4D]
+      <#M3.3 · mutate · One survivor fails. | bg#0B0C0E | w1440px | h700px | gap20px | pad36px 64px 28px 64px | column>
+        <#Head | w100% | hfit-content | gap0px | row>
+            "§03 · mutate · 3/3"  [Geist Mono 12px/400 #FF6A1A]
+          <#Rail | wfit-content | hfit-content | gap8px | row>
+            <#dot | bg#26282E | w6px | h6px>
+            <#dot | bg#26282E | w6px | h6px>
+            <#dot | bg#FF6A1A | w22px | h6px>
+        <#Formula | w100% | hfit-content | gap0px | row>
+          <#term | >
+            "score = 10 / 12 ="  [Azeret Mono 48px/700 #ECEDEF]
+          <#term | >
+            "0.83"  [Azeret Mono 48px/700 #ECEDEF]
+          <#term | >
+            "· survived"  [Azeret Mono 48px/700 #ECEDEF]
+          <#term | >
+            "2"  [Azeret Mono 48px/700 #FF6A1A]
+          <#term | >
+            "→ exit 3"  [Azeret Mono 48px/700 #ECEDEF]
+        <#Row | w100% | gap28px | row>
+          <#Code | bg#131417 | hfit-content | gap0px | column>
+            <#Filebar | w844px | h27.5px | gap0px | pad6px 12px | row>
+                "billing/pricing.py"  [Geist Mono 12px/400 #ECEDEF]
+                "python"  [Geist Mono 12px/400 #8B8F99]
+            <#Lines | w100% | hfit-content | gap0px | pad6px 0px | column>
+              <#L1 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "1"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "_settle"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "(items, tier, discount="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "None"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "):"  [Geist Mono 12px/400 #ECEDEF]
+              <#L2 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "2"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total = sum(_item_cost(i)"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "for"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "i"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "in"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "items)"  [Geist Mono 12px/400 #ECEDEF]
+              <#L3 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "3"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total = _apply_tier(total, tier)"  [Geist Mono 12px/400 #ECEDEF]
+              <#L4 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "4"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "if"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "discount"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "and"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "discount.valid():"  [Geist Mono 12px/400 #ECEDEF]
+              <#L5 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "5"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "total -= discount.amount"  [Geist Mono 12px/400 #ECEDEF]
+              <#L6 | bg#FF4D4D22 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "6"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "return"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                    "round(max(total,"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                    "0"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                    "),"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                    "2"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                    ")"  [Geist Mono 12px/400 #8B8F99]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "SURVIVED · needs: a case where the result is exactly 0"  [Geist Mono 10px/400 #FF4D4D]
+              <#L7 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "7"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+              <#L8 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "8"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "_apply_tier"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "(total, tier):"  [Geist Mono 12px/400 #ECEDEF]
+              <#L9 | bg#FF4D4D22 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "9"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "return"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                    "total * TIER_RATE.get(tier,"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                    "1"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                    ")"  [Geist Mono 12px/400 #8B8F99]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "SURVIVED · needs: an unknown tier, asserted on the result"  [Geist Mono 10px/400 #FF4D4D]
+              <#L10 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "10"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+              <#L11 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "11"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "test_gold_discount"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "():"  [Geist Mono 12px/400 #ECEDEF]
+              <#L12 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "12"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "assert"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "price(order("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "100"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "), gold) =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "90.0"  [Geist Mono 12px/400 #FFC95C]
+              <#L13 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "13"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "test_coupon"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "():"  [Geist Mono 12px/400 #ECEDEF]
+              <#L14 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "14"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "assert"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "price(order("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "100"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "), gold, coupon("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "10"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    ")) =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "80.0"  [Geist Mono 12px/400 #FFC95C]
+          <#Card | w440px | h191px | gap12px | pad16px 0px 0px 0px | column>
+              "One survivor fails."  [Azeret Mono 24px/700 #ECEDEF]
+              "83 % is not the verdict; `survived 2` is. Any survivor is exit 3. The next run re-executes only survivors and functions whose text changed, so the loop is seconds."  [Geist 15px/400 #ECEDEF]
+            <#Heuristic | w100% | hfit-content | gap10px | pad10px 12px | row>
+                "rule"  [Geist Mono 11px/400 #FF6A1A]
+                "survived > 0 → exit 3. Add the assertion that kills it, or delete code no honest test can tell apart."  [Geist Mono 12px/400 #ECEDEF]
+        <#Statusbar | w1312px | h25.5px | gap0px | pad10px 0px 0px 0px | row>
+            "● mutate · one survivor fails"  [Geist Mono 12px/400 #8B8F99]
+            "exit 3"  [Geist Mono 12px/400 #FF4D4D]
+      <#M4.1 · tests · Which test killed it? | bg#0B0C0E | w1440px | h700px | gap20px | pad36px 64px 28px 64px | column>
+        <#Head | w100% | hfit-content | gap0px | row>
+            "§04 · tests · 1/2"  [Geist Mono 12px/400 #FF6A1A]
+          <#Rail | wfit-content | hfit-content | gap8px | row>
+            <#dot | bg#FF6A1A | w22px | h6px>
+            <#dot | bg#26282E | w6px | h6px>
+        <#Formula | w100% | hfit-content | gap0px | row>
+          <#term | >
+            "kills(t) = { m : t fails on m } →"  [Azeret Mono 48px/700 #ECEDEF]
+          <#term | >
+            "4 · 1 · 5 · 0 · 0"  [Azeret Mono 48px/700 #FF6A1A]
+        <#Row | w100% | gap28px | row>
+          <#Code | bg#131417 | hfit-content | gap0px | column>
+            <#Filebar | w844px | h27.5px | gap0px | pad6px 12px | row>
+                "tests/test_pricing.py"  [Geist Mono 12px/400 #ECEDEF]
+                "python"  [Geist Mono 12px/400 #8B8F99]
+            <#Lines | w100% | hfit-content | gap0px | pad6px 0px | column>
+              <#L1 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "1"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "test_tier_rate"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "(tier, expected):"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "kills 4"  [Geist Mono 10px/400 #3DDC84]
+              <#L2 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "2"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "assert"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "price(order("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "100"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "), user(tier)) == expected"  [Geist Mono 12px/400 #ECEDEF]
+              <#L3 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "3"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+              <#L4 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "4"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "test_coupon_never_goes_negative"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "():"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "kills 1"  [Geist Mono 10px/400 #3DDC84]
+              <#L5 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "5"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "assert"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "price(order("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "5"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "), gold, coupon("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "50"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    ")) =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0.0"  [Geist Mono 12px/400 #FFC95C]
+              <#L6 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "6"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+              <#L7 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "7"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "test_quote_gold"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "():"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "kills 5"  [Geist Mono 10px/400 #3DDC84]
+              <#L8 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "8"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "assert"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "client.post("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "'/quote'"  [Geist Mono 12px/400 #8FD9A8]
+                  <#t | >
+                    ", gold_cart).json()["  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "'total'"  [Geist Mono 12px/400 #8FD9A8]
+                  <#t | >
+                    "] =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "90.0"  [Geist Mono 12px/400 #FFC95C]
+              <#L9 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "9"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+              <#L10 | bg#FF4D4D22 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "10"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                  <#t | >
+                    "test_price_returns_a_number"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                    "():"  [Geist Mono 12px/400 #8B8F99]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "kills 0"  [Geist Mono 10px/400 #FF4D4D]
+              <#L11 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "11"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "assert"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "isinstance(price(order("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "100"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "), gold), float)"  [Geist Mono 12px/400 #ECEDEF]
+              <#L12 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "12"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+              <#L13 | bg#FF4D4D22 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "13"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                  <#t | >
+                    "test_settle_called"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                    "(mocker):"  [Geist Mono 12px/400 #8B8F99]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "kills 0 · spies on a private call"  [Geist Mono 10px/400 #FF4D4D]
+              <#L14 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "14"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "spy = mocker.spy(pricing,"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "'_settle'"  [Geist Mono 12px/400 #8FD9A8]
+                  <#t | >
+                    "); price(order("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "100"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "), gold);"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "assert"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "spy.called"  [Geist Mono 12px/400 #ECEDEF]
+          <#Card | w440px | h191px | gap12px | pad16px 0px 0px 0px | column>
+              "Which test killed it?"  [Azeret Mono 24px/700 #ECEDEF]
+              "With attribution, every killed mutant records the tests that failed on it. `kills` per test: 4, 1, 5, 0, 0. A test with zero kills would pass with every function returning nothing."  [Geist 15px/400 #ECEDEF]
+            <#Heuristic | w100% | hfit-content | gap10px | pad10px 12px | row>
+                "rule"  [Geist Mono 11px/400 #FF6A1A]
+                "kills 0 → delete. It is not a test. (preview: ships with the tests gate)"  [Geist Mono 12px/400 #ECEDEF]
+        <#Statusbar | w1312px | h25.5px | gap0px | pad10px 0px 0px 0px | row>
+            "● tests · which test killed it?"  [Geist Mono 12px/400 #8B8F99]
+            "exit 3"  [Geist Mono 12px/400 #FF4D4D]
+      <#M4.2 · tests · Which test is the only one? | bg#0B0C0E | w1440px | h700px | gap20px | pad36px 64px 28px 64px | column>
+        <#Head | w100% | hfit-content | gap0px | row>
+            "§04 · tests · 2/2"  [Geist Mono 12px/400 #FF6A1A]
+          <#Rail | wfit-content | hfit-content | gap8px | row>
+            <#dot | bg#26282E | w6px | h6px>
+            <#dot | bg#FF6A1A | w22px | h6px>
+        <#Formula | w100% | hfit-content | gap0px | row>
+          <#term | >
+            "unique(t) = kills(t) − ⋃ kills(others) →"  [Azeret Mono 48px/700 #ECEDEF]
+          <#term | >
+            "2 · 1 · 0 · 0 · 0"  [Azeret Mono 48px/700 #FF6A1A]
+        <#Row | w100% | gap28px | row>
+          <#Code | bg#131417 | hfit-content | gap0px | column>
+            <#Filebar | w844px | h27.5px | gap0px | pad6px 12px | row>
+                "tests/test_pricing.py"  [Geist Mono 12px/400 #ECEDEF]
+                "python"  [Geist Mono 12px/400 #8B8F99]
+            <#Lines | w100% | hfit-content | gap0px | pad6px 0px | column>
+              <#L1 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "1"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "test_tier_rate"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "(tier, expected):"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "unique 2"  [Geist Mono 10px/400 #3DDC84]
+              <#L2 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "2"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "assert"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "price(order("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "100"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "), user(tier)) == expected"  [Geist Mono 12px/400 #ECEDEF]
+              <#L3 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "3"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+              <#L4 | bg#3DDC8422 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "4"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "test_coupon_never_goes_negative"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "():"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "unique 1"  [Geist Mono 10px/400 #3DDC84]
+              <#L5 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "5"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "assert"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "price(order("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "5"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "), gold, coupon("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "50"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    ")) =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "0.0"  [Geist Mono 12px/400 #FFC95C]
+              <#L6 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "6"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+              <#L7 | bg#FFB02022 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "7"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                  <#t | >
+                    "test_quote_gold"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "():"  [Geist Mono 12px/400 #ECEDEF]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "unique 0 · shadowed by lines 1, 4"  [Geist Mono 10px/400 #FFB020]
+              <#L8 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "8"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "assert"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "client.post("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "'/quote'"  [Geist Mono 12px/400 #8FD9A8]
+                  <#t | >
+                    ", gold_cart).json()["  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "'total'"  [Geist Mono 12px/400 #8FD9A8]
+                  <#t | >
+                    "] =="  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "90.0"  [Geist Mono 12px/400 #FFC95C]
+              <#L9 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "9"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+              <#L10 | bg#FF4D4D22 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "10"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                  <#t | >
+                    "test_price_returns_a_number"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                    "():"  [Geist Mono 12px/400 #8B8F99]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "unique 0"  [Geist Mono 10px/400 #FF4D4D]
+              <#L11 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "11"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                  <#t | >
+                    "assert"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "isinstance(price(order("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "100"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "), gold), float)"  [Geist Mono 12px/400 #ECEDEF]
+              <#L12 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "12"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+              <#L13 | bg#FF4D4D22 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "13"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "def"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                  <#t | >
+                    "test_settle_called"  [Geist Mono 12px/400 #8B8F99]
+                  <#t | >
+                    "(mocker):"  [Geist Mono 12px/400 #8B8F99]
+                <#Note | wfit-content | hfit-content | gap0px | pad0px 5px | row>
+                    "unique 0"  [Geist Mono 10px/400 #FF4D4D]
+              <#L14 | w100% | hfit-content | gap0px | pad0px 12px | row>
+                  "14"  [Geist Mono 12px/400 #8B8F99]
+                <#code | hfit-content | gap0px | row>
+                  <#t | >
+                    "spy = mocker.spy(pricing,"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "'_settle'"  [Geist Mono 12px/400 #8FD9A8]
+                  <#t | >
+                    "); price(order("  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "100"  [Geist Mono 12px/400 #FFC95C]
+                  <#t | >
+                    "), gold);"  [Geist Mono 12px/400 #ECEDEF]
+                  <#t | >
+                    "assert"  [Geist Mono 12px/400 #7CB8FF]
+                  <#t | >
+                    "spy.called"  [Geist Mono 12px/400 #ECEDEF]
+          <#Card | w440px | h213px | gap12px | pad16px 0px 0px 0px | column>
+              "Which test is the only one?"  [Azeret Mono 24px/700 #ECEDEF]
+              "Subtract what the other tests also kill. `test_quote_gold` kills 5 but none uniquely: `test_tier_rate` and `test_coupon_never_goes_negative` already catch all five. It is fully shadowed."  [Geist 15px/400 #ECEDEF]
+            <#Heuristic | w100% | hfit-content | gap10px | pad10px 12px | row>
+                "rule"  [Geist Mono 11px/400 #FF6A1A]
+                "unique 0 → merge or delete, unless it guards a seam at a higher level. The report names the shadow."  [Geist Mono 12px/400 #ECEDEF]
+        <#Statusbar | w1312px | h25.5px | gap0px | pad10px 0px 0px 0px | row>
+            "● tests · which test is the only one?"  [Geist Mono 12px/400 #8B8F99]
+            "exit 3"  [Geist Mono 12px/400 #FF4D4D]
+      <#M5 · Parity and determinism | bg#0B0C0E | w1440px | h720px | gap32px | pad64px | column>
+          "§05 · why you can check any of this by hand"  [Geist Mono 13px/400 #FF6A1A]
+          "Same tree in, same number out."  [Azeret Mono 52px/700 #ECEDEF]
+        <#Numbers | w100% | hfit-content | gap0px | row>
+          <#harness cases byte-identical to the originals | w261.9px | h128px | gap6px | pad20px 18px | column>
+              "36/36"  [Azeret Mono 40px/700 #FF6A1A]
+              "harness cases byte-identical to the originals"  [Geist Mono 12px/400 #8B8F99]
+          <#of the Go stdlib parses to the same tree | w261.9px | h128px | gap6px | pad20px 18px | column>
+              "99.3 %"  [Azeret Mono 40px/700 #ECEDEF]
+              "of the Go stdlib parses to the same tree"  [Geist Mono 12px/400 #8B8F99]
+          <#of the JDK sources, 15,759 files | w261.9px | h128px | gap6px | pad20px 18px | column>
+              "100 %"  [Azeret Mono 40px/700 #ECEDEF]
+              "of the JDK sources, 15,759 files"  [Geist Mono 12px/400 #8B8F99]
+          <#of ~/.cargo, 10,216 crates | w261.9px | h112px | gap6px | pad20px 18px | column>
+              "99.5 %"  [Azeret Mono 40px/700 #ECEDEF]
+              "of ~/.cargo, 10,216 crates"  [Geist Mono 12px/400 #8B8F99]
+          <#of a production TS monorepo, 12,167 files | hfit-content | gap6px | pad20px 18px | column>
+              "100 %"  [Azeret Mono 40px/700 #ECEDEF]
+              "of a production TS monorepo, 12,167 files"  [Geist Mono 12px/400 #8B8F99]
+        <#Determinism | w100% | hfit-content | gap24px | row>
+          <#no clock | w310px | h74px | gap6px | pad12px 0px 0px 0px | column>
+              "no clock"  [Geist Mono 13px/700 #ECEDEF]
+              "timestamps only in :tested-at, never in a score or an order"  [Geist Mono 13px/400 #8B8F99]
+          <#no locale | w310px | h54px | gap6px | pad12px 0px 0px 0px | column>
+              "no locale"  [Geist Mono 13px/700 #ECEDEF]
+              "sorting by code point, not collation"  [Geist Mono 13px/400 #8B8F99]
+          <#no randomness | w310px | h54px | gap6px | pad12px 0px 0px 0px | column>
+              "no randomness"  [Geist Mono 13px/700 #ECEDEF]
+              "no sampling of pairs, mutants or files"  [Geist Mono 13px/400 #8B8F99]
+          <#no model | w310px | h74px | gap6px | pad12px 0px 0px 0px | column>
+              "no model"  [Geist Mono 13px/700 #ECEDEF]
+              "nothing reads the PR description, the commit message or the transcript"  [Geist Mono 13px/400 #8B8F99]
+        <#CTA | bg#131417 | w100% | hfit-content | gap0px | pad18px 24px | row>
+          <#Left | wfit-content | hfit-content | gap4px | column>
+              "Run it on your repo and check a number by hand."  [Azeret Mono 22px/700 #ECEDEF]
+              "$ npx skills add coderefinery · fixtures, harness and benchmarks are in the repo"  [Geist Mono 13px/400 #8B8F99]
+          <#Button | bg#FF6A1A | wfit-content | hfit-content | gap0px | pad14px 22px | row>
+              "read the specs →"  [Geist Mono 14px/700 #0B0C0E]

@@ -1,0 +1,37 @@
+{
+  "_comment": "Every number that rolls on the page lives here (motion-spec §11). Copy is verbatim from designs/reference/page-reference.html.",
+  "hero": {
+    "stats": [
+      { "value": "+441 %", "label": "longer in review", "source": "Faros · 2026", "molten": false },
+      { "value": "31 %", "label": "of PRs merged unreviewed", "source": "Faros · 2026", "molten": false },
+      { "value": "80 %", "label": "of agent tests assert nothing that matters", "source": "arXiv 2606.18168", "molten": true },
+      { "value": "3–120×", "label": "faster than the originals", "source": "12 repos · docs/benchmarks", "molten": false }
+    ]
+  },
+  "pains": {
+    "review": "+98 %",
+    "trust": "66 %",
+    "ci": "18×"
+  },
+  "tests": {
+    "stats": ["80 %", "73 %", "357"],
+    "table": [
+      { "test": "test_tier_rate[gold]", "kills": 4, "unique": 2, "delete": false },
+      { "test": "test_coupon_never_goes_negative", "kills": 1, "unique": 1, "delete": false },
+      { "test": "test_price_returns_a_number", "kills": 0, "unique": 0, "delete": true },
+      { "test": "test_settle_called", "kills": 0, "unique": 0, "delete": true }
+    ]
+  },
+  "dive": {
+    "crap": { "before": 50.5, "cov": 20.0, "cc": 9, "after": [["pricing.py:price", 3, 100.0, 3], ["pricing.py:_item_cost", 3, 100.0, 3], ["pricing.py:_apply_tier", 1, 100.0, 1]] },
+    "dry": { "score": 0.91 },
+    "mutate": { "sites": 12, "killed": 10, "survived": 2, "killedAfter": 12, "survivedAfter": 0 },
+    "tests": { "score": 0.93, "rows": [["test_tier_rate[gold]", 4, 2], ["test_coupon_never_goes_negative", 1, 1], ["test_price_returns_a_number", 0, 0], ["test_settle_called", 0, 0]] }
+  },
+  "numbers": [
+    { "value": "3.8×", "label": "crap, 12 repos", "molten": false },
+    { "value": "120×", "label": "dry on django", "molten": true },
+    { "value": "5.0×", "label": "mutate --scan", "molten": false },
+    { "value": "36/36", "label": "cases byte-identical", "molten": false }
+  ]
+}

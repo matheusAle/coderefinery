@@ -1,0 +1,261 @@
+/* ---------- A0 hero ---------- */
+.a-hero {
+  padding-top: calc(40px * var(--u));
+  height: 100vh;
+}
+.a-hero-head {
+  display: flex;
+  flex-direction: column;
+  gap: calc(32px * var(--u));
+  margin-top: calc(90px * var(--u));
+}
+.a-hero .h2 {
+  max-width: 1240px;
+}
+.a-two {
+  display: grid;
+  grid-template-columns: 1fr 520px;
+  gap: calc(48px * var(--u));
+  align-items: start;
+}
+.a-lede {
+  font-size: calc(18px * var(--ut));
+  line-height: calc(26px * var(--ut));
+  color: var(--chalk);
+}
+.a-props {
+  display: flex;
+  flex-direction: column;
+}
+.a-prop {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: calc(12px * var(--u));
+  padding: var(--cell-v) var(--cell-h);
+  border-bottom: 1px solid var(--seam);
+  font-size: calc(13px * var(--ut));
+  line-height: calc(20px * var(--ut));
+}
+.a-prop:last-child {
+  border-bottom: 0;
+}
+
+/* ---------- A1 loop ---------- */
+.loop {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.loop-step {
+  flex: 1;
+  background: var(--slab);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-title);
+  padding: var(--pad-tile);
+  font-size: calc(13px * var(--ut));
+  line-height: calc(20px * var(--ut));
+  --seam-color: var(--seam);
+}
+/* seams draw left to right, 80 ms apart; the arrow draws after the box to its left */
+.loop-step > svg.seam rect {
+  transition-delay: calc(var(--i) * 80ms) !important;
+}
+.loop-step.tone-molten {
+  --seam-color: var(--molten);
+}
+.loop-step.tone-ember {
+  --seam-color: var(--ember);
+}
+.loop-step.tone-ingot {
+  --seam-color: var(--ingot);
+}
+.loop-arrow {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  color: var(--ash);
+}
+.loop-arrow path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.loop.go .loop-arrow path {
+  transition: stroke-dashoffset 220ms linear;
+  transition-delay: calc(var(--i) * 80ms + 160ms);
+  stroke-dashoffset: 0;
+}
+/* ---------- A2 verdicts ---------- */
+.vtable {
+  display: flex;
+  flex-direction: column;
+}
+.vrow {
+  display: grid;
+  grid-template-columns: 199.5fr 555.5fr 555.5fr;
+  border-bottom: 1px solid var(--seam);
+}
+.vrow:last-child {
+  border-bottom: 0;
+}
+.vrow > span {
+  padding: var(--cell-v) var(--cell-h);
+  font-size: calc(12px * var(--ut));
+  line-height: calc(20px * var(--ut));
+  border-right: 1px solid var(--seam);
+}
+.vrow > span:last-child {
+  border-right: 0;
+}
+.vhead > span {
+  font-size: calc(12px * var(--ut));
+}
+.vsees {
+  display: flex;
+  flex-direction: column;
+  white-space: pre-wrap;
+}
+.vdoes {
+  font-family: var(--font-body);
+  font-size: calc(13px * var(--ut));
+}
+
+/* ---------- A3 reliable tests ---------- */
+.a-lede-wide {
+  font-size: calc(17px * var(--u));
+  line-height: 1.45;
+}
+.a-two-tables {
+  display: grid;
+  grid-template-columns: 1fr 520px;
+  gap: calc(32px * var(--u));
+  align-items: start;
+}
+.mtable,
+.rtable {
+  display: flex;
+  flex-direction: column;
+}
+.mtable .pane-bar,
+.rtable .pane-bar {
+  padding: calc(14px * var(--uf)) var(--pad-card);
+}
+.mrow,
+.rrow {
+  position: relative;
+  border-bottom: 1px solid var(--seam);
+  padding: var(--cell-v) var(--cell-h);
+  font-size: calc(13px * var(--ut));
+  line-height: calc(20px * var(--ut));
+  cursor: default;
+}
+.mrow:last-child,
+.rrow:last-child {
+  border-bottom: 0;
+}
+.mrow {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: calc(12px * var(--u));
+}
+.rrow {
+  /* the rule's name (main) beside its muted evidence (support), a support gap apart (§0c): side by side, so the
+     16 px floor does not stack seven rows past the card */
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  column-gap: var(--gap-support);
+  align-items: baseline;
+  font-family: var(--font-body);
+}
+.rrow .mono {
+  font-size: calc(12px * var(--ut));
+}
+/* hover: a 1 px molten seam on the row and its pair (colour only, no lift) */
+.mrow::after,
+.rrow::after {
+  content: "";
+  position: absolute;
+  inset: -1px 0 -1px 0;
+  border: 1px solid transparent;
+  pointer-events: none;
+}
+.mrow.lit::after,
+.rrow.lit::after {
+  border-color: var(--molten);
+}
+.mrow:focus-visible,
+.rrow:focus-visible {
+  outline: none;
+}
+
+/* ---------- A4 same everywhere ---------- */
+.a-cells {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap-sib);
+}
+.a-cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-title);
+  padding: var(--pad-card);
+  font-size: calc(13px * var(--ut));
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 180ms var(--ease-out);
+  transition-delay: calc(var(--i) * 60ms);
+}
+.a-cell.open,
+.rm .a-cell {
+  clip-path: inset(-2px);
+}
+.a-cell-p {
+  font-size: calc(14px * var(--ut));
+  line-height: calc(20px * var(--ut));
+}
+.a-install {
+  font-size: calc(14px * var(--ut));
+}
+.a-install-s {
+  font-size: calc(12px * var(--ut));
+}
+
+@media (max-width: 1023px) {
+  .a-hero-head {
+    margin-top: calc(48px * var(--u));
+  }
+  .a-two,
+  .a-two-tables,
+  .a-cells {
+    grid-template-columns: 1fr;
+  }
+  .loop {
+    flex-direction: column;
+  }
+  .loop-arrow {
+    justify-content: center;
+    padding: 6px 0;
+  }
+  .loop-arrow svg {
+    transform: rotate(90deg);
+  }
+  .vrow {
+    grid-template-columns: 1fr;
+  }
+  .vrow > span {
+    border-right: 0;
+  }
+  .a-prop,
+  .mrow {
+    grid-template-columns: 1fr;
+    gap: calc(4px * var(--u));
+  }
+}
+@media (max-width: 1023px) {
+  .rrow {
+    grid-template-columns: 1fr;
+    row-gap: var(--gap-support);
+  }
+}

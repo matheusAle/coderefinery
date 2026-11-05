@@ -19,3 +19,5 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .DS_Store
+# QA screenshot dumps from the site review rounds (hundreds of PNGs)
+/designs/reviews/qa-shots/

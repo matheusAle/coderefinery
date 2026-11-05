@@ -1,0 +1,29 @@
+ <#M · the math (teaser → /math) | bg#0B0C0E | w1440px | h620px | gap36px | pad64px | column>
+  <#Head | w100% | hfit-content | gap10px | column>
+    "§07 · the math"  [Geist Mono 13px/400 #FF6A1A]
+    "Three numbers. Three rules. No opinions."  [Azeret Mono 44px/700 #ECEDEF]
+    "Every verdict is a formula you can check by hand. What each gate counts, where its threshold comes from, and what the number implies."  [Geist 17px/400 #8B8F99]
+  <#Formulas | w100% | hfit-content | row>
+   <#CRAP = CC² × (1 − cov)³ + CC | w327.5px | h133px | gap8px | pad18px | column>
+     "CRAP = CC² × (1 − cov)³ + CC"  [Azeret Mono 19px/700 #ECEDEF]
+     "complexity your tests never walk"  [Geist Mono 13px/400 #8B8F99]
+     "≥ 10 fails · exit 2"  [Geist Mono 12px/400 #FF6A1A]
+   <#score = |A ∩ B| / |A ∪ B| | w327.5px | h133px | gap8px | pad18px | column>
+     "score = |A ∩ B| / |A ∪ B|"  [Azeret Mono 19px/700 #ECEDEF]
+     "structural similarity, names erased"  [Geist Mono 13px/400 #8B8F99]
+     "≥ 0.8 fails · in the report"  [Geist Mono 12px/400 #FF6A1A]
+   <#killed / (killed + survived) | w327.5px | h133px | gap8px | pad18px | column>
+     "killed / (killed + survived)"  [Azeret Mono 19px/700 #ECEDEF]
+     "mutants your tests noticed"  [Geist Mono 13px/400 #8B8F99]
+     "1 survivor fails · exit 3"  [Geist Mono 12px/400 #FF6A1A]
+   <#unique kills per test | hfit-content | gap8px | pad18px | column>
+     "unique kills per test"  [Azeret Mono 19px/700 #ECEDEF]
+     "what each test alone catches"  [Geist Mono 13px/400 #8B8F99]
+     "0 unique fails · exit 3 · preview"  [Geist Mono 12px/400 #FF6A1A]
+  <#CTA | bg#131417 | w100% | hfit-content | pad16px 24px | row>
+    "The full math: decisions per language, the curve, every exit code."  [Azeret Mono 20px/700 #ECEDEF]
+   <#Button | bg#FF6A1A | wfit-content | hfit-content | pad12px 20px | row>
+     "read the math →"  [Geist Mono 14px/700 #0B0C0E]
+  <#Footer | w1312px | h30.5px | pad14px 0px 0px 0px | row>
+    "formulas and thresholds as implemented · byte-identical to crapper, dryer and mutator"  [Geist Mono 13px/400 #8B8F99]
+    "exit 0"  [Geist Mono 13px/400 #3DDC84]

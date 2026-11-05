@@ -1,0 +1,822 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  /* breathing room on surfaces (§0c): floors at 1440 × 900, scaled down to 1280 × 720 but never below 80 % */
+  --uf: max(var(--u, 1), 0.8);
+  --pad-card: calc(28px * var(--uf));
+  --pad-tile: calc(24px * var(--uf));
+  /* half a pixel of headroom: measured text-box to text-box gaps land at or above the floor, not 0.5 px under */
+  --gap-title: calc(12.5px * var(--uf));
+  --gap-row: calc(10px * var(--uf));
+  --gap-support: calc(16.5px * var(--uf));
+  --cell-v: calc(14px * var(--uf));
+  --cell-h: calc(18px * var(--uf));
+  --gap-sib: calc(24px * var(--uf));
+  --gap-fig: calc(8px * var(--uf));
+  /* viewport scale: set by JS as a clamp of (100vh / 900px, 100vw / 1440px) into [0.72, 1] */
+  --u: 1;
+  /* text scale: a softer clamp of --u so body copy never drops below 85 % */
+  --ut: 1;
+}
+
+html {
+  background: var(--coke);
+  color: var(--chalk);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--coke);
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:focus-visible {
+  color: var(--molten);
+}
+@media (hover: hover) {
+  a:hover {
+    color: var(--molten);
+  }
+}
+:focus-visible {
+  outline: 1px solid var(--molten);
+  outline-offset: 2px;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+figure,
+blockquote {
+  margin: 0;
+}
+ul {
+  padding: 0;
+  list-style: none;
+}
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+.display {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+.ash {
+  color: var(--ash);
+}
+.chalk {
+  color: var(--chalk);
+}
+.molten {
+  color: var(--molten);
+}
+.ember {
+  color: var(--ember);
+}
+.ingot {
+  color: var(--ingot);
+}
+.slag {
+  color: var(--slag);
+}
+.sr-only,
+.odo-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- discreet slag field behind every unpinned section ---------- */
+.gl-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.gl-field canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+main {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- section geometry (§0c): 100 vh, clipped, mounted on entrance ---------- */
+/* every unpinned section has a 150 vh runway with its 100 vh card sticky inside (§0c); the hero has none */
+.hold {
+  position: relative;
+  height: 150vh;
+}
+.hold.no-hold {
+  height: 100vh;
+}
+.hold-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+:is(.hold, .hold-sticky) > .sec-sticky {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+.section {
+  position: relative;
+  width: 100%;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: calc(40px * var(--u) * var(--u)) var(--page-pad);
+  display: flex;
+  flex-direction: column;
+  gap: calc(30px * var(--u) * var(--u));
+  background: transparent;
+}
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--molten);
+}
+.h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: calc(56px * var(--u));
+  line-height: 1.25;
+  letter-spacing: -0.036em;
+  color: var(--chalk);
+}
+.lede {
+  font-family: var(--font-body);
+  font-size: calc(18px * clamp(0.9, var(--u), 1));
+  line-height: 1.45;
+  color: var(--ash);
+}
+
+/* ---------- typed titles (§0b) ---------- */
+.typed-title .ch {
+  color: transparent;
+  position: relative;
+}
+.typed-title .ch.on {
+  color: inherit;
+}
+.typed-title .ch.cur::after {
+  content: "";
+  position: absolute;
+  left: 100%;
+  top: 0.12em;
+  width: 0.55em;
+  height: 0.85em;
+  background: var(--molten);
+  animation: blink 1s steps(1) infinite;
+}
+
+/* ---------- revealed blocks (§0b "inner text"): expand from zero height, top-down clip, 8 px rise ---------- */
+.mounted .rv {
+  --r: 0;
+  max-height: calc(var(--r) * var(--nh, 2000px));
+  overflow: hidden;
+  transform: translateY(calc((1 - var(--r)) * 8px));
+  /* nothing of a collapsed block shows before its slot (its padding and seam included), §0c */
+  opacity: clamp(0, var(--r) * 5, 1);
+}
+.measuring .rv,
+.rv.open {
+  max-height: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+}
+.no-hold .rv,
+.rm .rv {
+  max-height: none;
+  transform: none;
+  opacity: 1;
+}
+/* faded (labels, captions, sources, status bars) */
+.mounted .fd {
+  opacity: var(--f, 0);
+}
+.no-hold .fd,
+.rm .fd {
+  opacity: 1;
+}
+
+/* ---------- status bar / footer (tier: faded) ---------- */
+.statusbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+  border-top: 1px solid var(--seam);
+  padding-top: calc(12px * var(--u));
+  font-family: var(--font-mono);
+  font-size: 13px;
+  /* one fixed line box, so the divider sits at the same height on every card whatever the line holds (D18) */
+  line-height: 18px;
+  align-items: center;
+  color: var(--ash);
+}
+.statusbar .dot::before {
+  content: "●";
+  color: var(--ash);
+  margin-right: 8px;
+  font-size: 11px;
+}
+.statusbar a {
+  text-decoration: underline;
+  text-decoration-color: var(--seam);
+  text-underline-offset: 3px;
+}
+.exit {
+  position: relative;
+  white-space: nowrap;
+}
+.exit.ingot {
+  color: var(--ingot);
+}
+.exit.slag {
+  color: var(--slag);
+}
+.exit::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 2px;
+  width: 100%;
+  background: var(--molten);
+  transform: scaleX(var(--underline, 0));
+  transform-origin: left;
+}
+
+/* ---------- legacy tier-2 class: now a no-op inside revealed blocks ---------- */
+.t2 {
+  opacity: 1;
+}
+
+/* ---------- seams draw first (§14.1) ---------- */
+.box {
+  position: relative;
+  border: 1px solid transparent;
+}
+.box > svg.seam {
+  position: absolute;
+  inset: -1px;
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  pointer-events: none;
+  overflow: visible;
+}
+.box > svg.seam rect {
+  fill: none;
+  stroke: var(--seam-color, var(--seam));
+  stroke-width: 1;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  vector-effect: non-scaling-stroke;
+}
+.box.drawn > svg.seam rect {
+  transition: stroke-dashoffset 220ms linear;
+  stroke-dashoffset: 0;
+}
+.box.drawn.nested > svg.seam rect {
+  transition-delay: 80ms;
+}
+.box.molten-seam {
+  --seam-color: var(--molten);
+}
+/* boxes that clip their own overflow (revealed blocks, the explainer rule callout) draw the seam inside their
+   border box, or the clip would cut it (D20) */
+.rv.box > svg.seam,
+.ex-rule.box > svg.seam {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.rv.box > svg.seam rect,
+.ex-rule.box > svg.seam rect {
+  width: calc(100% - 1px);
+  height: calc(100% - 1px);
+}
+
+/* ---------- odometer: strips are pseudo-element presentation, the number is real text ---------- */
+.odo {
+  position: relative;
+  display: inline-flex;
+  white-space: pre;
+  line-height: 1;
+  vertical-align: baseline;
+}
+.odo-v {
+  display: inline-flex;
+}
+.odo .g::before {
+  content: attr(data-g);
+}
+.odo .d {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  position: relative;
+  width: 0.62em;
+}
+.odo .d::before {
+  content: "0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A 0";
+  white-space: pre;
+  display: block;
+  line-height: 1;
+  text-align: center;
+  transform: translateY(calc(var(--v, 0) * -1em));
+  will-change: transform;
+}
+
+/* ---------- typed command cursor ---------- */
+.cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  background: var(--molten);
+  vertical-align: text-bottom;
+  margin-left: 2px;
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+.typed {
+  white-space: pre-wrap;
+}
+.typed-rest {
+  display: none;
+}
+@media (max-width: 1023px) {
+  .typed-rest {
+    display: inline;
+    visibility: hidden;
+  }
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .box.drawn > svg.seam rect {
+    transition: none !important;
+  }
+  .cursor,
+  .typed-title .ch.cur::after {
+    animation: none;
+  }
+  .typed-title .ch {
+    color: inherit;
+  }
+  .rv {
+    max-height: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  .fd {
+    opacity: 1 !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .hold,
+  .hold.no-hold {
+    height: auto;
+  }
+  .hold-sticky {
+    position: relative;
+    height: auto;
+    overflow: visible;
+  }
+  :is(.hold, .hold-sticky) > .sec-sticky {
+    position: relative;
+    height: auto;
+    overflow: hidden;
+  }
+}
+
+/* ---------- deck stacking (§0c): cards stick and the next one slides over ---------- */
+.deck > .card {
+  position: sticky;
+  /* top is min(0, 100vh − height), set by deck.ts */
+  z-index: 0;
+  isolation: isolate;
+  overflow: clip;
+  background: var(--coke);
+}
+.deck > .card.card-last {
+  position: relative;
+}
+/* the incoming card's 1 px seam along its top edge; no shadow, no rounding */
+.deck > .card + .card::before,
+.deck > footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  /* molten at 60 % as the card starts to arrive, cooling to the seam colour by e = 0.60 (--seam-glow from deck.ts) */
+  background: color-mix(in srgb, var(--molten) calc(var(--seam-glow, 0) * 60%), var(--seam));
+  z-index: 60;
+  pointer-events: none;
+}
+.deck > footer {
+  position: relative;
+  z-index: 0;
+  background: var(--coke);
+}
+.card-face {
+  transform-origin: 50% 0;
+}
+/* 70 % brightness while covered: a black overlay at up to 30 % */
+.deck-dim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100vh;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 50;
+}
+.deck-dim:not([style*="opacity"]) {
+  display: none;
+}
+/* the discreet field inside the active card's face (clipped to it), and the frozen copy a covered card keeps */
+.gl-field.in-card,
+.gl-freeze {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: auto;
+  width: 100%;
+  height: 100vh;
+  z-index: auto;
+  pointer-events: none;
+}
+
+/* ---------- the deck on phones and tablets (§17.4): the same deck, compact geometry ----------
+   Cards are natural height, at least 100svh, sticky by the edge that fits (top = min(0, 100svh − card height), set
+   by deck.ts) inside a wrapper with a 50svh runway (an in-flow ::after; the hero: a margin) under them; the wrapper sticks by its bottom edge. The dive and the
+   math explainers are groups of state cards (`.deck-hold`), the group sticks by its bottom edge too. */
+main.deck-compact .deck-card {
+  position: sticky;
+  z-index: 0;
+  isolation: isolate;
+  overflow: clip;
+  background: var(--coke);
+}
+/* the runway is in flow (a sticky card can only travel inside its wrapper's content box, not its padding) */
+main.deck-compact .deck-card:not(.card-last):is(.hold:not(.no-hold), .deck-hold)::after {
+  content: "";
+  display: block;
+  height: 50svh;
+}
+/* the hero is its own face (its field and event stream live in it): its 50svh hold is a margin under it, so it stays
+   pinned by its bottom edge while the margin scrolls by below the viewport, then the next card arrives */
+main.deck-compact .deck-card.no-hold:not(.card-last) {
+  margin-bottom: 50svh;
+}
+main.deck-compact .deck-card.card-last {
+  position: relative;
+}
+main.deck-compact .deck-card > .card-face {
+  position: sticky;
+}
+main.deck-compact .deck-card.card-last > .card-face {
+  position: relative;
+}
+main.deck-compact .card-face,
+main.deck-compact .deck-card > .card-face,
+main.deck-compact .hold-sticky > .sec-sticky {
+  min-height: 100svh;
+}
+main.deck-compact .hold-sticky > .sec-sticky > .statusbar {
+  margin-top: auto;
+}
+main.deck-compact .deck-group {
+  position: sticky;
+  z-index: 0;
+  isolation: isolate;
+}
+main.deck-compact .deck-card.deck-seam::before,
+main.deck-compact > footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: color-mix(in srgb, var(--molten) calc(var(--seam-glow, 0) * 60%), var(--seam));
+  z-index: 60;
+  pointer-events: none;
+}
+main.deck-compact > footer {
+  position: relative;
+  z-index: 0;
+  background: var(--coke);
+}
+/* the dim covers the whole card: a tall card shows its top while it arrives and its bottom while it is covered */
+main.deck-compact .deck-dim {
+  top: 0;
+  height: auto;
+}
+/* the field is one small viewport tall: deck.ts moves it along a tall card; a covered card is pinned by its bottom
+   edge, so its frozen frame sits there */
+main.deck-compact .gl-field.in-card {
+  top: 0;
+  bottom: auto;
+  height: 100svh;
+}
+main.deck-compact .gl-freeze {
+  height: 100svh;
+}
+main.deck-compact :is(.deck-card, .deck-group)[data-hidden],
+main.deck-compact :is(.deck-card, .deck-group)[data-hidden] * {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+/* naturalTop (deck.ts): where an anchor lands, measured with the deck's offsets and transforms off */
+main.deck-measure :is(.card, .deck-card, .card-face, .deck-group) {
+  position: relative !important;
+  top: auto !important;
+  transform: none !important;
+}
+
+/* ---------- card layout, fixed rows (§0c): kicker top, content centred, status bar at the bottom edge ---------- */
+@media (min-width: 1024px) {
+  :is(.hold, .hold-sticky) > .section > :is(.numbers-head, .math-head, .a-hero-head, .m-hero-head) {
+    display: contents;
+  }
+  /* the headline opens the middle row; its top margin is the centring space, frozen by mount.ts with reveals open (--mid) */
+  :is(.hold, .hold-sticky) > .section > .h2,
+  :is(.hold, .hold-sticky) > .section > :is(.numbers-head, .math-head, .a-hero-head, .m-hero-head) > .h2,
+  .hold > .hero > .hero-cols {
+    margin-top: var(--mid, auto);
+  }
+  :is(.hold, .hold-sticky) > .section > .statusbar {
+    margin-top: auto;
+  }
+  :is(.hold, .hold-sticky) > .section > :last-child:not(.statusbar) {
+    margin-bottom: auto;
+  }
+  /* pinned cards: the head stays the top row, the panes / formula + diagram are centred below it */
+  .dive-sticky > .dive-stage > .dive-row {
+    margin-block: auto;
+  }
+  .ex-sticky > .ex-stage > .ex-formula {
+    margin-top: auto;
+  }
+  .ex-sticky > .ex-stage > .ex-row {
+    margin-bottom: auto;
+  }
+}
+
+/* ---------- pinned cards' status bars (§0c, D21): one line per state, cross-faded in place ---------- */
+.dive-st-stack,
+.ex-st-stack {
+  display: inline-grid;
+}
+.dive-st,
+.ex-st {
+  grid-area: 1 / 1;
+  opacity: var(--o, 0);
+  white-space: nowrap;
+}
+.dive-status,
+.ex-status {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+}
+/* the bottom row sits at the same place on every card (D18): every card's status bar ends 20 px above its bottom
+   edge (§0c breathing-room floor, scaled, never below 80 %) */
+.section,
+.hold > .hero,
+.dive-sticky > .dive-stage,
+.ex-sticky > .ex-stage {
+  padding-bottom: calc(20px * var(--uf));
+}
+.hero-status {
+  padding-top: calc(12px * var(--u));
+}
+/* every card's status bar is one fixed box (divider + one 18 px line), whatever its line holds (D18); under
+   1024 px status bars stack their two parts and flow */
+@media (min-width: 1024px) {
+  .hold .statusbar,
+  .dive-status,
+  .ex-status {
+    height: calc(12px * var(--u) + 19px);
+  }
+}
+@media (max-width: 1023px) {
+  .statusbar {
+    align-items: flex-start;
+  }
+}
+
+/* ---------- pinned cards' first-state mount during their entrance (§0c slots; vars set by pane.ts / explainer.ts) ---------- */
+:is(.dive-sticky, .dive.stacked) .dive-kicker,
+:is(.ex-sticky, .explainer.stacked) .ex-head {
+  opacity: var(--ent-k, 1);
+}
+:is(.dive-sticky, .dive.stacked) .dive-row,
+:is(.ex-sticky, .explainer.stacked) .ex-formula,
+:is(.ex-sticky, .explainer.stacked) .ex-code {
+  clip-path: inset(0 0 calc((1 - var(--ent-r, 1)) * 100%) 0);
+  opacity: clamp(0, var(--ent-r, 1) * 5, 1);
+}
+.ent-open .dive-row,
+.ent-open .ex-formula,
+.ent-open .ex-code {
+  clip-path: none;
+}
+:is(.dive-sticky, .dive.stacked) .dive-stage > .gauge {
+  opacity: var(--ent-c, 1);
+}
+:is(.dive-sticky, .dive.stacked) .dive-status,
+:is(.ex-sticky, .explainer.stacked) .ex-status {
+  opacity: var(--ent-s, 1);
+}
+/* the exit codes of the four dive states share one cell: right-aligned, so each ends at the card's right edge */
+.dive-st-stack > .dive-st.exit {
+  justify-self: end;
+}
+/* under 1024 px the pinned cards' status bars stay one row: the verdict ellipsizes, the exit code never wraps (R5) */
+@media (max-width: 1023px) {
+  .statusbar.dive-status,
+  .statusbar.ex-status {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  .dive-status > .dot,
+  .ex-status > .dot {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+  }
+  .dive-status > .dot > .dive-st-stack,
+  .ex-status > .dot > .ex-st-stack {
+    display: grid;
+    min-width: 0;
+  }
+  .dive-status .dive-st,
+  .ex-status .ex-st {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .dive-status > :last-child,
+  .ex-status > .exit {
+    flex: none;
+  }
+}
+
+/* ---------- inline code in prose (§0b: variables and computed values are code) ---------- */
+code.ic {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  color: var(--chalk);
+  background: color-mix(in srgb, var(--slab) 100%, var(--chalk) 6%);
+  padding: 0.05em 0.3em;
+  border-radius: 0;
+  white-space: nowrap;
+}
+
+/* ---------- syntax colours, the same six roles everywhere (§13.1) ---------- */
+.syn-kw {
+  color: var(--syn-kw);
+}
+.syn-str {
+  color: var(--syn-str);
+}
+.syn-num {
+  color: var(--syn-num);
+}
+.syn-fn {
+  color: var(--syn-fn);
+}
+.syn-cm {
+  color: var(--syn-cm);
+}
+.syn-dec {
+  color: var(--syn-dec);
+}
+
+/* ---------- text before its box (§0c, §14.1): inside a runway section the seams draw on scroll, scrubbed by
+   mount.ts (--bx), after the block's words; support text fades in after the container (--sup) ---------- */
+.hold-sticky .box > svg.seam rect {
+  stroke-dashoffset: calc(1 - var(--bx, 1));
+  transition: none !important;
+}
+.hold-sticky [data-support-on] {
+  filter: opacity(var(--sup, 1));
+}
+
+/* one type step down (§0c "breathing room": reduce the type scale before shrinking any padding); paddings and gaps
+   keep their floors because --uf is computed on the root */
+.type-step {
+  --u: calc(var(--u0, 1) * 0.9);
+  --ut: max(0.8, calc(var(--ut0, 1) * 0.9));
+}
+
+/* pinned first state, text before its box (§0c): surfaces and seams after the words (--ent-box), support after */
+:is(.dive-sticky, .dive.stacked) .term {
+  background-color: color-mix(in srgb, var(--furnace-slab) calc(var(--ent-box, 1) * 100%), transparent);
+  border-color: color-mix(in srgb, var(--heat-seam) calc(var(--ent-box, 1) * 100%), transparent);
+}
+:is(.dive-sticky, .dive.stacked) .ob,
+:is(.dive-sticky, .dive.stacked) .term .pane-bar {
+  border-color: color-mix(in srgb, var(--heat-seam) calc(var(--ent-box, 1) * 100%), transparent);
+}
+:is(.ex-sticky, .explainer.stacked) .ex-code {
+  background-color: color-mix(in srgb, var(--slab) calc(var(--ent-box, 1) * 100%), transparent);
+  border-color: color-mix(in srgb, var(--seam) calc(var(--ent-box, 1) * 100%), transparent);
+}
+:is(.ex-sticky, .explainer.stacked) .ex-code .pane-bar {
+  border-color: color-mix(in srgb, var(--seam) calc(var(--ent-box, 1) * 100%), transparent);
+}
+:is(.ex-sticky, .explainer.stacked) .ex-rule > svg.seam rect {
+  stroke-dashoffset: calc(1 - var(--ent-box, 1));
+  /* scrubbed, not on the 220 ms clock (the clock lagged the draw behind the label) */
+  transition: none !important;
+}
+:is(.dive-sticky, .dive.stacked) .term .pane-bar,
+:is(.dive-sticky, .dive.stacked) .ob-l,
+:is(.ex-sticky, .explainer.stacked) .ex-code .pane-bar,
+:is(.ex-sticky, .explainer.stacked) .cp-n {
+  filter: opacity(var(--ent-sup, 1));
+}
+
+/* pinned explainer first state: the card's molten rule and the visual's slab arrive with the boxes (--ent-box) */
+:is(.ex-sticky, .explainer.stacked) .ex-cards {
+  border-top-color: color-mix(in srgb, var(--molten) calc(var(--ent-box, 1) * 100%), transparent);
+}
+:is(.ex-sticky, .explainer.stacked) .ex-vis {
+  background-color: color-mix(in srgb, var(--slab) calc(var(--ent-box, 1) * 100%), transparent);
+  border-color: color-mix(in srgb, var(--seam) calc(var(--ent-box, 1) * 100%), transparent);
+}
+/* (the rule box's first child is its injected SVG seam, so the label is selected by class, not :first-child) */
+:is(.ex-sticky, .explainer.stacked) .ex-rule > span.mono,
+:is(.ex-sticky, .explainer.stacked) .ex-vis [data-support],
+:is(.ex-sticky, .explainer.stacked) .mk-l {
+  opacity: var(--ent-sup, 1);
+}
+
+/* a fully covered card renders nothing, whatever its descendants say about their own visibility */
+.deck > .card[data-hidden],
+.deck > .card[data-hidden] * {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* the last card: 100 vh minus the footer (its kicker stays on screen at max scroll, QA r6 D9) */
+.deck > .card-last > .hold-sticky,
+.deck > .card-last > .hold-sticky > .sec-sticky {
+  height: calc(100vh - var(--footer-h, 0px));
+}
+
+/* stacked dive state (phone): the hint box is a block of the card's entrance */
+.dive.stacked .hint-stack {
+  opacity: var(--ent-r, 1);
+}

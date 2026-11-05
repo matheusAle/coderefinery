@@ -1,0 +1,1132 @@
+/* ---------- shared pane / transcript (session, measure, hook) ---------- */
+.pane {
+  background: var(--slab);
+  --seam-color: var(--seam);
+  display: flex;
+  flex-direction: column;
+}
+.pane-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: calc(16px * var(--u));
+  padding: calc(14px * var(--uf)) var(--pad-card);
+  border-bottom: 1px solid var(--seam);
+  font-family: var(--font-mono);
+  font-size: calc(13px * var(--ut));
+  color: var(--chalk);
+}
+.transcript {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-row);
+  padding: var(--pad-card);
+  font-family: var(--font-mono);
+  font-size: calc(13px * var(--ut));
+}
+.transcript .agent {
+  padding: var(--cell-v) var(--cell-h);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-support);
+}
+.transcript .agent-k {
+  font-size: calc(11px * var(--ut));
+  color: var(--ash);
+}
+.transcript .agent p {
+  font-family: var(--font-body);
+  font-size: calc(14px * var(--ut));
+  line-height: calc(20px * var(--ut));
+}
+.transcript .cmd {
+  display: flex;
+  gap: calc(8px * var(--u));
+}
+.transcript .tool {
+  background: var(--coke);
+  padding: var(--cell-v) var(--cell-h);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-support);
+  --seam-color: var(--seam);
+}
+.transcript .tool-b {
+  display: flex;
+  flex-direction: column;
+  font-size: calc(12px * var(--ut));
+  line-height: calc(19px * var(--ut));
+  color: var(--ash);
+}
+.transcript .verdict {
+  line-height: calc(21px * var(--ut));
+}
+/* session steps and scrubbed lines: hidden until their moment */
+.step,
+.sline,
+.setup [data-typer] {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 120ms var(--ease-out),
+    transform 120ms var(--ease-out);
+}
+.step.in,
+.sline.in,
+.setup [data-typer].in {
+  opacity: 1;
+  transform: none;
+}
+.prompt {
+  color: var(--molten);
+}
+
+/* ---------- slag-field host: the full-width wrapper, behind the sticky section ---------- */
+.hold > .gl-host {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.gl-host canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+:is(.hold, .hold-sticky) > .sec-sticky {
+  z-index: 1;
+}
+
+/* ---------- P0 hero ---------- */
+.hero {
+  height: 100vh;
+  padding: calc(40px * var(--u)) var(--page-pad) calc(28px * var(--u));
+  gap: 0;
+  overflow: hidden;
+}
+.hero > .topbar,
+.hero > .hero-cols,
+.hero > .hero-status {
+  position: relative;
+  z-index: 2;
+}
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -1px;
+}
+.wordmark:focus-visible {
+  color: var(--chalk);
+}
+@media (hover: hover) {
+  .wordmark:hover {
+    color: var(--chalk);
+  }
+}
+.wm-refinery {
+  color: var(--molten);
+}
+.wm-cursor {
+  display: inline-block;
+  width: 9px;
+  height: 17px;
+  background: var(--molten);
+  animation: blink 1s steps(1) infinite;
+}
+.nav {
+  display: flex;
+  gap: 28px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ash);
+}
+.nav .active {
+  color: var(--molten);
+}
+.hero-cols {
+  display: grid;
+  grid-template-columns: 1fr calc(520px * var(--u));
+  gap: 64px;
+  align-items: start;
+  margin-top: calc(96px * var(--u) * var(--u));
+}
+.pitch {
+  display: flex;
+  flex-direction: column;
+  gap: calc(26px * var(--u));
+}
+.hero-h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: calc(76px * var(--u));
+  line-height: 1.25;
+  letter-spacing: -0.046em;
+  display: flex;
+  flex-direction: column;
+  gap: calc(26px * var(--u));
+}
+.hero-prove {
+  color: var(--molten);
+  opacity: 0;
+  transform: translateY(8px);
+  animation: land 240ms var(--ease-out) 200ms forwards;
+}
+@keyframes land {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.hero-lede {
+  font-size: calc(19px * var(--ut));
+  line-height: 1.47;
+}
+.install {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: var(--cell-v) var(--cell-h);
+  width: fit-content;
+  font-family: var(--font-mono);
+  /* opaque: the install box sits above the stream and keeps pointer priority */
+  background: var(--coke);
+}
+.install .prompt {
+  font-size: 13px;
+}
+.install-cmd {
+  font-family: var(--font-mono);
+  font-size: 15px;
+}
+.hero-foot {
+  font-size: 13px;
+}
+/* the four big numbers, 2 × 2, translucent coke with seams */
+.bignums-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #0b0c0ecc;
+  --seam-color: var(--seam);
+}
+.bn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-fig);
+  padding: calc(26px * var(--uf)) var(--pad-tile);
+  border-right: 1px solid var(--seam);
+  border-bottom: 1px solid var(--seam);
+}
+.bn:nth-child(2n of .bn) {
+  border-right: 0;
+}
+.bn:nth-child(n + 3 of .bn) {
+  border-bottom: 0;
+}
+.bn-v {
+  font-size: calc(52px * var(--u));
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.bn-l {
+  font-size: 13px;
+  line-height: 18px;
+}
+.bn-s {
+  font-size: 11px;
+}
+.hero-status {
+  margin-top: auto;
+}
+/* ---------- event stream: pills rising from the bottom edge, behind the text, above the field ---------- */
+.stream {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  /* full stream opacity (50 %) is applied per element so a hovered event can lift to 1 */
+  pointer-events: none;
+  contain: strict;
+}
+.stream-pipes {
+  position: absolute;
+  inset: 0;
+}
+.stream-pipe {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: var(--seam);
+  will-change: transform;
+}
+.ev {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 26px;
+  padding: 4px 10px;
+  background: var(--coke);
+  border: 1px solid var(--seam);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  white-space: nowrap;
+  color: var(--chalk);
+  will-change: transform, opacity;
+}
+.ev-pr {
+  font-size: 10px;
+  color: var(--ash);
+}
+.ev-ingot {
+  border-color: var(--ingot);
+}
+.ev-ingot .ev-g {
+  color: var(--ingot);
+}
+.ev-ember {
+  border-color: var(--ember);
+}
+.ev-ember .ev-g {
+  color: var(--ember);
+}
+.ev-slag {
+  border-color: var(--slag);
+}
+.ev-slag .ev-g {
+  color: var(--slag);
+}
+.ev-seam .ev-g,
+.ev-seam .ev-m {
+  color: var(--ash);
+}
+.ev-ash .ev-g,
+.ev-ash .ev-m {
+  color: var(--ash);
+}
+/* a failing event blinks twice on spawn (120 ms each) and carries a soft slag halo for 2 s */
+.ev.fail {
+  animation:
+    ev-blink 120ms steps(2, start) 2,
+    ev-halo 2s linear 1;
+}
+@keyframes ev-blink {
+  to {
+    visibility: hidden;
+  }
+}
+@keyframes ev-halo {
+  0%,
+  70% {
+    box-shadow: 0 0 10px 0 #ff4d4d44;
+  }
+  100% {
+    box-shadow: 0 0 10px 0 transparent;
+  }
+}
+/* depth layers (parallax): scaled about the top-left so the JS hit test stays arithmetic; near above mid above far */
+.ev,
+.spark {
+  transform-origin: 0 0;
+}
+.ev-l2 {
+  z-index: 0;
+}
+.ev-l1 {
+  z-index: 1;
+}
+.ev-l0 {
+  z-index: 2;
+}
+/* hover (pointer only, hit-tested in JS): paused, full opacity, molten seam, one-line detail beneath; a failure stops blinking */
+.ev.hov {
+  z-index: 3;
+  border-color: var(--molten);
+  animation: none;
+}
+.ev-d {
+  position: absolute;
+  left: -1px;
+  top: calc(100% + 4px);
+  display: none;
+  padding: 3px 10px;
+  background: var(--coke);
+  border: 1px solid var(--seam);
+  font-size: 10px;
+  line-height: 14px;
+  color: var(--chalk);
+  white-space: nowrap;
+}
+.ev.hov .ev-d {
+  display: block;
+}
+.ev-slag .ev-d {
+  border-color: var(--slag);
+}
+.spark {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: var(--molten);
+  will-change: transform, opacity;
+}
+.stream-cmd {
+  position: absolute;
+  left: var(--page-pad);
+  right: var(--page-pad);
+  bottom: calc(44px * var(--u) + 6px);
+  font-size: 10px;
+  color: var(--seam);
+  opacity: 0.5;
+  white-space: nowrap;
+  overflow: hidden;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-prove {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .ev.fail {
+    animation: none;
+  }
+}
+
+/* ---------- P1 pains ---------- */
+.pain-cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: max(var(--gap-sib), calc(32px * var(--u)));
+}
+.pain-col {
+  border-top: 1px solid var(--seam);
+  padding-top: calc(16px * var(--u));
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-title);
+}
+.pain-k {
+  font-size: calc(13px * var(--ut));
+  font-weight: 500;
+}
+.pain-stat {
+  font-size: calc(48px * var(--u));
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.pain-sub {
+  font-size: calc(13px * var(--ut));
+}
+.quote {
+  border-left: 2px solid var(--seam);
+  padding-left: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-support);
+}
+.quote p {
+  font-size: calc(15px * var(--ut));
+  line-height: calc(22px * var(--ut));
+}
+.quote.big p {
+  font-size: calc(17px * var(--ut));
+  line-height: calc(25px * var(--ut));
+}
+.quote cite {
+  font-style: normal;
+  font-size: calc(11px * var(--ut));
+}
+.pain-bullets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-row);
+  font-size: calc(13px * var(--ut));
+  line-height: calc(20px * var(--ut));
+}
+
+/* ---------- P3 gates beat reasoning ---------- */
+.vs3 {
+  display: flex;
+  flex-direction: column;
+}
+.vs3-row {
+  display: grid;
+  grid-template-columns: 219.5fr 545.5fr 545.5fr;
+  border-bottom: 1px solid var(--seam);
+}
+.vs3-row:last-child {
+  border-bottom: 0;
+}
+.vs3-row > span {
+  padding: var(--cell-v) var(--cell-h);
+  font-size: calc(13px * var(--ut));
+  line-height: calc(20px * var(--ut));
+  border-right: 1px solid var(--seam);
+}
+.vs3-row > span:last-child {
+  border-right: 0;
+}
+/* the two "what the agent learns" panes (shared with /agents A1) */
+.a-two-panes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: max(var(--gap-sib), calc(32px * var(--u)));
+  align-items: start;
+}
+.a-pane .pane-bar {
+  padding: calc(14px * var(--uf)) var(--pad-card);
+}
+.a-lines {
+  display: flex;
+  flex-direction: column;
+  padding: calc(14px * var(--uf)) 0;
+}
+.a-line {
+  display: flex;
+  gap: calc(8px * var(--u));
+  align-items: baseline;
+  padding: calc(4px * var(--u)) var(--pad-card);
+  font-size: calc(13px * var(--ut));
+  line-height: calc(20px * var(--ut));
+}
+.a-line.agent {
+  font-family: var(--font-body);
+}
+.a-line .agent-k {
+  font-size: calc(11px * var(--ut));
+  flex: 0 0 auto;
+  margin-right: 8px;
+}
+/* the only tier-1 motion on A1: the verdict lines land 200 ms after their pane */
+.a-line.land {
+  opacity: 0;
+  transition: opacity 160ms var(--ease-out) 200ms;
+}
+.t2.in .a-line.land,
+.rm .a-line.land {
+  opacity: 1;
+}
+
+
+/* ---------- P4 the tests ---------- */
+.tests-row {
+  display: grid;
+  /* the slab's text is sized by --ut, so its width follows --ut too (it would wrap taller at 1280 × 720 otherwise) */
+  grid-template-columns: 1fr calc(520px * var(--ut));
+  gap: calc(40px * var(--u));
+  align-items: start;
+}
+.evidence {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-support);
+}
+.tstats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.tstat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-fig);
+  padding: var(--pad-tile);
+  border-right: 1px solid var(--seam);
+}
+.tstat:last-child {
+  border-right: 0;
+}
+.tstat-v {
+  font-size: calc(36px * var(--u));
+  letter-spacing: -1.5px;
+  line-height: calc(36px * var(--ut));
+}
+.tstat-l {
+  font-size: calc(12px * var(--ut));
+  line-height: calc(17px * var(--ut));
+}
+.tstat-s {
+  font-size: calc(11px * var(--ut));
+}
+.patterns {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-title);
+}
+.patterns-h {
+  font-size: calc(13px * var(--ut));
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+.patterns ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-row);
+  font-size: calc(13px * var(--ut));
+  line-height: calc(21px * var(--ut));
+}
+.patterns li {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(24px * var(--u));
+}
+.measure-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-title);
+  padding: var(--pad-card);
+}
+.measure-q {
+  font-size: calc(22px * var(--u));
+  line-height: 1.25;
+  letter-spacing: -0.5px;
+}
+.measure-p {
+  font-size: calc(14px * var(--ut));
+  line-height: calc(20px * var(--ut));
+  color: var(--ash);
+}
+.m2t {
+  display: flex;
+  flex-direction: column;
+}
+.m2t-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: calc(12px * var(--u));
+  padding: var(--cell-v) var(--cell-h);
+  border-bottom: 1px solid var(--seam);
+  font-size: calc(12px * var(--ut));
+  line-height: calc(18px * var(--ut));
+}
+.m2t-row:last-child {
+  border-bottom: 0;
+}
+.measure-note {
+  font-size: calc(12px * var(--ut));
+}
+.measure-out {
+  margin: 0;
+  font-size: calc(12px * var(--ut));
+  line-height: calc(19px * var(--ut));
+  white-space: pre;
+  overflow-x: auto;
+}
+.measure-prev {
+  font-size: calc(11px * var(--ut));
+}
+
+/* ---------- P2 how it helps ---------- */
+.gate-cells {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.gate-cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-title);
+  padding: var(--pad-tile);
+  border-right: 1px solid var(--seam);
+  /* opens along its left seam: a clip that widens from the seam outward */
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 180ms var(--ease-out);
+  transition-delay: calc(var(--i) * 60ms);
+}
+.gate-cell.open {
+  clip-path: inset(0 0 0 0);
+}
+.gate-cell:last-child {
+  border-right: 0;
+}
+.gate-cmd {
+  font-size: calc(13px * var(--ut));
+  font-weight: 500;
+}
+.gate-q {
+  font-size: calc(20px * var(--u));
+  line-height: 1.25;
+  letter-spacing: -0.5px;
+}
+.gate-body {
+  font-size: calc(13px * var(--ut));
+  line-height: calc(20px * var(--ut));
+}
+.gate-after {
+  font-size: calc(11px * var(--ut));
+  line-height: calc(17px * var(--ut));
+}
+.hlists {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-sib);
+  align-items: start;
+}
+.hlist {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.hlist-head {
+  padding: var(--cell-v) var(--cell-h);
+  border-bottom: 1px solid var(--seam);
+  font-size: calc(13px * var(--ut));
+}
+.hlist-row {
+  display: flex;
+  gap: calc(12px * var(--u));
+  padding: var(--cell-v) var(--cell-h);
+  border-bottom: 1px solid var(--seam);
+  font-size: calc(12px * var(--ut));
+  line-height: calc(18px * var(--ut));
+}
+.hlist-row:last-child {
+  border-bottom: 0;
+}
+.hlist-k {
+  flex: 0 0 170px;
+}
+.cta {
+  background: var(--slab);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--gap-sib);
+  padding: var(--pad-card);
+}
+.cta-left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-support);
+}
+.cta-h {
+  font-size: calc(22px * var(--u));
+  letter-spacing: -0.5px;
+  line-height: 1.25;
+}
+.cta-s {
+  font-size: calc(13px * var(--ut));
+}
+.cta-btn {
+  background: var(--molten);
+  color: var(--coke);
+  font-size: calc(14px * var(--ut));
+  font-weight: 700;
+  padding: calc(14px * var(--u)) 22px;
+  white-space: nowrap;
+}
+.cta-btn:focus-visible {
+  color: var(--coke);
+}
+@media (hover: hover) {
+  .cta-btn:hover {
+    color: var(--coke);
+  }
+}
+/* the bridge into K1 types inside the button, in the same cell as the label it replaces (no reflow) */
+.cta-btn {
+  display: inline-grid;
+}
+.cta-label,
+.cta-bridge {
+  grid-area: 1 / 1;
+}
+.cta-bridge {
+  visibility: hidden;
+}
+.cta-btn.bridging .cta-label {
+  visibility: hidden;
+}
+.cta-btn.bridging .cta-bridge {
+  visibility: visible;
+}
+.cta.drawn .arrow {
+  display: inline-block;
+  animation: nudge 480ms var(--ease-out) 300ms 1;
+}
+@keyframes nudge {
+  40% {
+    transform: translateY(4px);
+  }
+}
+
+/* ---------- P5 setup ---------- */
+/* reading order (§0c blocks): the hook file (left), the transcript (right, both rows), the steps (left, below) */
+.setup-panes {
+  display: grid;
+  /* the file column follows the page scale, not the card's type steps, so the settings file wraps as little as possible */
+  grid-template-columns: calc(500px * var(--u0, 1)) 1fr;
+  grid-template-rows: auto 1fr;
+  gap: max(var(--gap-sib), calc(32px * var(--u)));
+  align-items: start;
+}
+.setup-panes > .hook {
+  grid-area: 1 / 1;
+}
+.setup-panes > .setup-session {
+  grid-area: 1 / 2 / 3 / 3;
+}
+.setup-panes > .hook-notes {
+  grid-area: 2 / 1;
+  margin: 0;
+  background: var(--slab);
+  --seam-color: var(--seam);
+}
+.hook-json {
+  margin: 0;
+  padding: var(--pad-card);
+  font-size: calc(12px * var(--ut));
+  line-height: calc(19px * var(--ut));
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+/* hanging indent: a wrapped line continues at its value's column, not at column 0 */
+.hook-json .jl {
+  display: block;
+  padding-left: var(--hang, 0ch);
+  text-indent: calc(-1 * var(--hang, 0ch));
+}
+.hook-notes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-row);
+  padding: var(--pad-card);
+  font-size: calc(12px * var(--ut));
+  line-height: calc(18px * var(--ut));
+}
+/* typed tool-call lines reserve their line before typing, so the card's centring (--mid) never changes */
+.setup [data-typer] {
+  display: block;
+  min-height: 1lh;
+}
+
+/* ---------- S9 numbers ---------- */
+.numbers {
+  gap: calc(36px * var(--u));
+}
+.numbers-head {
+  display: flex;
+  flex-direction: column;
+  gap: calc(10px * var(--u));
+}
+.numbers .kicker {
+  font-size: calc(14px * var(--ut));
+}
+.numbers .h2 {
+  line-height: 1.25;
+}
+.bignums {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.bignum {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-fig);
+  padding: var(--pad-tile);
+  border-right: 1px solid var(--seam);
+}
+.bignum:last-child {
+  border-right: 0;
+}
+.bignum-v {
+  font-size: calc(88px * var(--u));
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+}
+.bignum-l {
+  font-size: calc(14px * var(--ut));
+}
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(40px * var(--u));
+}
+.fact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-row);
+  font-size: calc(14px * var(--ut));
+}
+.fact-h {
+  font-size: calc(14px * var(--ut));
+  font-weight: 400;
+}
+.fact-rule {
+  height: 1px;
+  background: var(--seam);
+  margin: 8px 0;
+}
+.fact-l {
+  color: var(--ash);
+  transition: color 160ms linear;
+  line-height: calc(20px * var(--ut));
+}
+.fact-l.in {
+  color: var(--chalk);
+}
+.numbers .statusbar {
+  font-size: calc(14px * var(--ut));
+}
+.exit.drawn::after {
+  transition: transform 240ms linear;
+}
+
+/* ---------- M the math (teaser) ---------- */
+.math-head {
+  display: flex;
+  flex-direction: column;
+  gap: calc(10px * var(--u));
+}
+.math .h2 {
+  font-size: calc(44px * var(--u));
+  line-height: 1.25;
+  letter-spacing: -0.034em;
+}
+.math .lede {
+  font-size: calc(17px * var(--ut));
+  line-height: calc(25px * var(--ut));
+}
+.math-cta {
+  padding: var(--pad-card);
+}
+.math-cta .cta-h {
+  font-size: calc(20px * var(--ut));
+  line-height: 1.25;
+}
+.math-cta .cta-btn {
+  padding: calc(12px * var(--u)) 20px;
+}
+.math .statusbar {
+  padding-top: calc(14px * var(--u));
+}
+
+/* ---------- the four-formula strip (home teaser + /math hero) ---------- */
+.fstrip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.fcell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-title);
+  padding: var(--pad-tile);
+  border-right: 1px solid var(--seam);
+}
+.fcell:last-child {
+  border-right: 0;
+}
+/* hover: a 1 px molten seam, colour only */
+.fcell::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 1px solid transparent;
+  pointer-events: none;
+}
+@media (hover: hover) {
+  .fcell:hover::after {
+    border-color: var(--molten);
+  }
+}
+.fcell-f {
+  font-size: calc(19px * var(--ut));
+  line-height: calc(24px * var(--ut));
+}
+.fcell-s {
+  font-size: calc(13px * var(--ut));
+}
+.fcell-g {
+  font-size: calc(12px * var(--ut));
+}
+
+/* ---------- footer ---------- */
+.footer {
+  padding-top: 0;
+}
+.footer .statusbar {
+  line-height: calc(20px * var(--ut));
+}
+
+/* ---------- responsive (single breakpoint) ---------- */
+@media (max-width: 1023px) {
+  :root {
+    --page-pad: 24px;
+  }
+  .section {
+    padding: 48px var(--page-pad);
+  }
+  .hero {
+    min-height: 0;
+  }
+  .hero-cols {
+    grid-template-columns: 1fr;
+    margin-top: calc(48px * var(--u));
+  }
+  .hero .session {
+    width: 100%;
+  }
+  .hero-h1 {
+    font-size: calc(48px * var(--u));
+    line-height: 1.25;
+    letter-spacing: -2px;
+  }
+  .bignums-2 {
+    grid-template-columns: 1fr;
+  }
+  .bn,
+  .bn:nth-child(2n of .bn) {
+    border-right: 0;
+    border-bottom: 1px solid var(--seam);
+  }
+  .h2 {
+    font-size: calc(36px * var(--u));
+    line-height: 1.25;
+    letter-spacing: -1px;
+  }
+  .pain-cols,
+  .tstats,
+  .a-two-panes,
+  .gate-cells,
+  .hlists,
+  .setup-panes,
+  .bignums,
+  .facts,
+  .fstrip {
+    grid-template-columns: 1fr;
+  }
+  .tests-row {
+    grid-template-columns: 1fr;
+  }
+  /* one column: the setup blocks drop their two-column areas and follow in reading order (tablets too, not only
+     phones; with the areas kept the file was squeezed into an implicit 47 px column) */
+  .setup-panes {
+    grid-template-rows: none;
+  }
+  .setup-panes > :is(.hook, .setup-session, .hook-notes) {
+    grid-area: auto;
+  }
+  .vs3-row {
+    grid-template-columns: 1fr;
+  }
+  .vs3-row > span {
+    border-right: 0;
+  }
+  .tstat,
+  .gate-cell,
+  .bignum,
+  .fcell {
+    border-right: 0;
+    border-bottom: 1px solid var(--seam);
+  }
+  .bignum-v {
+    font-size: calc(56px * var(--u));
+    letter-spacing: -2px;
+    line-height: calc(56px * var(--ut));
+  }
+  .cta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .nav {
+    gap: calc(16px * var(--u));
+  }
+  .statusbar {
+    flex-direction: column;
+    gap: calc(8px * var(--u));
+  }
+  .patterns li {
+    grid-template-columns: 1fr;
+    gap: calc(2px * var(--u));
+  }
+}
+
+/* P4 carries the most rows (headline, stats, quote, patterns, slab, CTA): a slightly tighter rhythm keeps it inside 100 vh at 1280 × 720 with 1.25 titles */
+.section.tests {
+  gap: calc(18px * var(--u) * var(--u));
+}
+/* §08: the longest transcript on the page; the section rhythm (not a surface padding) tightens so it fits 720 px */
+.section.setup {
+  gap: calc(16px * var(--u) * var(--u));
+  padding-top: calc(24px * var(--uf));
+}
+.tests .measure-body {
+  gap: var(--gap-title);
+}
+.tests .cta {
+  padding-block: var(--pad-card);
+}
+
+.cta-btn .cursor {
+  background: var(--coke);
+}
+.cta-btn .prompt {
+  color: var(--coke);
+}
+
+/* hero, text before its box (§0c, §14.1, on the load clock): the labels and figures are there at once, the strip's
+   surface, inner seams and outline arrive at 200 ms (220 ms draw), the sources fade at 440 ms, the figures roll from
+   500 ms (hero.ts); the install line draws its box after its command */
+.hero .bignums-2 > svg.seam rect,
+.hero .install > svg.seam rect {
+  transition-delay: 200ms;
+}
+.hero .bignums-2 {
+  animation: hero-surface 220ms linear 200ms both;
+}
+.hero .bn {
+  animation: hero-seams 220ms linear 260ms both;
+}
+.hero .install {
+  animation: hero-surface 220ms linear 200ms both;
+}
+.hero .bn-s {
+  animation: hero-support 200ms linear 440ms both;
+}
+@keyframes hero-surface {
+  from {
+    background-color: transparent;
+  }
+}
+@keyframes hero-seams {
+  from {
+    border-color: transparent;
+  }
+}
+@keyframes hero-support {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero .bignums-2,
+  .hero .bn,
+  .hero .install,
+  .hero .bn-s {
+    animation: none;
+  }
+}
+
+/* main text → support text 16 px (§0c floors): a stat tile's source sits a support gap under its label */
+.tstat-s {
+  margin-top: calc(var(--gap-support) - var(--gap-fig));
+}
+/* §08 at 720 px: the last card is 100 vh minus the footer and both its columns are as long as the story allows; a
+   second type step (not a padding cut) keeps it inside its card at 1280 × 720 */
+@media (max-height: 800px) and (min-width: 1024px) {
+  .section.setup.type-step {
+    --u: calc(var(--u0, 1) * 0.82);
+    --ut: max(0.72, calc(var(--ut0, 1) * 0.82));
+  }
+}

@@ -1,0 +1,38 @@
+/* Generated from designs/tokens.json — names are kept 1:1. */
+:root {
+  --coke: #0b0c0e;
+  --slab: #131417;
+  --seam: #26282e;
+  --ash: #8b8f99;
+  --chalk: #ecedef;
+  --molten: #ff6a1a;
+  --ember: #ffb020;
+  --ingot: #3ddc84;
+  --slag: #ff4d4d;
+  --link: #5cb2ff;
+  --font-display: "Azeret Mono", ui-monospace, monospace;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+  --furnace: #110b09;
+  --furnace-slab: #191210;
+  --heat-seam: #ff6a1a33;
+  --heat-glow: #ff6a1a1a;
+  --dive-ash: #a9adb6;
+  --syn-kw: #7cb8ff;
+  --syn-str: #8fd9a8;
+  --syn-num: #ffc95c;
+  --syn-fn: #ecedef;
+  --syn-cm: #8b8f99;
+  --syn-dec: #c9a0ff;
+
+  /* derived tints (token × alpha), never new hues */
+  --tint-hot: #ff6a1a26;
+  --tint-dup: #ffb02022;
+  --tint-new: #3ddc8422;
+  --tint-del: #ff4d4d22;
+  --hint-fill: #ff6a1a14;
+
+  --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --page-pad: 64px;
+  --page-max: 1440px;
+}
