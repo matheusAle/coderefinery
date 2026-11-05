@@ -5,7 +5,8 @@
 #   1. $CODEREFINERY_BIN, when set
 #   2. coderefinery on PATH
 #   3. the cache: ${XDG_CACHE_HOME:-$HOME/.cache}/coderefinery/<version>/coderefinery
-#   4. the GitHub release asset for this OS/arch, checked against SHA256SUMS
+#   4. the release archive for this OS/arch, checked against SHA256SUMS, from
+#      coderefinery.dev/dl (Cloudflare R2), else from the GitHub release
 #   5. go install .../cmd/coderefinery@<version> into the cache directory
 #
 # Exit 127 when none of them yields a binary; otherwise coderefinery's own status.
@@ -15,7 +16,10 @@ set -eu
 CODEREFINERY_VERSION=v0.1.0
 CODEREFINERY_REPO=matheusAle/coderefinery
 CODEREFINERY_MODULE=github.com/matheusAle/coderefinery/cmd/coderefinery
-# Overridable for mirrors (and for testing against a local release dir).
+# Release downloads, tried in this order; both hold <version>/<archive> and
+# <version>/SHA256SUMS. Overridable for mirrors (and for testing against a
+# local release dir).
+CODEREFINERY_DOWNLOAD_URL=${CODEREFINERY_DOWNLOAD_URL:-https://coderefinery.dev/dl}
 CODEREFINERY_RELEASE_URL=${CODEREFINERY_RELEASE_URL:-https://github.com/$CODEREFINERY_REPO/releases/download}
 
 say() { printf 'coderefinery launcher: %s\n' "$*" >&2; }
@@ -87,14 +91,10 @@ clean_download() {
 	rmdir "$dl" 2>/dev/null || true
 }
 
-# install_release: download, verify and unpack the release asset, then move
-# the binary into the cache. Returns non-zero, with a message, on failure.
-install_release() {
-	if [ -z "$os" ] || [ -z "$arch" ]; then
-		say "no release build for $(uname -s)/$(uname -m)"
-		return 1
-	fi
-	url=$CODEREFINERY_RELEASE_URL/$CODEREFINERY_VERSION
+# install_from BASE_URL: download, verify and unpack the release asset, then
+# move the binary into the cache. Returns non-zero, with a message, on failure.
+install_from() {
+	url=${1%/}/$CODEREFINERY_VERSION
 	say "downloading $url/$asset"
 	fetch "$url/$asset" "$dl/$asset" || { say "download failed: $url/$asset"; return 1; }
 	fetch "$url/SHA256SUMS" "$dl/SHA256SUMS" || { say "download failed: $url/SHA256SUMS"; return 1; }
@@ -107,6 +107,14 @@ install_release() {
 	tar -xzf "$dl/$asset" -C "$dl" || { say "could not unpack $asset"; return 1; }
 	[ -f "$dl/coderefinery" ] || { say "$asset has no coderefinery binary"; return 1; }
 	chmod +x "$dl/coderefinery" && mv -f "$dl/coderefinery" "$bin"
+}
+
+install_release() {
+	if [ -z "$os" ] || [ -z "$arch" ]; then
+		say "no release build for $(uname -s)/$(uname -m)"
+		return 1
+	fi
+	install_from "$CODEREFINERY_DOWNLOAD_URL" || install_from "$CODEREFINERY_RELEASE_URL"
 }
 
 install_with_go() {

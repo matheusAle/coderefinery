@@ -109,7 +109,10 @@ ln -s "$LAUNCHER" "$T/selfbin/coderefinery"
 run self "PATH=$T/selfbin:$T/sysbin" "XDG_CACHE_HOME=$T/xdg" -- dry
 expect "launcher on PATH falls through to the cache" 0 '^xdg-cache:dry:1$'
 
-# 5. Download: a local release dir laid out like GitHub's, with the real binary.
+# 5. Download: a local release dir laid out like the R2 bucket and the GitHub
+# release (<version>/<archive>, <version>/SHA256SUMS), with the real binary.
+# NOWHERE points both mirrors at nothing, so no case reaches the network.
+NOWHERE="CODEREFINERY_DOWNLOAD_URL=file://$T/nowhere CODEREFINERY_RELEASE_URL=file://$T/nowhere"
 mkdir -p "$T/build" "$T/release/$VERSION"
 (cd "$ROOT" && CGO_ENABLED=0 go build -trimpath -ldflags "-s -w -X main.version=$VERSION" -o "$T/build/coderefinery" ./cmd/coderefinery)
 tar -czf "$T/release/$VERSION/$ASSET" -C "$T/build" coderefinery
@@ -122,8 +125,10 @@ fi
 mkdir -p "$T/dl-cache/coderefinery/$VERSION/.download"
 echo junk >"$T/dl-cache/coderefinery/$VERSION/.download/$ASSET"
 echo junk >"$T/dl-cache/coderefinery/$VERSION/.download/coderefinery"
-run download "XDG_CACHE_HOME=$T/dl-cache" "CODEREFINERY_RELEASE_URL=file://$T/release" -- --version
+run download "XDG_CACHE_HOME=$T/dl-cache" "CODEREFINERY_DOWNLOAD_URL=file://$T/release" "CODEREFINERY_RELEASE_URL=file://$T/nowhere" -- --version
 expect "release asset is downloaded, verified and run" 0 "^coderefinery $VERSION\$"
+expect "coderefinery.dev/dl (R2) is tried first" 0 "downloading file://$T/release/$VERSION/$ASSET\$"
+if printf '%s\n' "$out" | grep -q nowhere; then fail "the GitHub mirror is not tried after R2 worked"; else pass "the GitHub mirror is not tried after R2 worked"; fi
 leftover=
 for f in "$T/dl-cache/coderefinery/$VERSION"/* "$T/dl-cache/coderefinery/$VERSION"/.[!.]*; do
 	[ -e "$f" ] && [ "${f##*/}" != coderefinery ] && leftover="$leftover ${f##*/}"
@@ -133,17 +138,23 @@ if [ -x "$T/dl-cache/coderefinery/$VERSION/coderefinery" ] && [ -z "$leftover" ]
 else
 	fail "downloaded binary is cached and the temp dir is gone; left over:$leftover"
 fi
-run download-again "XDG_CACHE_HOME=$T/dl-cache" "CODEREFINERY_RELEASE_URL=file://$T/nowhere" -- --help
+# shellcheck disable=SC2086 # NOWHERE is two assignments
+run download-again "XDG_CACHE_HOME=$T/dl-cache" $NOWHERE -- --help
 expect "second run uses the cache without downloading" 0 '^Usage: coderefinery <command>'
 
 # 6. A checksum mismatch installs nothing.
 mkdir -p "$T/bad-release/$VERSION"
 cp "$T/release/$VERSION/$ASSET" "$T/bad-release/$VERSION/"
 printf '%s  %s\n' 0000000000000000000000000000000000000000000000000000000000000000 "$ASSET" >"$T/bad-release/$VERSION/SHA256SUMS"
-run badsum "XDG_CACHE_HOME=$T/bad-cache" "CODEREFINERY_RELEASE_URL=file://$T/bad-release" -- --version
+run badsum "XDG_CACHE_HOME=$T/bad-cache" "CODEREFINERY_DOWNLOAD_URL=file://$T/bad-release" "CODEREFINERY_RELEASE_URL=file://$T/bad-release" -- --version
 expect "checksum mismatch is refused" 127 "checksum mismatch for $ASSET"
 if [ ! -e "$T/bad-cache/coderefinery/$VERSION/coderefinery" ]; then pass "nothing cached after a mismatch"; else fail "nothing cached after a mismatch"; fi
 expect "the failure message says how to fix it" 127 'set CODEREFINERY_BIN to its path'
+
+# 6b. R2 unreachable: the GitHub release is the fallback.
+run fallback "XDG_CACHE_HOME=$T/fallback-cache" "CODEREFINERY_DOWNLOAD_URL=file://$T/nowhere" "CODEREFINERY_RELEASE_URL=file://$T/release" -- --version
+expect "the GitHub release is used when R2 fails" 0 "^coderefinery $VERSION\$"
+expect "after R2 was tried first" 0 "download failed: file://$T/nowhere/$VERSION/$ASSET\$"
 
 # 7. go install fallback, from a file:// module proxy holding the root module
 # (its Go sources) at the plain vX.Y.Z tag, as the real proxy serves it.
@@ -164,14 +175,16 @@ done)
 cp "$ROOT/go.mod" "$proxy/$VERSION.mod"
 printf '{"Version":"%s"}\n' "$VERSION" >"$proxy/$VERSION.info"
 printf '%s\n' "$VERSION" >"$proxy/list"
-run goinstall "PATH=$T/sysbin:$GOROOT_BIN" "XDG_CACHE_HOME=$T/go-cache" "CODEREFINERY_RELEASE_URL=file://$T/nowhere" \
+# shellcheck disable=SC2086 # NOWHERE is two assignments
+run goinstall "PATH=$T/sysbin:$GOROOT_BIN" "XDG_CACHE_HOME=$T/go-cache" $NOWHERE \
 	"GOPROXY=file://$T/proxy" GOSUMDB=off GOTOOLCHAIN=local GOFLAGS=-modcacherw \
 	"GOPATH=$T/gopath" "GOCACHE=$T/gocache" -- --version
 expect "go install fallback builds the pinned version" 0 "^coderefinery $VERSION\$"
 expect "go install runs only after the download failed" 0 'download failed: file://'
 
 # 8. Nothing works: no release, no go.
-run nothing "XDG_CACHE_HOME=$T/none-cache" "CODEREFINERY_RELEASE_URL=file://$T/nowhere" -- crap
+# shellcheck disable=SC2086 # NOWHERE is two assignments
+run nothing "XDG_CACHE_HOME=$T/none-cache" $NOWHERE -- crap
 expect "no binary at all exits 127" 127 'go is not installed'
 expect "and explains the options" 127 "could not install coderefinery $VERSION"
 
