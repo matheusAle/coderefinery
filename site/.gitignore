@@ -3,3 +3,4 @@ dist
 .dev.pid
 .dev.log
 .shots
+.wrangler

@@ -1,0 +1,11 @@
+# Cloudflare Pages config for coderefinery.dev (project "coderefinery").
+# `wrangler pages deploy` reads it; it is the source of truth for the
+# project's bindings. RELEASES backs functions/dl/[[path]].ts (release
+# downloads, docs/release.md).
+name = "coderefinery"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-11-05"
+
+[[r2_buckets]]
+binding = "RELEASES"
+bucket_name = "coderefinery-releases"
