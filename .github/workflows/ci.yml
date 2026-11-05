@@ -13,6 +13,7 @@ env:
   # harness/env.sh defaults to the author's checkout path; point it here.
   REPO_ROOT: ${{ github.workspace }}
 
+# Actions are pinned by commit; the comment names the release.
 jobs:
   ci:
     name: ci (${{ matrix.os }})
@@ -22,8 +23,8 @@ jobs:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-go@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: .tool-versions
       - name: Point env.sh at this Go
@@ -32,6 +33,37 @@ jobs:
         run: make ci
       - name: Skill launcher tests
         run: tests/launcher_test.sh
+      - name: Installer tests (site/public/install.sh)
+        run: tests/install_test.sh
+
+  signing-key:
+    # The CODEREFINERY_SIGNING_KEY secret must sign with the key whose public
+    # half is built into coderefinery (internal/selfupdate), or every release
+    # fails to verify. Secrets are not given to pull requests from forks.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: .tool-versions
+      - name: Sign a probe and verify it with the built-in public key
+        env:
+          CODEREFINERY_SIGNING_KEY: ${{ secrets.CODEREFINERY_SIGNING_KEY }}
+          FROM_FORK: ${{ github.event.pull_request.head.repo.fork }}
+        run: |
+          if [ -z "$CODEREFINERY_SIGNING_KEY" ]; then
+            if [ "$FROM_FORK" = true ]; then
+              echo "::notice::no secrets for pull requests from forks; signing key not checked"
+              exit 0
+            fi
+            echo "::error::secret CODEREFINERY_SIGNING_KEY is missing; see docs/release.md (Signing key)"
+            exit 1
+          fi
+          mkdir -p "$RUNNER_TEMP/sign-check"
+          printf '%064d  coderefinery_0.0.0_linux_amd64.tar.gz\n' 0 > "$RUNNER_TEMP/sign-check/SHA256SUMS"
+          go run ./tools/release sign "$RUNNER_TEMP/sign-check"
+          go run ./tools/release verify "$RUNNER_TEMP/sign-check"
+          echo "CODEREFINERY_SIGNING_KEY matches the public key in internal/selfupdate"
 
   parity:
     # Golden mode: coderefinery vs harness/golden, recorded from upstream on macOS
@@ -40,14 +72,14 @@ jobs:
     # part of the golden stdout, so the platform and versions are pinned.
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-go@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: .tool-versions
-      - uses: actions/setup-python@v7
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.12.3'
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '24.13.0'
       - name: Point env.sh at this Go

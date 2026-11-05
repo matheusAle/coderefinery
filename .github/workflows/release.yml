@@ -1,65 +1,216 @@
 name: release
 
 # Push a tag vX.Y.Z equal to CODEREFINERY_VERSION in
-# skills/coderefinery/scripts/coderefinery. Publishes
-# coderefinery_<X.Y.Z>_<os>_<arch>.tar.gz + SHA256SUMS (the names the launcher
-# downloads). The Go module sits at the repo root, so `go install` resolves the
-# same vX.Y.Z tag.
+# skills/coderefinery/scripts/coderefinery. The release goes to the R2 bucket
+# behind https://coderefinery.dev/dl (docs/release.md):
+#
+#   vX.Y.Z/coderefinery_<X.Y.Z>_<os>_<arch>.tar.gz, vX.Y.Z/SHA256SUMS,
+#   vX.Y.Z/SHA256SUMS.sig (ed25519, checked by `coderefinery update`),
+#   latest.json (written last, so it never names files that are not there yet)
+#
+# and to a GitHub release as a mirror (the skill launcher's fallback; the Go
+# module sits at the repo root, so `go install` resolves the same tag). Then
+# the site is deployed (install.sh, the /dl function) and the release is
+# installed on Linux and macOS through install.sh and through the launcher.
+# Secrets: CODEREFINERY_SIGNING_KEY, CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID.
+# A tag with a pre-release suffix (v1.2.0-rc.1) is published but does not
+# move latest.json.
 
 on:
   push:
     tags: ['v*']
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
 
 env:
   REPO_ROOT: ${{ github.workspace }}
   VERSION: ${{ github.ref_name }}
+  R2_BUCKET: coderefinery-releases
+  WRANGLER: wrangler@4.158.0
+  # The public site; a repository variable can point at a preview host
+  # (e.g. https://coderefinery-21a.pages.dev) while the custom domain is not live.
+  SITE_URL: ${{ vars.CODEREFINERY_SITE_URL || 'https://coderefinery.dev' }}
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      prerelease: ${{ steps.kind.outputs.prerelease }}
+      latest: ${{ steps.latest.outputs.moved }}
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-go@v7
+      - name: Secrets are configured
+        env:
+          CODEREFINERY_SIGNING_KEY: ${{ secrets.CODEREFINERY_SIGNING_KEY }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          missing=
+          for s in CODEREFINERY_SIGNING_KEY CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID; do
+            if [ -z "$(printenv "$s")" ]; then
+              echo "::error::secret $s is missing; see docs/release.md (Secrets), then: gh secret set $s"
+              missing=1
+            fi
+          done
+          [ -z "$missing" ]
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: .tool-versions
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24.13.0'
       - name: Point env.sh at this Go
         run: echo "REPO_GOROOT_BIN=$(go env GOROOT)/bin" >> "$GITHUB_ENV"
-      - name: Tag must match the launcher's pinned version
+      - name: Tag must be vX.Y.Z[-pre] and match the launcher's pinned version
+        id: kind
         run: |
+          if ! printf '%s\n' "$VERSION" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$'; then
+            echo "::error::tag $VERSION is not vX.Y.Z or vX.Y.Z-pre"
+            exit 1
+          fi
           pinned=$(sed -n 's/^CODEREFINERY_VERSION=//p' skills/coderefinery/scripts/coderefinery)
           if [ "$pinned" != "$VERSION" ]; then
             echo "::error::tag $VERSION does not match CODEREFINERY_VERSION=$pinned in skills/coderefinery/scripts/coderefinery"
             exit 1
           fi
+          case $VERSION in *-*) echo prerelease=true ;; *) echo prerelease=false ;; esac >> "$GITHUB_OUTPUT"
       - name: gofmt, vet, test, build
         run: make ci
+      - name: Launcher and installer tests
+        run: tests/launcher_test.sh && tests/install_test.sh
       - name: Build release archives
         run: make dist VERSION="$VERSION"
       - name: Smoke test the linux/amd64 binary
         run: |
-          got=$(dist/coderefinery_${VERSION#v}_linux_amd64/coderefinery --version)
+          got=$("dist/coderefinery_${VERSION#v}_linux_amd64/coderefinery" --version)
           test "$got" = "coderefinery $VERSION" || { echo "::error::--version printed '$got'"; exit 1; }
           (cd dist && sha256sum -c SHA256SUMS)
-      - name: Publish the GitHub release
+      - name: Sign SHA256SUMS and check it against the key built into coderefinery
+        env:
+          CODEREFINERY_SIGNING_KEY: ${{ secrets.CODEREFINERY_SIGNING_KEY }}
+        run: |
+          go run ./tools/release sign dist
+          go run ./tools/release verify dist
+      - name: Write latest.json
+        run: go run ./tools/release manifest "$VERSION" dist > dist/latest.json && cat dist/latest.json
+      - name: Upload the versioned files to R2
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          put() { # put FILE CONTENT-TYPE KEY
+            npx --yes "$WRANGLER" r2 object put "$R2_BUCKET/$3" --file "$1" --content-type "$2" --remote
+          }
+          for f in dist/coderefinery_"${VERSION#v}"_*.tar.gz; do
+            put "$f" application/gzip "$VERSION/${f#dist/}"
+          done
+          put dist/SHA256SUMS 'text/plain; charset=utf-8' "$VERSION/SHA256SUMS"
+          put dist/SHA256SUMS.sig 'text/plain; charset=utf-8' "$VERSION/SHA256SUMS.sig"
+      - name: Publish the GitHub release (mirror)
         env:
           GH_TOKEN: ${{ github.token }}
+          PRERELEASE: ${{ steps.kind.outputs.prerelease }}
         run: |
-          gh release create "$VERSION" --verify-tag --title "coderefinery $VERSION" --generate-notes \
-            dist/coderefinery_${VERSION#v}_*.tar.gz dist/SHA256SUMS
+          files=(dist/coderefinery_"${VERSION#v}"_*.tar.gz dist/SHA256SUMS dist/SHA256SUMS.sig)
+          if gh release view "$VERSION" >/dev/null 2>&1; then
+            # A re-run: replace the assets, keep the release.
+            gh release upload "$VERSION" --clobber "${files[@]}"
+          else
+            flags=()
+            if [ "$PRERELEASE" = true ]; then flags=(--prerelease); fi
+            gh release create "$VERSION" --verify-tag --title "coderefinery $VERSION" --generate-notes "${flags[@]}" "${files[@]}"
+          fi
+      - name: Point latest.json at the release (last)
+        id: latest
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          PRERELEASE: ${{ steps.kind.outputs.prerelease }}
+        run: |
+          if [ "$PRERELEASE" = true ]; then
+            echo "pre-release: latest.json unchanged"
+            echo moved=false >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # Never move latest.json backwards (a patch tag on an older line).
+          current=$(npx --yes "$WRANGLER" r2 object get "$R2_BUCKET/latest.json" --pipe --remote 2>/dev/null |
+            sed -n 's/.*"version": *"\(v[^"]*\)".*/\1/p' || true)
+          if [ -n "$current" ] && [ "$(printf '%s\n%s\n' "${current#v}" "${VERSION#v}" | sort -V | tail -n 1)" != "${VERSION#v}" ]; then
+            echo "::warning::latest.json stays at $current (newer than $VERSION)"
+            echo moved=false >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          npx --yes "$WRANGLER" r2 object put "$R2_BUCKET/latest.json" --file dist/latest.json \
+            --content-type 'application/json; charset=utf-8' --remote
+          echo moved=true >> "$GITHUB_OUTPUT"
+
+  site:
+    # Ship install.sh and the /dl function from this tag.
+    needs: release
+    uses: ./.github/workflows/site.yml
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
   verify:
-    # The skill's launcher, from a clean cache, installs what was just published.
-    needs: release
+    # From a clean machine: the served installer, the update check, the
+    # signature as served, and the skill launcher (R2, then the GitHub mirror).
+    needs: [release, site]
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
+    env:
+      LATEST: ${{ needs.release.outputs.latest }}
     steps:
-      - uses: actions/checkout@v7
-      - name: Launcher downloads, verifies and runs the release
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: .tool-versions
+      - name: install.sh from the site installs this version
         run: |
-          got=$(env -i HOME="$RUNNER_TEMP/home" PATH=/usr/bin:/bin skills/coderefinery/scripts/coderefinery --version)
-          test "$got" = "coderefinery $VERSION" || { echo "::error::launcher printed '$got'"; exit 1; }
+          home=$RUNNER_TEMP/home-installer
+          mkdir -p "$home"
+          curl -fsSL "$SITE_URL/install.sh" -o "$RUNNER_TEMP/install.sh"
+          cmp "$RUNNER_TEMP/install.sh" site/public/install.sh || { echo "::error::$SITE_URL/install.sh is not this tag's site/public/install.sh"; exit 1; }
+          pin=$VERSION
+          if [ "$LATEST" = true ]; then pin=; fi   # then latest.json must name this version
+          env -i HOME="$home" PATH=/usr/bin:/bin TMPDIR="$RUNNER_TEMP" CODEREFINERY_DOWNLOAD_URL="$SITE_URL/dl" \
+            ${pin:+CODEREFINERY_VERSION=$pin} sh "$RUNNER_TEMP/install.sh"
+          got=$("$home/.local/bin/coderefinery" --version)
+          test "$got" = "coderefinery $VERSION" || { echo "::error::installed '$got'"; exit 1; }
+          echo "INSTALLED=$home/.local/bin/coderefinery" >> "$GITHUB_ENV"
+      - name: coderefinery update --check finds nothing newer
+        if: env.LATEST == 'true'
+        run: |
+          got=$(CODEREFINERY_DOWNLOAD_URL="$SITE_URL/dl" "$INSTALLED" update --check)
+          test "$got" = "coderefinery $VERSION is up to date" || { echo "::error::update --check printed '$got'"; exit 1; }
+      - name: The served SHA256SUMS.sig verifies with the built-in key
+        run: |
+          mkdir -p "$RUNNER_TEMP/served"
+          curl -fsSL "$SITE_URL/dl/$VERSION/SHA256SUMS" -o "$RUNNER_TEMP/served/SHA256SUMS"
+          curl -fsSL "$SITE_URL/dl/$VERSION/SHA256SUMS.sig" -o "$RUNNER_TEMP/served/SHA256SUMS.sig"
+          go run ./tools/release verify "$RUNNER_TEMP/served"
+      - name: The launcher installs from R2
+        run: |
+          out=$(env -i HOME="$RUNNER_TEMP/home-r2" PATH=/usr/bin:/bin CODEREFINERY_DOWNLOAD_URL="$SITE_URL/dl" \
+            skills/coderefinery/scripts/coderefinery --version 2>"$RUNNER_TEMP/r2.err")
+          cat "$RUNNER_TEMP/r2.err"
+          test "$out" = "coderefinery $VERSION" || { echo "::error::launcher printed '$out'"; exit 1; }
+          if ! grep -q "downloading $SITE_URL/dl/$VERSION/" "$RUNNER_TEMP/r2.err" || grep -q 'download failed' "$RUNNER_TEMP/r2.err"; then
+            echo "::error::the launcher did not install from $SITE_URL/dl"
+            exit 1
+          fi
+      - name: The launcher falls back to the GitHub release
+        run: |
+          out=$(env -i HOME="$RUNNER_TEMP/home-gh" PATH=/usr/bin:/bin CODEREFINERY_DOWNLOAD_URL=file:///nonexistent \
+            skills/coderefinery/scripts/coderefinery --version)
+          test "$out" = "coderefinery $VERSION" || { echo "::error::launcher printed '$out'"; exit 1; }

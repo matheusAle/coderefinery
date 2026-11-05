@@ -1,0 +1,66 @@
+name: site
+
+# Builds site/ (coderefinery.dev) and deploys it to the Cloudflare Pages
+# project "coderefinery": on pushes to main that touch site/, from the release
+# workflow (so install.sh and the /dl function ship with every release), or by
+# hand from main. Pull requests only build. site/wrangler.toml carries the R2
+# binding of functions/dl. Secrets: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID
+# (docs/release.md).
+
+on:
+  push:
+    branches: [main]
+    paths: ['site/**', '.github/workflows/site.yml']
+  pull_request:
+    paths: ['site/**', '.github/workflows/site.yml']
+  workflow_call:
+    secrets:
+      CLOUDFLARE_API_TOKEN:
+        required: false
+      CLOUDFLARE_ACCOUNT_ID:
+        required: false
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  WRANGLER: wrangler@4.158.0
+
+jobs:
+  site:
+    runs-on: ubuntu-latest
+    # One production deploy at a time, in order; pull requests build in parallel.
+    concurrency:
+      group: ${{ github.event_name == 'pull_request' && format('site-pr-{0}', github.ref) || 'site-production' }}
+      cancel-in-progress: false
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24.13.0'
+      - name: Install
+        run: npm ci --no-audit --no-fund
+      - name: Build
+        run: npm run build
+      - name: Release files are in the build
+        run: |
+          test -f dist/install.sh || { echo "::error::dist/install.sh is missing"; exit 1; }
+          test -f 'functions/dl/[[path]].ts' || { echo "::error::functions/dl is missing"; exit 1; }
+      - name: Deploy to Cloudflare Pages (production)
+        if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          for s in CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID; do
+            if [ -z "$(printenv "$s")" ]; then
+              echo "::error::secret $s is missing. Create it as described in docs/release.md (Cloudflare API token), then: gh secret set $s"
+              exit 1
+            fi
+          done
+          npx --yes "$WRANGLER" pages deploy dist --project-name coderefinery --branch main \
+            --commit-hash "$GITHUB_SHA" --commit-message "${GITHUB_REF_NAME} ${GITHUB_SHA::7}" --commit-dirty=false
