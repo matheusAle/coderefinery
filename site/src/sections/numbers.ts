@@ -21,7 +21,7 @@ const FACTS: [string, string[]][] = [
 export function mountNumbers(): HTMLElement {
   const el = fromHTML(html`
     <section class="section numbers" id="numbers" aria-labelledby="numbers-h">
-      <div class="numbers-head">${head("§06 · after the intro", "Same output as the originals.<br />A fraction of the time.", "numbers-h")}</div>
+      <div class="numbers-head">${head("§06 · measured against Uncle Bob's skill and CLIs", "Same output as the originals.<br />A fraction of the time.", "numbers-h")}</div>
       <div class="bignums box" data-slot="visual" role="list">
         ${intro.numbers.map(
           (n) => html`<div class="bignum" role="listitem">

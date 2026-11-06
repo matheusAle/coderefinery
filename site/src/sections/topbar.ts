@@ -18,7 +18,7 @@ export function topbar(active?: NavKey): string {
       <a href="/agents"${a("agents")}>for agents</a>
       <a href="/math"${a("math")}>the math</a>
       <a href="/docs">docs</a>
-      <a href="https://github.com/coderefinery" rel="noopener">github</a>
+      <a href="https://github.com/matheusAle/coderefinery" rel="noopener">github</a>
     </nav>
   </div>`;
 }

@@ -474,6 +474,13 @@ differs. Decide before implementing.
 
 ## 9. S9 · the numbers
 
+Kicker: `§06 · measured against Uncle Bob's skill and CLIs` (the card is the
+comparison against the reference crapper, dryer and mutator; "after the intro"
+was a storyboard label and reads as nothing on a scan). The hero's four
+numbers carry their source as a link on the tile (Faros 2026, arXiv
+2606.18168, docs/benchmarks on GitHub), underlined in the seam colour, molten
+on hover.
+
 Unpinned, normal scrolling. Triggered when the section is 30 % in view, scrubbed
 over the next 40 % of viewport travel:
 

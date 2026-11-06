@@ -45,7 +45,7 @@ export function mountHero(): HeroHandle {
             (s) => html`<div class="bn" role="listitem">
               <span class="bn-v display ${s.molten ? "molten" : ""}" data-odo="${esc(s.value)}"></span>
               <span class="bn-l mono">${esc(s.label)}</span>
-              <span class="bn-s mono ash">${esc(s.source)}</span>
+              <a class="bn-s mono ash" href="${esc(s.href)}" rel="noopener">${esc(s.source)}</a>
             </div>`,
           )}
         </div>

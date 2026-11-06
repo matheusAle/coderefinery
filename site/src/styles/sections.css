@@ -243,6 +243,17 @@
 .bn-s {
   font-size: 11px;
 }
+a.bn-s {
+  text-decoration: underline;
+  text-decoration-color: var(--seam);
+  text-underline-offset: 3px;
+}
+@media (hover: hover) {
+  a.bn-s:hover {
+    color: var(--molten);
+    text-decoration-color: var(--molten);
+  }
+}
 .hero-status {
   margin-top: auto;
 }
