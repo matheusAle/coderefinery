@@ -15,7 +15,7 @@ import { head, statusbar } from "./common";
 const FACTS: [string, string[]][] = [
   ["languages · 7", ["python · typescript · tsx · javascript", "go · java · rust · clojure", "same tree shape as tree-sitter, hand-written in Go"]],
   ["one binary", ["`7.2 MB` · stdlib only · no cgo", "macOS + Linux · amd64 + arm64", "no venv, no node, no jvm to run it"]],
-  ["install", ["`$ curl -fsSL https://get.coderefinery.dev | sh`", "`$ npx skills add coderefinery`", "`$ go install github.com/.../coderefinery@latest`"]],
+  ["install", ["`$ curl -fsSL https://get.coderefinery.dev | sh`", "`$ npx skills add matheusAle/coderefinery`", "`$ go install github.com/.../coderefinery@latest`"]],
 ];
 
 export function mountNumbers(): HTMLElement {

@@ -234,7 +234,7 @@ export function mountEverywhere(): HTMLElement {
       <div class="cta box molten-seam" data-slot="card">
         <div class="cta-left">
           <p class="cta-h display">Give the agent a number it cannot argue with.</p>
-          <p class="a-install mono"><span class="prompt">$</span> <code class="ic">npx skills add coderefinery</code> <span class="ash a-install-s">· then add the hook (two minutes)</span></p>
+          <p class="a-install mono"><span class="prompt">$</span> <code class="ic">npx skills add matheusAle/coderefinery</code> <span class="ash a-install-s">· then add the hook (two minutes)</span></p>
         </div>
         <a class="cta-btn mono" href="/#hook">see the hook →</a>
       </div>

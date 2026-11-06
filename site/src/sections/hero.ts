@@ -35,7 +35,7 @@ export function mountHero(): HeroHandle {
           <p class="hero-lede">Three gates on the diff, before the commit. Complexity without tests. Copies under new names. Tests that cannot fail. If one fails, the commit fails.</p>
           <div class="install box" role="group" aria-label="install command">
             <span class="prompt molten">$</span>
-            <code class="install-cmd">npx skills add coderefinery</code>
+            <code class="install-cmd">npx skills add matheusAle/coderefinery</code>
             <span class="wm-cursor" aria-hidden="true"></span>
           </div>
           <p class="hero-foot mono ash">one binary · no runtime · Claude Code, Cursor, CI · byte-identical to Uncle Bob's crapper, dryer, mutator</p>

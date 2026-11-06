@@ -65,7 +65,7 @@ export function mountParity(): HTMLElement {
       <div class="cta box molten-seam" data-slot="card">
         <div class="cta-left">
           <p class="cta-h display">Run it on your repo and check a number by hand.</p>
-          <p class="cta-s mono ash"><code class="ic">$ npx skills add coderefinery</code> · fixtures, harness and benchmarks are in the repo</p>
+          <p class="cta-s mono ash"><code class="ic">$ npx skills add matheusAle/coderefinery</code> · fixtures, harness and benchmarks are in the repo</p>
         </div>
         <a class="cta-btn mono" href="https://github.com/coderefinery/coderefinery/tree/main/docs" rel="noopener">read the specs →</a>
       </div>

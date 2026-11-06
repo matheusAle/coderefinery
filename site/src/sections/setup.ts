@@ -76,7 +76,7 @@ export function mountSetup(): HTMLElement {
           </div>
         </figure>
         <ul class="hook-notes mono box" data-slot="card" aria-label="the three steps">
-            <li>· step 1 · <code class="ic">npx skills add coderefinery</code> installs the skill: gate order, thresholds, what to do per verdict</li>
+            <li>· step 1 · <code class="ic">npx skills add matheusAle/coderefinery</code> installs the skill: gate order, thresholds, what to do per verdict</li>
             <li>· step 2 · the hook above: <code class="ic">exit ≠ 0</code> blocks the tool call; the agent sees stderr and fixes the code</li>
             <li>· step 3 · the same three commands in CI: same exit codes, same <code class="ic">.metrics/</code>, no second config</li>
             <li>· what the skill adds: TDD first, split before test, delete what no honest test can kill</li>
